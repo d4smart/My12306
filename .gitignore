@@ -1,0 +1,28 @@
+*.class
+
+# package file
+*.jar
+*.war
+*.ear
+
+# maven file
+target/
+
+# idea file
+.idea/
+/idea/
+*.ipr
+*.iml
+*.iws
+
+# temp file
+*.log
+*.gz
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# system file
+.DS_Store
+Thumbs.db
