@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/manage/user/")
-public class UserController {
+public class UserManageController {
 
     @Autowired
     private UserService userService;

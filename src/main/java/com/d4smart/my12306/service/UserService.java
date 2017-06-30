@@ -29,8 +29,6 @@ public class UserService {
             serverResponse = checkValid(Const.EMAIL, user.getEmail());
             if(serverResponse.isFailed()) return serverResponse;
         }
-        System.out.println(user.getIdentityNumber());
-        System.out.println(user.getIdentityNumber() != null);
         if(user.getIdentityNumber() != null) {
             serverResponse = checkValid(Const.IDENTITY_NUMBER, user.getIdentityNumber());
             if(serverResponse.isFailed()) return serverResponse;
