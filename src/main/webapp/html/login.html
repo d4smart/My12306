@@ -32,7 +32,7 @@
 			}
 			
 			.main-form .form-group input{
-				width: 16%;
+				width: 18%;
 			}
 			
 			.main-form .form-group .picCode{
@@ -74,7 +74,7 @@
 				<div class="col-xs-8 col-xs-offset-2 main-wrap">
 					<form action="" role="form" class="form-horizontal main-form">
 						<div class="form-group">
-							<label for="username" class="col-xs-2 col-xs-offset-6 text-right" placeholder="请输入6到12位用户名">用户名：</label>
+							<label for="username" class="col-xs-2 col-xs-offset-6 text-right" placeholder="请输入邮箱">邮&nbsp;&nbsp;&nbsp;&nbsp;箱：</label>
 							<input type="text" name="" id="username"/>
 						</div>
 						<div class="form-group">
@@ -127,19 +127,21 @@
 				var passwd = document.getElementById("password").value;
 				var vertifyCode = document.getElementById("vertifyCode").value;
 				var picCode = new RegExp("^"+picCode+"$", "i");
+				var username_test = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
 			
-				if (username.length<6 || username.length>12) {
-					alert("用户名长度在6到12位之间");
+				if (!username_test.test(username)) {
+					alert("请输入正确的邮箱");
 					return;
 				}
-				if (passwd.length == 0) {
-					alert("密码不能为空");
+				if (passwd.length < 6) {
+					alert("密码为6-12位");
 					return;
 				}
 				if(picCode.test(vertifyCode)) {
 					alert("验证码错误");
 					return;
 				}
+				// 向后台查询用户名和密码是否匹配，若匹配，检测权限并跳转到index.html
 				location.href = ("index.html?" + "username=" + username);
 			}
 		</script>

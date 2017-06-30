@@ -95,42 +95,12 @@
 							<input type="radio" name="gender" id="female"/>女
 						</div>
 						<div class="info">
-							<span class="col-xs-2"><span style="color:orangered">*</span>省份：</span>
-							<select name="province" id="province">
-								<option value="province">省份</option>
-							</select>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							城市：
-							<select name="city" id="city">
-								<option value="city">市县</option>
-							</select>
-						</div>
-						<div class="info">
-							<span class="col-xs-2"><span style="color:orangered">*</span>证件类型：</span>
-							<select name="" id="certificate">
-								<option value="idcard">二代身份证</option>
-								<option value="passport">护照</option>
-							</select>
-						</div>
-						<div class="info">
 							<span for="certificateNo" class="col-xs-2"><span style="color:orangered">*</span>证件号码：</span>
 							<input type="text" name="" id="certificateNo" />
 						</div>
 						<div class="info">
-							<span for="birthdate" class="col-xs-2"><span style="color:orangered">*</span>出生日期：</span>
-							<input type="text" name="" id="birthdate" />
-						</div>
-						<div class="info">
-							<span class="col-xs-2">旅客类型：</span>
-							<select name="" id="travelorType">
-								<option value="">成人</option>
-								<option value="">学生</option>
-								<option value="">儿童</option>
-							</select>
-						</div>
-						<div class="info">
-							<span for="note" class="col-xs-2">备注：</span>
-							<textarea name="" id="note" cols="60" rows="6"></textarea>
+							<lable for="phone" class="col-xs-2"><span style="color:orangered">*</span>联系电话：</lable>
+							<input type="text" name="" id="phone" />
 						</div>
 						<div class="info" style="margin-top:45px; margin-bottom:25px;">
 							<span class="col-xs-3"></span>
@@ -145,49 +115,6 @@
 		</div>
 		
 		<script>
-            var oProvince = document.getElementById("province");
-			var oCity = document.getElementById("city");
-			
-			// 模拟从数据库获取省份信息
-			var province = new Array();
-			province[0] = "省份";
-            province[1] = "黑龙江";
-            province[2] = "辽宁";
-            province[3] = "吉林";
-            
-            //模拟从数据库取出城市信息
-            var city = new Array();
-            city[0] = new Array();
-            city[0][0] = "市县";
-
-            city[1] = new Array();
-            city[1][0] = "1";
-            city[1][1] = "2";
-            city[1][2] = "3";
-
-            city[2] = new Array();
-            city[2][0] = "4";
-            city[2][1] = "5";
-            city[2][2] = "6";
-            city[2][3] = "7";
-
-            city[3] = new Array();
-            city[3][0] = "8";
-            city[3][1] = "9";
-            city[3][2] = "10";
-            city[3][3] = "11";
-            
-            for(var i = 0; i < province.length; i++) {
-            	oProvince.options[i] = new Option(province[i]);
-            }
-            
-            oProvince.onchange = function() {
-            	var index = oProvince.selectedIndex;
-            	oCity.length = 0;
-            	for (var i = 0; i < city[i].length; i++) {
-            		oCity.options[i] = new Option(city[index][i])
-            	}
-            }
             
             function previewImg(thisBox) {
             	var imgBox = document.getElementById("imgBox");
@@ -207,12 +134,10 @@
             
             function submitBtn() {
             	var loginName = document.getElementById("loginName");
-            	var name = document.getElementById("name");
-            	var province = document.getElementById("province");
-            	var city = document.getElementById("city");
+            	var name = document.getElementById("name");           	
             	var certificateNo = document.getElementById("certificateNo");
-            	var birthDate = document.getElementById("birthdate");
-            	var loginNameReg = /^[\w_]{6,30}$/;
+            	var loginNameReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+            	var idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
             	
             	if (!loginNameReg.test(loginName.value)) {
             		alert("登录名非法");
@@ -222,12 +147,8 @@
             		alert("真实姓名不能为空");
             		return;
             	}
-            	if (province.selectedIndex == 0 || city.selectedIndex == 0) {
-            		alert("请选择省份和城市");
-            		return;
-            	}
-            	if (certificateNo == "") {
-            		alert("证件号码不能为空");
+            	if (!idReg.test(certificateNo)) {
+            		alert("证件号码格式有误");
             		return;
             	}
             	// 保存信息到数据库
