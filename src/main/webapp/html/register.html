@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="stylesheet" href="../css/bootstrap.css" />
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<title></title>
+		<style>
+			body{
+				background: url(../images/bg_point_write.gif);
+			}
+			
+			.register-top{
+				background: url(../images/ny_top_img_bg.gif) repeat-x;
+			}
+			
+			.register-top2{
+				height: 30px;
+				background-color: #DEEFFF;
+				margin-top: -9px;
+			}
+			
+			.header{
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+			
+			.content{
+				
+			}
+			
+			.info{
+				margin-top: 15px;
+				margin-bottom: 15px;
+			}
+			
+			.register-bottom{
+				background: url(../images/bottom_ny_bg.gif) repeat-x;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12 register-top">
+					<img src="../images/ny_top_img.gif" alt="" />
+				</div>
+				<div class="col-xs-12 register-top2">
+					<div class="col-xs-offset-1" style="margin-top: 5px;">
+						<p>当前位置：注册信息</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-8 col-xs-offset-2 header">
+					<h3 style="color:#0A3C5F;">注册信息</h3>
+					<img src="../images/line1.jpg" alt=""/>
+					<p style="margin-top:10px;">注：标有<span style="color:red">*</span>处，均为必填项</p>
+				</div>
+				<div class="col-xs-8 col-xs-offset-3 content">
+					<div class=" col-xs-12 loginInfo">
+						<h5 style="color:orangered">登录信息</h5>
+						<div class="info">
+							<lable for="loginName" class="col-xs-2"><span style="color:orangered">*</span>登录名：</lable>
+							<input type="text" name="" id="loginName" />&nbsp;&nbsp;&nbsp;&nbsp;由字母、数字或"_"组成，长度不少于6位，不多于30位
+						</div>
+						<div class="info">
+							<lable for="password" class="col-xs-2"><span style="color:orangered">*</span>密码：</lable>
+							<input type="password" name="" id="password" />&nbsp;&nbsp;&nbsp;&nbsp;不少于6位字符
+						</div>
+						<div class="info">
+							<lable for="rePassword" class="col-xs-2"><span style="color:orangered">*</span>确认密码：</lable>
+							<input type="password" name="" id="rePassword" />&nbsp;&nbsp;&nbsp;&nbsp;请再次输入密码
+						</div>
+					</div>
+					<div class=" col-xs-12 detailInfo">
+						<h5 style="color:orangered">详细信息</h5>
+						<div class="info">
+							<lable for="name" class="col-xs-2"><span style="color:orangered">*</span>真实姓名：</lable>
+							<input type="text" name="" id="name" />
+						</div>
+						<div class="info">
+							<lable for="male" class="col-xs-2"><span style="color:orangered">*</span>性别：</lable>
+							<input type="radio" name="gender" id="male" checked/>男
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="gender" id="female"/>女
+						</div>
+						<div class="info">
+							<lable class="col-xs-2"><span style="color:orangered">*</span>省份：</lable>
+							<select name="province" id="province">
+								<option value="province">省份</option>
+							</select>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							城市：
+							<select name="city" id="city">
+								<option value="city">市县</option>
+							</select>
+						</div>
+						<div class="info">
+							<lable class="col-xs-2"><span style="color:orangered">*</span>证件类型：</lable>
+							<select name="" id="certificate">
+								<option value="idcard">二代身份证</option>
+								<option value="passport">护照</option>
+							</select>
+						</div>
+						<div class="info">
+							<lable for="certificateNo" class="col-xs-2"><span style="color:orangered">*</span>证件号码：</lable>
+							<input type="text" name="" id="certificateNo" />
+						</div>
+						<div class="info">
+							<lable for="birthdate" class="col-xs-2"><span style="color:orangered">*</span>出生日期：</lable>
+							<input type="text" name="" id="birthdate" />
+						</div>
+						<div class="info">
+							<lable class="col-xs-2">旅客类型：</lable>
+							<select name="" id="travelorType">
+								<option value="">成人</option>
+								<option value="">学生</option>
+								<option value="">儿童</option>
+							</select>
+						</div>
+						<div class="info">
+							<lable for="note" class="col-xs-2">备注：</lable>
+							<textarea name="" id="note" cols="60" rows="6"></textarea>
+						</div>
+						<div class="info">
+							<lable class="col-xs-2"></lable>
+							<span style="color:orangered">*</span>
+							<input type="checkbox" name="" id="rule" />
+							<label for="rule">我已阅读并同意遵守<a href="#">《中国铁路客户服务中新网网站服务条款》</a></label>
+						</div>
+						<div class="info" style="margin-top:25px; margin-bottom:25px;">
+							<lable class="col-xs-3"></lable>
+							<input type="button" name="" id="" value="提交" onclick="btn_submit()"/>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="reset" name="" id="" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12 register-bottom">
+					<div class="col-xs-2 col-xs-offset-5" style="margin-top: 5px;">
+						<p>copyright@12306 购票网</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			var oProvince = document.getElementById("province");
+			var oCity = document.getElementById("city");
+			
+			// 模拟从数据库获取省份信息
+			var province = new Array();
+			province[0] = "省份";
+            province[1] = "黑龙江";
+            province[2] = "辽宁";
+            province[3] = "吉林";
+            
+            //模拟从数据库取出城市信息
+            var city = new Array();
+            city[0] = new Array();
+            city[0][0] = "市县";
+
+            city[1] = new Array();
+            city[1][0] = "1";
+            city[1][1] = "2";
+            city[1][2] = "3";
+
+            city[2] = new Array();
+            city[2][0] = "4";
+            city[2][1] = "5";
+            city[2][2] = "6";
+            city[2][3] = "7";
+
+            city[3] = new Array();
+            city[3][0] = "8";
+            city[3][1] = "9";
+            city[3][2] = "10";
+            city[3][3] = "11";
+            
+            for(var i = 0; i < province.length; i++) {
+            	oProvince.options[i] = new Option(province[i]);
+            }
+            
+            oProvince.onchange = function() {
+            	var index = oProvince.selectedIndex;
+            	oCity.length = 0;
+            	for (var i = 0; i < city[i].length; i++) {
+            		oCity.options[i] = new Option(city[index][i])
+            	}
+            }
+            
+            function btn_submit() {
+            	var loginName = document.getElementById("loginName");
+            	var passwd = document.getElementById("password");
+            	var rePassword = document.getElementById("rePassword");
+            	var name = document.getElementById("name");
+            	var province = document.getElementById("province");
+            	var city = document.getElementById("city");
+            	var certificateNo = document.getElementById("certificateNo");
+            	var birthDate = document.getElementById("birthdate");
+            	var rule = document.getElementById("rule");
+            	var loginNameReg = /^[\w_]{6,30}$/;
+            	var passwdReg = /^[\w_]{6,}$/;
+            	
+            	if (!loginNameReg.test(loginName.value)) {
+            		alert("登录名非法");
+            		return;
+            	}
+            	if (passwdReg.test(passwd.value)) {
+            		alert("密码非法");
+            		return;
+            	}
+            	if (rePassword.value != passwd.value) {
+            		alert("两次密码不一致！");
+            		return;
+            	}
+            	if (name.value == "") {
+            		alert("真实姓名不能为空");
+            		return;
+            	}
+            	if (province.selectedIndex == 0 || city.selectedIndex == 0) {
+            		alert("请选择省份和城市");
+            		return;
+            	}
+            	if (certificateNo == "") {
+            		alert("证件号码不能为空");
+            		return;
+            	}
+            	if (!rule.checked) {
+            		alert("未同意服务条款");
+            		return;
+            	}
+            	
+            	location.href = ("Index.html?" + "username=" + loginName);
+            }
+            
+		</script>
+
+		<script src="../js/jquery.js"></script>
+		<script src="../js/bootstrap.js"></script>
+	</body>
+
+</html>

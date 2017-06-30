@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="stylesheet" href="../../css/bootstrap.css" />
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<title></title>
+		<style>
+			body{
+				background: url(../../images/bg_point_write.gif);
+			}
+			
+			.header{
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+			
+			.loginInfo{
+				position: relative;
+			}
+			
+			.loginInfo img{
+				position: absolute;
+				top: 10px;
+				right: 200px;
+			}
+			
+			.info{
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+			
+			#changeBtn{
+				width: 80px;
+				background: url(../../images/button_xg.gif);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-8 col-xs-offset-2 header">
+					<h3 style="color:#0A3C5F;">查看个人信息</h3>
+					<img src="../../images/line1.jpg" alt=""/>
+				</div>
+				<div class="col-xs-8 col-xs-offset-3 content">
+					<div class=" col-xs-12 loginInfo">
+						<h5 style="color:orangered">个人详细信息</h5>
+						<div class="info">
+							<span for="loginName" class="col-xs-2"><span style="color:orangered">*</span>登录名：</span>
+							<span id="loginName">用户1</span>
+							<img src="../../images/photo.jpg" alt="../images/photo_mr.jpg" />
+						</div>
+						<div class="info">
+							<span for="name" class="col-xs-2"><span style="color:orangered">*</span>真实姓名：</span>
+							<span id="name">王小明</span>
+						</div>
+						<div class="info">
+							<span for="male" class="col-xs-2"><span style="color:orangered">*</span>性别：</span>
+							<span id="gender">男</span>
+						</div>
+						<div class="info">
+							<span class="col-xs-2"><span style="color:orangered">*</span>省份：</span>
+							<span id="province">辽宁</span>
+						</div>
+						<div class="info">
+							<span class="col-xs-2"><span style="color:orangered">*</span>城市：</span>
+							<span id="city">沈阳</span>
+						</div>
+						<div class="info">
+							<span class="col-xs-2"><span style="color:orangered">*</span>证件类型：</span>
+							<span id="certificateType">二代身份证</span>
+						</div>
+						<div class="info">
+							<span class="col-xs-2"><span style="color:orangered">*</span>证件号码：</span>
+							<span id="certificateNo">220221199802051028</span>
+						</div>
+						<div class="info">
+							<span class="col-xs-2"><span style="color:orangered">*</span>出生日期：</span>
+							<span id="birthdate">1998-2-5</span>
+						</div>
+						<div class="info">
+							<span class="col-xs-2">&nbsp;旅客类型：</span>
+							<span id="travelorType">学生</span>
+						</div>
+						<div class="info">
+							<span class="col-xs-2">&nbsp;备注：</span>
+							<span id="note">无</span>
+						</div>
+						<div class="info" style="margin-top:45px; margin-bottom:25px;">
+							<span class="col-xs-3"></span>
+							<input type="button" name="" id="changeBtn" value="" onclick="infoEdit()"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+            function infoEdit() {
+            	location.href = "UserManageInfo_Edit.html";
+            }
+		</script>
+
+		<script src="../../js/jquery.js"></script>
+		<script src="../../js/bootstrap.js"></script>
+	</body>
+
+</html>

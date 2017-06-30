@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="stylesheet" href="../css/bootstrap.css" />
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<title></title>
+		<style>
+			body{
+				background: url(../images/bg_point.gif);
+			}
+			
+			.register-top{
+				background: url(../images/ny_top_img_bg.gif) repeat-x;
+			}
+			
+			.register-top2{
+				height: 30px;
+				background-color: #DEEFFF;
+				margin-top: -9px;
+				padding-top: 5px;
+			}
+			
+			#timeBar{
+				padding-left: 95px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12 register-top">
+					<img src="../images/ny_top_img.gif" alt="" />
+				</div>
+				<div class="col-xs-12 register-top2">
+					<div class="col-xs-2 col-xs-offset-1" >
+						<p>当前位置：所有用户管理</p>
+					</div>
+					<div class="col-xs-2  col-xs-offset-4 text-left">
+						<span id="timeBar">时间</span>
+					</div>
+					<div class="col-xs-2 text-left" style="padding-left: 90px;">
+						欢迎您，<span id="loginName"></span>
+					</div>
+					<div class="col-xs-1 text-right">
+						<a href="login.html" target="_parent">退出</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var address = parent.location.href;
+			var indexOfPara = address.indexOf("username");
+			var username = address.substring(indexOfPara + 9, address.length);
+			document.getElementById("loginName").innerHTML = username;
+			
+			function showTime() {
+				var now = new Date();
+				var year = now.getFullYear();
+				var month = now.getMonth() + 1;
+				var day = now.getDate();
+				var hour = now.getHours();
+				var minute = now.getMinutes();
+				var second = now.getSeconds();
+				
+				document.getElementById("timeBar").innerHTML = year + "-" + month + "-" + day + "&nbsp;" 
+				                                             + hour + ":" + minute + ":" + second;
+			}
+			showTime();
+			
+			window.setInterval("showTime()", 1000);
+		</script>
+		
+		<script src="../js/jquery.js"></script>
+		<script src="../js/bootstrap.js"></script>
+	</body>
+</html>

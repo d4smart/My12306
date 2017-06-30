@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="stylesheet" href="../css/bootstrap.css" />
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<title></title>
+		<style>
+			body{
+				background: url(../images/bg_point.gif);
+			}
+			
+			.main-wrap{
+				margin-top: 9%;
+				background: url(../images/bg_img1.jpg) no-repeat;
+				background-size: 100%;
+			}
+			
+			.main-form{
+				padding-top: 14%;
+			}
+			
+			.main-form .form-group label{
+				color: white;
+			}
+			
+			.main-form .form-group input{
+				width: 16%;
+			}
+			
+			.main-form .form-group .picCode{
+				width: 42px;
+				height: 30px;
+				background-color: dimgray;
+				color: white;
+				margin-left: 5px;
+				padding: 5px 10px;
+			}
+			
+			.main-form .form-group a{
+				text-decoration: none;
+				color: white;
+				padding-left: 10px;
+			}
+			
+			.data-btngroup{
+				margin-top: 25px;
+				margin-bottom: 9%;
+			}
+			
+			.btn_login{
+				width: 80px;
+				background: url(../images/button_dl.gif);
+			}
+			
+			.btn_register{
+				width: 80px;
+				background: url(../images/button_zc.gif);
+				margin-left: 50px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-8 col-xs-offset-2 main-wrap">
+					<form action="" role="form" class="form-horizontal main-form">
+						<div class="form-group">
+							<label for="username" class="col-xs-2 col-xs-offset-6 text-right" placeholder="请输入6到12位用户名">用户名：</label>
+							<input type="text" name="" id="username"/>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-sm-2 col-sm-offset-6 text-right" placeholder="请输入密码">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+							<input type="password" name="" id="password" />
+						</div>
+						<div class="form-group">
+							<label for="vertifyCode" class="col-sm-2 col-sm-offset-6 text-right" placeholder="请输入验证码">验证码：</label>
+							<input type="text" name="" id="vertifyCode"/>
+							<span class="picCode"></span>
+							<a href="#" onclick="createCode()">刷新</a>
+						</div>
+						<div class="checkbox">
+							<div class="col-xs-2 col-xs-offset-8">
+								<label>
+									<input type="checkbox" id="autoLogin"/><span style="color:white">自动登录</span>
+								</label>
+							</div>
+						</div>
+						<div class="col-xs-4 col-xs-offset-8 data-btngroup">
+							<input type="button" value="" class="btn_login" onclick="login()"/>
+							<input type="button" value="" class="btn_register" onclick="location.href='register.html'"/>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			var code;
+			function createCode() {
+				code = "";
+				var codeLength = 4;
+				var picCode = document.getElementsByClassName("picCode")[0];
+				var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+				'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+				'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+				't', 'u', 'v', 'w', 'x', 'y', 'z');
+				for (var i = 0; i < codeLength; i++) {
+					var charIndex = Math.floor(Math.random()*62);
+					code += selectChar[charIndex];
+				}
+//				alert(code);
+				picCode.innerHTML = code;
+			}
+			createCode();
+			
+			function login() {
+				var username = document.getElementById("username").value;
+				var passwd = document.getElementById("password").value;
+				var vertifyCode = document.getElementById("vertifyCode").value;
+				var picCode = new RegExp("^"+picCode+"$", "i");
+			
+				if (username.length<6 || username.length>12) {
+					alert("用户名长度在6到12位之间");
+					return;
+				}
+				if (passwd.length == 0) {
+					alert("密码不能为空");
+					return;
+				}
+				if(picCode.test(vertifyCode)) {
+					alert("验证码错误");
+					return;
+				}
+				location.href = ("index.html?" + "username=" + username);
+			}
+		</script>
+		
+		<script src="../js/jquery.js"></script>
+		<script src="../js/bootstrap.js"></script>
+	</body>
+</html>
