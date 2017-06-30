@@ -17,13 +17,13 @@ public class User {
 
     private String sex;
 
-    private Byte isAdmin;
+    private Integer role;
 
     private Date lastLogin;
 
     private Integer status;
 
-    public User(Integer id, String phone, String identityNumber, String email, String password, String actualName, String sex, Byte isAdmin, Date lastLogin, Integer status) {
+    public User(Integer id, String phone, String identityNumber, String email, String password, String actualName, String sex, Integer role, Date lastLogin, Integer status) {
         this.id = id;
         this.phone = phone;
         this.identityNumber = identityNumber;
@@ -31,9 +31,25 @@ public class User {
         this.password = password;
         this.actualName = actualName;
         this.sex = sex;
-        this.isAdmin = isAdmin;
+        this.role = role;
         this.lastLogin = lastLogin;
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                ", identityNumber='" + identityNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", actualName='" + actualName + '\'' +
+                ", sex='" + sex + '\'' +
+                ", role=" + role +
+                ", lastLogin=" + lastLogin +
+                ", status=" + status +
+                '}';
     }
 
     public User() {
@@ -96,12 +112,12 @@ public class User {
         this.sex = sex == null ? null : sex.trim();
     }
 
-    public Byte getIsAdmin() {
-        return isAdmin;
+    public Integer getRole() {
+        return role;
     }
 
-    public void setIsAdmin(Byte isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setRole(Integer role) {
+        this.role = role;
     }
 
     public Date getLastLogin() {
