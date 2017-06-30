@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.d4smart.my12306.dao.TicketMapper" >
+  <resultMap id="BaseResultMap" type="com.d4smart.my12306.pojo.Ticket" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="trip" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="date" jdbcType="DATE" javaType="java.util.Date" />
+      <arg column="cabin" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="seat" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="seat_type" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="begin_station" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="end_station" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="passenger_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="passenger_type" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="identity_number" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sale_method" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="sale_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_id, trip, date, cabin, seat, seat_type, begin_station, end_station, price, 
+    passenger_name, passenger_type, identity_number, sale_method, sale_time, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ticket
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ticket
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.d4smart.my12306.pojo.Ticket" >
+    insert into ticket (id, order_id, trip, 
+      date, cabin, seat, seat_type, 
+      begin_station, end_station, price, 
+      passenger_name, passenger_type, identity_number, 
+      sale_method, sale_time, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{trip,jdbcType=VARCHAR}, 
+      #{date,jdbcType=DATE}, #{cabin,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, #{seatType,jdbcType=CHAR}, 
+      #{beginStation,jdbcType=VARCHAR}, #{endStation,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{passengerName,jdbcType=VARCHAR}, #{passengerType,jdbcType=CHAR}, #{identityNumber,jdbcType=VARCHAR}, 
+      #{saleMethod,jdbcType=CHAR}, #{saleTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Ticket" >
+    insert into ticket
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="trip != null" >
+        trip,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="cabin != null" >
+        cabin,
+      </if>
+      <if test="seat != null" >
+        seat,
+      </if>
+      <if test="seatType != null" >
+        seat_type,
+      </if>
+      <if test="beginStation != null" >
+        begin_station,
+      </if>
+      <if test="endStation != null" >
+        end_station,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="passengerName != null" >
+        passenger_name,
+      </if>
+      <if test="passengerType != null" >
+        passenger_type,
+      </if>
+      <if test="identityNumber != null" >
+        identity_number,
+      </if>
+      <if test="saleMethod != null" >
+        sale_method,
+      </if>
+      <if test="saleTime != null" >
+        sale_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="trip != null" >
+        #{trip,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="cabin != null" >
+        #{cabin,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null" >
+        #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="seatType != null" >
+        #{seatType,jdbcType=CHAR},
+      </if>
+      <if test="beginStation != null" >
+        #{beginStation,jdbcType=VARCHAR},
+      </if>
+      <if test="endStation != null" >
+        #{endStation,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="passengerName != null" >
+        #{passengerName,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerType != null" >
+        #{passengerType,jdbcType=CHAR},
+      </if>
+      <if test="identityNumber != null" >
+        #{identityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="saleMethod != null" >
+        #{saleMethod,jdbcType=CHAR},
+      </if>
+      <if test="saleTime != null" >
+        #{saleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Ticket" >
+    update ticket
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="trip != null" >
+        trip = #{trip,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="cabin != null" >
+        cabin = #{cabin,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null" >
+        seat = #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="seatType != null" >
+        seat_type = #{seatType,jdbcType=CHAR},
+      </if>
+      <if test="beginStation != null" >
+        begin_station = #{beginStation,jdbcType=VARCHAR},
+      </if>
+      <if test="endStation != null" >
+        end_station = #{endStation,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="passengerName != null" >
+        passenger_name = #{passengerName,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerType != null" >
+        passenger_type = #{passengerType,jdbcType=CHAR},
+      </if>
+      <if test="identityNumber != null" >
+        identity_number = #{identityNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="saleMethod != null" >
+        sale_method = #{saleMethod,jdbcType=CHAR},
+      </if>
+      <if test="saleTime != null" >
+        sale_time = #{saleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.d4smart.my12306.pojo.Ticket" >
+    update ticket
+    set order_id = #{orderId,jdbcType=INTEGER},
+      trip = #{trip,jdbcType=VARCHAR},
+      date = #{date,jdbcType=DATE},
+      cabin = #{cabin,jdbcType=VARCHAR},
+      seat = #{seat,jdbcType=VARCHAR},
+      seat_type = #{seatType,jdbcType=CHAR},
+      begin_station = #{beginStation,jdbcType=VARCHAR},
+      end_station = #{endStation,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      passenger_name = #{passengerName,jdbcType=VARCHAR},
+      passenger_type = #{passengerType,jdbcType=CHAR},
+      identity_number = #{identityNumber,jdbcType=VARCHAR},
+      sale_method = #{saleMethod,jdbcType=CHAR},
+      sale_time = #{saleTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

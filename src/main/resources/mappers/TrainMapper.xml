@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.d4smart.my12306.dao.TrainMapper" >
+  <resultMap id="BaseResultMap" type="com.d4smart.my12306.pojo.Train" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="line_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="begin_station" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="end_station" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="begin_time" jdbcType="TIME" javaType="java.util.Date" />
+      <arg column="end_time" jdbcType="TIME" javaType="java.util.Date" />
+      <arg column="spend_time" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="mileage" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="noseat_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="vehicle_type" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="train_type" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, line_id, begin_station, end_station, begin_time, end_time, spend_time, 
+    mileage, noseat_count, vehicle_type, train_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from train
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from train
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.d4smart.my12306.pojo.Train" >
+    insert into train (id, code, line_id, 
+      begin_station, end_station, begin_time, 
+      end_time, spend_time, mileage, 
+      noseat_count, vehicle_type, train_type
+      )
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{lineId,jdbcType=INTEGER}, 
+      #{beginStation,jdbcType=VARCHAR}, #{endStation,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIME}, 
+      #{endTime,jdbcType=TIME}, #{spendTime,jdbcType=INTEGER}, #{mileage,jdbcType=INTEGER}, 
+      #{noseatCount,jdbcType=INTEGER}, #{vehicleType,jdbcType=CHAR}, #{trainType,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Train" >
+    insert into train
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="lineId != null" >
+        line_id,
+      </if>
+      <if test="beginStation != null" >
+        begin_station,
+      </if>
+      <if test="endStation != null" >
+        end_station,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="spendTime != null" >
+        spend_time,
+      </if>
+      <if test="mileage != null" >
+        mileage,
+      </if>
+      <if test="noseatCount != null" >
+        noseat_count,
+      </if>
+      <if test="vehicleType != null" >
+        vehicle_type,
+      </if>
+      <if test="trainType != null" >
+        train_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="lineId != null" >
+        #{lineId,jdbcType=INTEGER},
+      </if>
+      <if test="beginStation != null" >
+        #{beginStation,jdbcType=VARCHAR},
+      </if>
+      <if test="endStation != null" >
+        #{endStation,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIME},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIME},
+      </if>
+      <if test="spendTime != null" >
+        #{spendTime,jdbcType=INTEGER},
+      </if>
+      <if test="mileage != null" >
+        #{mileage,jdbcType=INTEGER},
+      </if>
+      <if test="noseatCount != null" >
+        #{noseatCount,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleType != null" >
+        #{vehicleType,jdbcType=CHAR},
+      </if>
+      <if test="trainType != null" >
+        #{trainType,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Train" >
+    update train
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="lineId != null" >
+        line_id = #{lineId,jdbcType=INTEGER},
+      </if>
+      <if test="beginStation != null" >
+        begin_station = #{beginStation,jdbcType=VARCHAR},
+      </if>
+      <if test="endStation != null" >
+        end_station = #{endStation,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=TIME},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIME},
+      </if>
+      <if test="spendTime != null" >
+        spend_time = #{spendTime,jdbcType=INTEGER},
+      </if>
+      <if test="mileage != null" >
+        mileage = #{mileage,jdbcType=INTEGER},
+      </if>
+      <if test="noseatCount != null" >
+        noseat_count = #{noseatCount,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleType != null" >
+        vehicle_type = #{vehicleType,jdbcType=CHAR},
+      </if>
+      <if test="trainType != null" >
+        train_type = #{trainType,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.d4smart.my12306.pojo.Train" >
+    update train
+    set code = #{code,jdbcType=VARCHAR},
+      line_id = #{lineId,jdbcType=INTEGER},
+      begin_station = #{beginStation,jdbcType=VARCHAR},
+      end_station = #{endStation,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=TIME},
+      end_time = #{endTime,jdbcType=TIME},
+      spend_time = #{spendTime,jdbcType=INTEGER},
+      mileage = #{mileage,jdbcType=INTEGER},
+      noseat_count = #{noseatCount,jdbcType=INTEGER},
+      vehicle_type = #{vehicleType,jdbcType=CHAR},
+      train_type = #{trainType,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

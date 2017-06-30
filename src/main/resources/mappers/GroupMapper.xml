@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.d4smart.my12306.dao.GroupMapper" >
+  <resultMap id="BaseResultMap" type="com.d4smart.my12306.pojo.Group" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cabin" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="seat_type" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="type" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, cabin, seat_type, count, type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from group
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from group
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.d4smart.my12306.pojo.Group" >
+    insert into group (id, code, cabin, 
+      seat_type, count, type)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{cabin,jdbcType=VARCHAR}, 
+      #{seatType,jdbcType=CHAR}, #{count,jdbcType=INTEGER}, #{type,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Group" >
+    insert into group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="cabin != null" >
+        cabin,
+      </if>
+      <if test="seatType != null" >
+        seat_type,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="cabin != null" >
+        #{cabin,jdbcType=VARCHAR},
+      </if>
+      <if test="seatType != null" >
+        #{seatType,jdbcType=CHAR},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Group" >
+    update group
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="cabin != null" >
+        cabin = #{cabin,jdbcType=VARCHAR},
+      </if>
+      <if test="seatType != null" >
+        seat_type = #{seatType,jdbcType=CHAR},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.d4smart.my12306.pojo.Group" >
+    update group
+    set code = #{code,jdbcType=VARCHAR},
+      cabin = #{cabin,jdbcType=VARCHAR},
+      seat_type = #{seatType,jdbcType=CHAR},
+      count = #{count,jdbcType=INTEGER},
+      type = #{type,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

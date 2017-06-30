@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.d4smart.my12306.dao.SectionMapper" >
+  <resultMap id="BaseResultMap" type="com.d4smart.my12306.pojo.Section" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="from" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="to" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="mileage" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, from, to, mileage, price
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from section
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from section
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.d4smart.my12306.pojo.Section" >
+    insert into section (id, from, to, 
+      mileage, price)
+    values (#{id,jdbcType=INTEGER}, #{from,jdbcType=VARCHAR}, #{to,jdbcType=VARCHAR}, 
+      #{mileage,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Section" >
+    insert into section
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="from != null" >
+        from,
+      </if>
+      <if test="to != null" >
+        to,
+      </if>
+      <if test="mileage != null" >
+        mileage,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="from != null" >
+        #{from,jdbcType=VARCHAR},
+      </if>
+      <if test="to != null" >
+        #{to,jdbcType=VARCHAR},
+      </if>
+      <if test="mileage != null" >
+        #{mileage,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Section" >
+    update section
+    <set >
+      <if test="from != null" >
+        from = #{from,jdbcType=VARCHAR},
+      </if>
+      <if test="to != null" >
+        to = #{to,jdbcType=VARCHAR},
+      </if>
+      <if test="mileage != null" >
+        mileage = #{mileage,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.d4smart.my12306.pojo.Section" >
+    update section
+    set from = #{from,jdbcType=VARCHAR},
+      to = #{to,jdbcType=VARCHAR},
+      mileage = #{mileage,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

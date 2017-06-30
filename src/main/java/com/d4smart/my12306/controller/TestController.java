@@ -1,7 +1,5 @@
 package com.d4smart.my12306.controller;
 
-import com.d4smart.my12306.dao.UserMapper;
-import com.d4smart.my12306.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class TestController {
-    @Autowired
-    private UserMapper userMapper;
 
     @RequestMapping(value = "test.do")
     public String test() {
@@ -20,10 +16,10 @@ public class TestController {
         return "index";
     }
 
-    @RequestMapping(value = "test2.do")
-    public String test2(User user) {
-        System.out.println("in test2 controller");
-        userMapper.insert(user);
-        return "index";
-    }
+//    @RequestMapping(value = "test2.do")
+//    public String test2(User user) {
+//        System.out.println("in test2 controller");
+//        userMapper.insert(user);
+//        return "index";
+//    }
 }
