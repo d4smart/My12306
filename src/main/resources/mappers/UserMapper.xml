@@ -13,11 +13,13 @@
       <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="last_login" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, phone, identity_number, email, password, actual_name, sex, role, last_login,
-    status
+    status, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -33,11 +35,11 @@
     insert into user (id, phone, identity_number, 
       email, password, actual_name, 
       sex, role, last_login,
-      status)
+      status, create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{identityNumber,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{actualName,jdbcType=VARCHAR}, 
       #{sex,jdbcType=CHAR}, #{role,jdbcType=INTEGER}, #{lastLogin,jdbcType=TIMESTAMP},
-      #{status,jdbcType=INTEGER})
+      #{status,jdbcType=INTEGER}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.User" >
     insert into user
@@ -72,6 +74,7 @@
       <if test="status != null" >
         status,
       </if>
+      create_time, update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -104,6 +107,7 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
+      now(), now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.User" >
@@ -136,6 +140,7 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
+      update_time = now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -149,7 +154,8 @@
       sex = #{sex,jdbcType=CHAR},
       role = #{role,jdbcType=INTEGER},
       last_login = #{lastLogin,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 

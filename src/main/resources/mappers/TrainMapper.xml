@@ -15,11 +15,13 @@
       <arg column="noseat_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="vehicle_type" jdbcType="CHAR" javaType="java.lang.String" />
       <arg column="train_type" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, code, line_id, begin_station, end_station, begin_time, end_time, spend_time, 
-    mileage, noseat_count, vehicle_type, train_type
+    mileage, noseat_count, vehicle_type, train_type, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -35,13 +37,13 @@
     insert into train (id, code, line_id, 
       begin_station, end_station, begin_time, 
       end_time, spend_time, mileage, 
-      noseat_count, vehicle_type, train_type
-      )
+      noseat_count, vehicle_type, train_type,
+      create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{lineId,jdbcType=INTEGER}, 
       #{beginStation,jdbcType=VARCHAR}, #{endStation,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIME}, 
       #{endTime,jdbcType=TIME}, #{spendTime,jdbcType=INTEGER}, #{mileage,jdbcType=INTEGER}, 
-      #{noseatCount,jdbcType=INTEGER}, #{vehicleType,jdbcType=CHAR}, #{trainType,jdbcType=CHAR}
-      )
+      #{noseatCount,jdbcType=INTEGER}, #{vehicleType,jdbcType=CHAR}, #{trainType,jdbcType=CHAR},
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Train" >
     insert into train
@@ -82,6 +84,7 @@
       <if test="trainType != null" >
         train_type,
       </if>
+      create_time, update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -120,6 +123,7 @@
       <if test="trainType != null" >
         #{trainType,jdbcType=CHAR},
       </if>
+      now(), now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Train" >
@@ -158,6 +162,7 @@
       <if test="trainType != null" >
         train_type = #{trainType,jdbcType=CHAR},
       </if>
+      update_time = now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -173,7 +178,8 @@
       mileage = #{mileage,jdbcType=INTEGER},
       noseat_count = #{noseatCount,jdbcType=INTEGER},
       vehicle_type = #{vehicleType,jdbcType=CHAR},
-      train_type = #{trainType,jdbcType=CHAR}
+      train_type = #{trainType,jdbcType=CHAR},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

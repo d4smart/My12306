@@ -8,10 +8,12 @@
       <arg column="to" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="mileage" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, from, to, mileage, price
+    id, from, to, mileage, price, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,9 +27,9 @@
   </delete>
   <insert id="insert" parameterType="com.d4smart.my12306.pojo.Section" >
     insert into section (id, from, to, 
-      mileage, price)
+      mileage, price, create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{from,jdbcType=VARCHAR}, #{to,jdbcType=VARCHAR}, 
-      #{mileage,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL})
+      #{mileage,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Section" >
     insert into section
@@ -47,6 +49,7 @@
       <if test="price != null" >
         price,
       </if>
+      create_time, update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,6 +67,7 @@
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
+      now(), now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Section" >
@@ -81,6 +85,7 @@
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
+      update_time = now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -89,7 +94,8 @@
     set from = #{from,jdbcType=VARCHAR},
       to = #{to,jdbcType=VARCHAR},
       mileage = #{mileage,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL}
+      price = #{price,jdbcType=DECIMAL},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

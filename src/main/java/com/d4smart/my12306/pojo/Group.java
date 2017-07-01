@@ -1,5 +1,7 @@
 package com.d4smart.my12306.pojo;
 
+import java.util.Date;
+
 public class Group {
     private Integer id;
 
@@ -13,13 +15,19 @@ public class Group {
 
     private String type;
 
-    public Group(Integer id, String code, String cabin, String seatType, Integer count, String type) {
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Group(Integer id, String code, String cabin, String seatType, Integer count, String type, Date createTime, Date updateTime) {
         this.id = id;
         this.code = code;
         this.cabin = cabin;
         this.seatType = seatType;
         this.count = count;
         this.type = type;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Group() {
@@ -72,5 +80,21 @@ public class Group {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

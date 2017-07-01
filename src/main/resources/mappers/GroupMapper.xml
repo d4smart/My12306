@@ -9,10 +9,12 @@
       <arg column="seat_type" jdbcType="CHAR" javaType="java.lang.String" />
       <arg column="count" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="type" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, code, cabin, seat_type, count, type
+    id, code, cabin, seat_type, count, type, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,9 +28,9 @@
   </delete>
   <insert id="insert" parameterType="com.d4smart.my12306.pojo.Group" >
     insert into group (id, code, cabin, 
-      seat_type, count, type)
+      seat_type, count, type, create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{cabin,jdbcType=VARCHAR}, 
-      #{seatType,jdbcType=CHAR}, #{count,jdbcType=INTEGER}, #{type,jdbcType=CHAR})
+      #{seatType,jdbcType=CHAR}, #{count,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Group" >
     insert into group
@@ -51,6 +53,7 @@
       <if test="type != null" >
         type,
       </if>
+      create_time, update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -71,6 +74,7 @@
       <if test="type != null" >
         #{type,jdbcType=CHAR},
       </if>
+      now(), now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Group" >
@@ -91,6 +95,7 @@
       <if test="type != null" >
         type = #{type,jdbcType=CHAR},
       </if>
+      update_time = now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -100,7 +105,8 @@
       cabin = #{cabin,jdbcType=VARCHAR},
       seat_type = #{seatType,jdbcType=CHAR},
       count = #{count,jdbcType=INTEGER},
-      type = #{type,jdbcType=CHAR}
+      type = #{type,jdbcType=CHAR},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

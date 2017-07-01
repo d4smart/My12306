@@ -27,7 +27,11 @@ public class Train {
 
     private String trainType;
 
-    public Train(Integer id, String code, Integer lineId, String beginStation, String endStation, Date beginTime, Date endTime, Integer spendTime, Integer mileage, Integer noseatCount, String vehicleType, String trainType) {
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Train(Integer id, String code, Integer lineId, String beginStation, String endStation, Date beginTime, Date endTime, Integer spendTime, Integer mileage, Integer noseatCount, String vehicleType, String trainType, Date createTime, Date updateTime) {
         this.id = id;
         this.code = code;
         this.lineId = lineId;
@@ -40,6 +44,8 @@ public class Train {
         this.noseatCount = noseatCount;
         this.vehicleType = vehicleType;
         this.trainType = trainType;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Train() {
@@ -140,5 +146,21 @@ public class Train {
 
     public void setTrainType(String trainType) {
         this.trainType = trainType == null ? null : trainType.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

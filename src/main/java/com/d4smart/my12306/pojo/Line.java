@@ -24,7 +24,11 @@ public class Line {
 
     private Integer spendTime;
 
-    public Line(Integer id, String name, String stationIds, String stationNames, Date beginTime, Date endTime, BigDecimal price, Integer mileage, String stayTimes, Integer spendTime) {
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Line(Integer id, String name, String stationIds, String stationNames, Date beginTime, Date endTime, BigDecimal price, Integer mileage, String stayTimes, Integer spendTime, Date createTime, Date updateTime) {
         this.id = id;
         this.name = name;
         this.stationIds = stationIds;
@@ -35,6 +39,8 @@ public class Line {
         this.mileage = mileage;
         this.stayTimes = stayTimes;
         this.spendTime = spendTime;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Line() {
@@ -119,5 +125,21 @@ public class Line {
 
     public void setSpendTime(Integer spendTime) {
         this.spendTime = spendTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

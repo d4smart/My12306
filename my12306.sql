@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-07-01 15:47:20
+Date: 2017-07-01 20:45:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,6 +36,8 @@ CREATE TABLE `group` (
   `seat_type` enum('硬座','软座','硬卧','软卧') NOT NULL DEFAULT '硬座',
   `count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '车厢坐席数量',
   `type` enum('硬座车','软座车','硬卧车','软卧车','餐车') NOT NULL DEFAULT '硬座车' COMMENT '车厢类型',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -54,6 +56,8 @@ CREATE TABLE `line` (
   `mileage` int(11) NOT NULL DEFAULT '0',
   `stay_times` text NOT NULL COMMENT '停留时间，以分钟为单位',
   `spend_time` int(11) NOT NULL DEFAULT '0',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -68,6 +72,8 @@ CREATE TABLE `order` (
   `status` int(10) unsigned NOT NULL DEFAULT '0',
   `price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '订单总价',
   `order_time` datetime DEFAULT NULL COMMENT '下单时间',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -91,6 +97,8 @@ CREATE TABLE `section` (
   `to` varchar(60) NOT NULL DEFAULT '',
   `mileage` int(11) NOT NULL DEFAULT '0',
   `price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '区段的基础价格，最终价格按车座类型乘对应系数',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -107,6 +115,8 @@ CREATE TABLE `station` (
   `level` enum('一等站','二等站','三等站','四等站','五等站') NOT NULL DEFAULT '四等站',
   `region` varchar(60) NOT NULL DEFAULT '' COMMENT '所属行政区域',
   `address` varchar(60) NOT NULL DEFAULT '' COMMENT '联系地址',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -131,6 +141,8 @@ CREATE TABLE `ticket` (
   `sale_method` enum('网络','售票处','电话','车站') NOT NULL DEFAULT '网络',
   `sale_time` datetime DEFAULT NULL,
   `status` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '车票状态',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -151,6 +163,8 @@ CREATE TABLE `train` (
   `noseat_count` int(11) NOT NULL DEFAULT '0',
   `vehicle_type` enum('新空调','高铁') NOT NULL DEFAULT '新空调' COMMENT '车辆车体分类',
   `train_type` enum('直达特快','特快','普快','普客') NOT NULL DEFAULT '普客' COMMENT '列车类型',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
@@ -169,6 +183,8 @@ CREATE TABLE `user` (
   `role` int(4) unsigned NOT NULL DEFAULT '0' COMMENT '用户角色',
   `last_login` datetime DEFAULT NULL,
   `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 SET FOREIGN_KEY_CHECKS=1;

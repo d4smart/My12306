@@ -19,11 +19,13 @@
       <arg column="sale_method" jdbcType="CHAR" javaType="java.lang.String" />
       <arg column="sale_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, order_id, trip, date, cabin, seat, seat_type, begin_station, end_station, price, 
-    passenger_name, passenger_type, identity_number, sale_method, sale_time, status
+    passenger_name, passenger_type, identity_number, sale_method, sale_time, status, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -40,14 +42,14 @@
       date, cabin, seat, seat_type, 
       begin_station, end_station, price, 
       passenger_name, passenger_type, identity_number, 
-      sale_method, sale_time, status
-      )
+      sale_method, sale_time, status,
+      create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{trip,jdbcType=VARCHAR}, 
       #{date,jdbcType=DATE}, #{cabin,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, #{seatType,jdbcType=CHAR}, 
       #{beginStation,jdbcType=VARCHAR}, #{endStation,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
       #{passengerName,jdbcType=VARCHAR}, #{passengerType,jdbcType=CHAR}, #{identityNumber,jdbcType=VARCHAR}, 
-      #{saleMethod,jdbcType=CHAR}, #{saleTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
-      )
+      #{saleMethod,jdbcType=CHAR}, #{saleTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Ticket" >
     insert into ticket
@@ -100,6 +102,7 @@
       <if test="status != null" >
         status,
       </if>
+      create_time, update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -150,6 +153,7 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
+      now(), now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Ticket" >
@@ -200,6 +204,7 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
+      update_time = now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -219,7 +224,8 @@
       identity_number = #{identityNumber,jdbcType=VARCHAR},
       sale_method = #{saleMethod,jdbcType=CHAR},
       sale_time = #{saleTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

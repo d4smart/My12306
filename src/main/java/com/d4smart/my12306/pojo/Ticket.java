@@ -36,7 +36,11 @@ public class Ticket {
 
     private Integer status;
 
-    public Ticket(Integer id, Integer orderId, String trip, Date date, String cabin, String seat, String seatType, String beginStation, String endStation, BigDecimal price, String passengerName, String passengerType, String identityNumber, String saleMethod, Date saleTime, Integer status) {
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Ticket(Integer id, Integer orderId, String trip, Date date, String cabin, String seat, String seatType, String beginStation, String endStation, BigDecimal price, String passengerName, String passengerType, String identityNumber, String saleMethod, Date saleTime, Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.orderId = orderId;
         this.trip = trip;
@@ -53,6 +57,8 @@ public class Ticket {
         this.saleMethod = saleMethod;
         this.saleTime = saleTime;
         this.status = status;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Ticket() {
@@ -185,5 +191,21 @@ public class Ticket {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

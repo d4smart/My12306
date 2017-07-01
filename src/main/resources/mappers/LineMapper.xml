@@ -13,11 +13,13 @@
       <arg column="mileage" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="stay_times" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="spend_time" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, station_ids, station_names, begin_time, end_time, price, mileage, stay_times, 
-    spend_time
+    spend_time, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -33,11 +35,11 @@
     insert into line (id, name, station_ids, 
       station_names, begin_time, end_time, 
       price, mileage, stay_times, 
-      spend_time)
+      spend_time, create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{stationIds,jdbcType=VARCHAR}, 
       #{stationNames,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIME}, #{endTime,jdbcType=TIME}, 
       #{price,jdbcType=DECIMAL}, #{mileage,jdbcType=INTEGER}, #{stayTimes,jdbcType=VARCHAR}, 
-      #{spendTime,jdbcType=INTEGER})
+      #{spendTime,jdbcType=INTEGER}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Line" >
     insert into line
@@ -72,6 +74,7 @@
       <if test="spendTime != null" >
         spend_time,
       </if>
+      create_time, update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -104,6 +107,7 @@
       <if test="spendTime != null" >
         #{spendTime,jdbcType=INTEGER},
       </if>
+      now(), now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Line" >
@@ -136,6 +140,7 @@
       <if test="spendTime != null" >
         spend_time = #{spendTime,jdbcType=INTEGER},
       </if>
+      update_time = now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -149,7 +154,8 @@
       price = #{price,jdbcType=DECIMAL},
       mileage = #{mileage,jdbcType=INTEGER},
       stay_times = #{stayTimes,jdbcType=VARCHAR},
-      spend_time = #{spendTime,jdbcType=INTEGER}
+      spend_time = #{spendTime,jdbcType=INTEGER},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

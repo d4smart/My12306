@@ -11,10 +11,12 @@
       <arg column="level" jdbcType="CHAR" javaType="java.lang.String" />
       <arg column="region" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, code, name, pinyin_code, bureau, level, region, address
+    id, code, name, pinyin_code, bureau, level, region, address, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -29,10 +31,10 @@
   <insert id="insert" parameterType="com.d4smart.my12306.pojo.Station" >
     insert into station (id, code, name, 
       pinyin_code, bureau, level, 
-      region, address)
+      region, address, create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{pinyinCode,jdbcType=VARCHAR}, #{bureau,jdbcType=VARCHAR}, #{level,jdbcType=CHAR}, 
-      #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR})
+      #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Station" >
     insert into station
@@ -61,6 +63,7 @@
       <if test="address != null" >
         address,
       </if>
+      create_time, update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -87,6 +90,7 @@
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
       </if>
+      now(), now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Station" >
@@ -113,6 +117,7 @@
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
       </if>
+      update_time = now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -124,7 +129,8 @@
       bureau = #{bureau,jdbcType=VARCHAR},
       level = #{level,jdbcType=CHAR},
       region = #{region,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR}
+      address = #{address,jdbcType=VARCHAR},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

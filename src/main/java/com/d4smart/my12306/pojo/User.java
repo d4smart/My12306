@@ -23,7 +23,11 @@ public class User {
 
     private Integer status;
 
-    public User(Integer id, String phone, String identityNumber, String email, String password, String actualName, String sex, Integer role, Date lastLogin, Integer status) {
+    private Date createTime;
+
+    private Date updateTime;
+
+    public User(Integer id, String phone, String identityNumber, String email, String password, String actualName, String sex, Integer role, Date lastLogin, Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.phone = phone;
         this.identityNumber = identityNumber;
@@ -34,6 +38,12 @@ public class User {
         this.role = role;
         this.lastLogin = lastLogin;
         this.status = status;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
+
+    public User() {
+        super();
     }
 
     @Override
@@ -49,11 +59,9 @@ public class User {
                 ", role=" + role +
                 ", lastLogin=" + lastLogin +
                 ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
                 '}';
-    }
-
-    public User() {
-        super();
     }
 
     public Integer getId() {
@@ -134,5 +142,21 @@ public class User {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

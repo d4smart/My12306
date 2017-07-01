@@ -6,7 +6,6 @@ import com.d4smart.my12306.pojo.User;
 import com.d4smart.my12306.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,13 +24,13 @@ public class UserController {
 
     @RequestMapping(value = "register.do", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> register(@RequestBody User user) {
+    public ServerResponse<String> register(User user) {
         return userService.register(user);
     }
 
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> login(@RequestBody User user, HttpSession session) {
+    public ServerResponse<User> login(User user, HttpSession session) {
         ServerResponse<User> serverResponse = userService.login(user);
         if(serverResponse.isSuccess()) {
             session.setAttribute(Const.LOGIN_USER, serverResponse.getData());
@@ -53,7 +52,7 @@ public class UserController {
 
     @RequestMapping(value = "update_user_info.do", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> updateUserInfo(@RequestBody User user, HttpSession session) {
+    public ServerResponse<User> updateUserInfo(User user, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
         if(login == null) {
             return ServerResponse.createByErrorMessage("请先登录");

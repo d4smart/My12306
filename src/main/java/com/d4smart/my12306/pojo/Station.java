@@ -1,5 +1,7 @@
 package com.d4smart.my12306.pojo;
 
+import java.util.Date;
+
 public class Station {
     private Integer id;
 
@@ -17,7 +19,11 @@ public class Station {
 
     private String address;
 
-    public Station(Integer id, String code, String name, String pinyinCode, String bureau, String level, String region, String address) {
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Station(Integer id, String code, String name, String pinyinCode, String bureau, String level, String region, String address, Date createTime, Date updateTime) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -26,6 +32,8 @@ public class Station {
         this.level = level;
         this.region = region;
         this.address = address;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Station() {
@@ -94,5 +102,21 @@ public class Station {
 
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

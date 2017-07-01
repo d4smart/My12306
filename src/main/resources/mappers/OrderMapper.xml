@@ -9,10 +9,12 @@
       <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="order_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, actual_name, status, price, order_time
+    id, user_id, actual_name, status, price, order_time, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,11 +28,11 @@
   </delete>
   <insert id="insert" parameterType="com.d4smart.my12306.pojo.Order" >
     insert into order (id, user_id, actual_name, 
-      status, price, order_time
-      )
+      status, price, order_time,
+      create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{actualName,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{orderTime,jdbcType=TIMESTAMP}
-      )
+      #{status,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{orderTime,jdbcType=TIMESTAMP},
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Order" >
     insert into order
@@ -53,6 +55,7 @@
       <if test="orderTime != null" >
         order_time,
       </if>
+      create_time, update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -73,6 +76,7 @@
       <if test="orderTime != null" >
         #{orderTime,jdbcType=TIMESTAMP},
       </if>
+      now(), now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Order" >
@@ -93,6 +97,7 @@
       <if test="orderTime != null" >
         order_time = #{orderTime,jdbcType=TIMESTAMP},
       </if>
+      update_time = now()
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -102,7 +107,8 @@
       actual_name = #{actualName,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
-      order_time = #{orderTime,jdbcType=TIMESTAMP}
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

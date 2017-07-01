@@ -16,13 +16,19 @@ public class Order {
 
     private Date orderTime;
 
-    public Order(Integer id, Integer userId, String actualName, Integer status, BigDecimal price, Date orderTime) {
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Order(Integer id, Integer userId, String actualName, Integer status, BigDecimal price, Date orderTime, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.actualName = actualName;
         this.status = status;
         this.price = price;
         this.orderTime = orderTime;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Order() {
@@ -75,5 +81,21 @@ public class Order {
 
     public void setOrderTime(Date orderTime) {
         this.orderTime = orderTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }
