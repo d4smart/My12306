@@ -154,17 +154,56 @@
   </update>
 
   <select id="checkPhone" parameterType="string" resultType="int">
-    select count(1) from user
+    select count(1)
+    from user
     where phone = #{phone}
   </select>
 
   <select id="checkEmail" parameterType="string" resultType="int">
-    select count(1) from user
+    select count(1)
+    from user
     where email = #{email}
   </select>
 
   <select id="checkIdentityNumber" parameterType="string" resultType="int">
-    select count(1) from user
+    select count(1)
+    from user
     where identity_number = #{identity_number}
+  </select>
+
+  <select id="selectLoginByPhone" parameterType="map" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where phone = #{phone}
+    and password = #{password}
+  </select>
+
+  <select id="selectLoginByEmail" parameterType="map" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where email = #{email}
+    and password = #{password}
+  </select>
+
+  <select id="selectLoginByIdentityNumber" parameterType="map" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where identity_number = #{identity_number}
+    and password = #{password}
+  </select>
+
+  <update id="updateLastLoginTime" parameterType="map">
+    update set last_login = now()
+    where id = #{id}
+  </update>
+
+  <select id="checkPassword" parameterType="map" resultType="int">
+    select count(1)
+    from user
+    where id = #{id}
+    and password = #{password}
   </select>
 </mapper>
