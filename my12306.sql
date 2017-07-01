@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : DigitalOcean1
+Source Server         : my12306
 Source Server Version : 50548
 Source Host           : 138.68.30.118:3306
 Source Database       : my12306
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-06-30 20:58:22
+Date: 2017-07-01 15:47:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -67,7 +67,7 @@ CREATE TABLE `order` (
   `actual_name` varchar(60) NOT NULL DEFAULT '',
   `status` int(10) unsigned NOT NULL DEFAULT '0',
   `price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '订单总价',
-  `order_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '下单时间',
+  `order_time` datetime DEFAULT NULL COMMENT '下单时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -118,7 +118,7 @@ CREATE TABLE `ticket` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单的id',
   `trip` varchar(30) NOT NULL DEFAULT '' COMMENT '车次',
-  `date` date NOT NULL DEFAULT '0000-00-00',
+  `date` date DEFAULT NULL,
   `cabin` varchar(30) NOT NULL DEFAULT '',
   `seat` varchar(30) NOT NULL DEFAULT '',
   `seat_type` enum('硬座','软座','硬卧','软卧','无座') NOT NULL DEFAULT '无座',
@@ -129,7 +129,7 @@ CREATE TABLE `ticket` (
   `passenger_type` enum('成人','儿童','学生') NOT NULL DEFAULT '成人',
   `identity_number` varchar(18) NOT NULL DEFAULT '',
   `sale_method` enum('网络','售票处','电话','车站') NOT NULL DEFAULT '网络',
-  `sale_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `sale_time` datetime DEFAULT NULL,
   `status` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '车票状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -144,15 +144,15 @@ CREATE TABLE `train` (
   `line_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '线路的id',
   `begin_station` varchar(60) NOT NULL DEFAULT '',
   `end_station` varchar(60) NOT NULL DEFAULT '',
-  `begin_time` time NOT NULL DEFAULT '00:00:00',
-  `end_time` time NOT NULL DEFAULT '00:00:00',
+  `begin_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
   `spend_time` int(11) NOT NULL DEFAULT '0',
   `mileage` int(11) NOT NULL DEFAULT '0' COMMENT '里程',
   `noseat_count` int(11) NOT NULL DEFAULT '0',
   `vehicle_type` enum('新空调','高铁') NOT NULL DEFAULT '新空调' COMMENT '车辆车体分类',
   `train_type` enum('直达特快','特快','普快','普客') NOT NULL DEFAULT '普客' COMMENT '列车类型',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for user
@@ -167,8 +167,8 @@ CREATE TABLE `user` (
   `actual_name` varchar(60) NOT NULL DEFAULT '' COMMENT '真实姓名',
   `sex` enum('男','女') NOT NULL DEFAULT '男' COMMENT '性别',
   `role` int(4) unsigned NOT NULL DEFAULT '0' COMMENT '用户角色',
-  `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_login` datetime DEFAULT NULL,
   `status` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 SET FOREIGN_KEY_CHECKS=1;

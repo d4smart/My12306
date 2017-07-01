@@ -196,7 +196,8 @@
   </select>
 
   <update id="updateLastLoginTime" parameterType="map">
-    update set last_login = now()
+    update user
+    set last_login = now()
     where id = #{id}
   </update>
 

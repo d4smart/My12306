@@ -87,6 +87,7 @@ public class UserService {
         }
 
         User update = new User();
+        update.setId(user.getId());
         update.setPhone(user.getPhone());
         update.setEmail(user.getEmail());
         update.setIdentityNumber(user.getIdentityNumber());
@@ -96,6 +97,8 @@ public class UserService {
 
         int count = userMapper.updateByPrimaryKeySelective(update);
         if(count > 0) {
+            user = userMapper.selectByPrimaryKey(user.getId());
+            user.setPassword(StringUtils.EMPTY);
             return ServerResponse.createBySuccess("更新个人信息成功", user);
         } else {
             return ServerResponse.createByErrorMessage("更新个人信息失败");
