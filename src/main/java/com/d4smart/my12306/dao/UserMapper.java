@@ -36,4 +36,6 @@ public interface UserMapper {
     int checkPassword(@Param("id") Integer id, @Param("password") String password);
 
     List<User> selectUsersByPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    int getUserCount();
 }

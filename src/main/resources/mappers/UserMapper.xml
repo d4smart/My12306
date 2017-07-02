@@ -221,4 +221,9 @@
     order by id desc
     limit #{offset}, #{limit}
   </select>
+
+  <select id="getUserCount" resultType="int">
+    select count(1)
+    from user
+  </select>
 </mapper>

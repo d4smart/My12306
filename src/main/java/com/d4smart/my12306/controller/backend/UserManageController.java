@@ -1,6 +1,7 @@
 package com.d4smart.my12306.controller.backend;
 
 import com.d4smart.my12306.common.Const;
+import com.d4smart.my12306.common.PageInfo;
 import com.d4smart.my12306.common.ResponseCode;
 import com.d4smart.my12306.common.ServerResponse;
 import com.d4smart.my12306.pojo.User;
@@ -62,9 +63,9 @@ public class UserManageController {
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<User>> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                           HttpSession session) {
+    public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                         HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         if(user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请先登录");

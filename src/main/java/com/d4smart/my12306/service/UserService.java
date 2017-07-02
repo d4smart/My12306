@@ -1,6 +1,7 @@
 package com.d4smart.my12306.service;
 
 import com.d4smart.my12306.common.Const;
+import com.d4smart.my12306.common.PageInfo;
 import com.d4smart.my12306.common.ResponseCode;
 import com.d4smart.my12306.common.ServerResponse;
 import com.d4smart.my12306.dao.UserMapper;
@@ -201,13 +202,16 @@ public class UserService {
         }
     }
 
-    public ServerResponse<List<User>> getUsers(int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> getUsers(int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
         List<User> users = userMapper.selectUsersByPage(offset, limit);
+        int count = userMapper.getUserCount();
+        PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
+        pageInfo.setList(users);
 
-        return ServerResponse.createBySuccess(users);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
     public ServerResponse<User> get(Integer id) {

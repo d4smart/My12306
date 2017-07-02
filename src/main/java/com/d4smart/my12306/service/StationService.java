@@ -1,5 +1,6 @@
 package com.d4smart.my12306.service;
 
+import com.d4smart.my12306.common.PageInfo;
 import com.d4smart.my12306.common.ServerResponse;
 import com.d4smart.my12306.dao.StationMapper;
 import com.d4smart.my12306.pojo.Station;
@@ -17,13 +18,16 @@ public class StationService {
     @Autowired
     private StationMapper stationMapper;
 
-    public ServerResponse<List<Station>> getStations(int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> getStations(int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
         List<Station> stations = stationMapper.selectStationsByPage(offset, limit);
+        int count = stationMapper.getStationCount();
+        PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
+        pageInfo.setList(stations);
 
-        return ServerResponse.createBySuccess(stations);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
     public ServerResponse<Station> get(Integer id) {

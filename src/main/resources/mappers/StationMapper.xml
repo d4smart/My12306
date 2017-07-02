@@ -130,4 +130,9 @@
     order by id desc
     limit #{offset}, #{limit}
   </select>
+
+  <select id="getStationCount" resultType="int">
+    select count(1)
+    from station
+  </select>
 </mapper>

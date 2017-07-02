@@ -19,4 +19,6 @@ public interface StationMapper {
     int updateByPrimaryKey(Station record);
 
     List<Station> selectStationsByPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    int getStationCount();
 }
