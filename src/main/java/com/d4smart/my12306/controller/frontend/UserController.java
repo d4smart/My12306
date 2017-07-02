@@ -22,13 +22,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "register.do", method = RequestMethod.POST)
+    @RequestMapping(value = "register", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> register(User user) {
         return userService.register(user);
     }
 
-    @RequestMapping(value = "login.do", method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> login(User user, HttpSession session) {
         ServerResponse<User> serverResponse = userService.login(user);
@@ -39,7 +39,7 @@ public class UserController {
         return serverResponse;
     }
 
-    @RequestMapping(value = "get_user_info.do", method = RequestMethod.GET)
+    @RequestMapping(value = "get_user_info", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
@@ -50,7 +50,7 @@ public class UserController {
         return ServerResponse.createBySuccess(user);
     }
 
-    @RequestMapping(value = "update_user_info.do", method = RequestMethod.POST)
+    @RequestMapping(value = "update_user_info", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> updateUserInfo(User user, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
@@ -65,7 +65,7 @@ public class UserController {
         return serverResponse;
     }
 
-    @RequestMapping(value = "reset_password.do", method = RequestMethod.POST)
+    @RequestMapping(value = "reset_password", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> resetPassword(HttpSession session, String oldPassword, String newPassword) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
@@ -76,14 +76,14 @@ public class UserController {
         return userService.resetPassword(user, oldPassword, newPassword);
     }
 
-    @RequestMapping(value = "logout.do", method = RequestMethod.POST)
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session) {
         session.removeAttribute(Const.LOGIN_USER);
         return ServerResponse.createBySuccess();
     }
 
-    @RequestMapping(value = "check_valid.do", method = RequestMethod.GET)
+    @RequestMapping(value = "check_valid", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<String> checkValid(String type, String str) {
         return userService.checkValid(type, str);

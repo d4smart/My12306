@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-07-01 20:45:06
+Date: 2017-07-02 14:01:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -108,9 +108,8 @@ CREATE TABLE `section` (
 DROP TABLE IF EXISTS `station`;
 CREATE TABLE `station` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(60) NOT NULL DEFAULT '',
   `name` varchar(60) NOT NULL DEFAULT '',
-  `pinyin_code` varchar(100) NOT NULL DEFAULT '',
+  `code` varchar(60) NOT NULL DEFAULT '' COMMENT '拼音码',
   `bureau` varchar(60) NOT NULL DEFAULT '',
   `level` enum('一等站','二等站','三等站','四等站','五等站') NOT NULL DEFAULT '四等站',
   `region` varchar(60) NOT NULL DEFAULT '' COMMENT '所属行政区域',
@@ -118,7 +117,7 @@ CREATE TABLE `station` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for ticket
@@ -186,5 +185,5 @@ CREATE TABLE `user` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 SET FOREIGN_KEY_CHECKS=1;

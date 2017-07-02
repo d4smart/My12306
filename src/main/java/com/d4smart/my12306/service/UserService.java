@@ -201,11 +201,11 @@ public class UserService {
         }
     }
 
-    public ServerResponse<List<User>> getUserList(int pageNum, int pageSize) {
+    public ServerResponse<List<User>> getUsers(int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<User> users = userMapper.selectUserList(offset, limit);
+        List<User> users = userMapper.selectUsersByPage(offset, limit);
 
         return ServerResponse.createBySuccess(users);
     }

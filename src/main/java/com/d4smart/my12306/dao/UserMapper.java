@@ -35,5 +35,5 @@ public interface UserMapper {
 
     int checkPassword(@Param("id") Integer id, @Param("password") String password);
 
-    List<User> selectUserList(@Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<User> selectUsersByPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
 }

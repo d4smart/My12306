@@ -17,11 +17,11 @@ public class StationService {
     @Autowired
     private StationMapper stationMapper;
 
-    public ServerResponse<List<Station>> getStationList(int pageNum, int pageSize) {
+    public ServerResponse<List<Station>> getStations(int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<Station> stations = stationMapper.selectStationList(offset, limit);
+        List<Station> stations = stationMapper.selectStationsByPage(offset, limit);
 
         return ServerResponse.createBySuccess(stations);
     }

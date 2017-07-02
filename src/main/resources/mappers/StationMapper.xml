@@ -123,7 +123,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectStationList" parameterType="map" resultMap="BaseResultMap">
+  <select id="selectStationsByPage" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from station

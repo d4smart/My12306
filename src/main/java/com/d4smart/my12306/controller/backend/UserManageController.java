@@ -25,9 +25,9 @@ public class UserManageController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "add.do", method = RequestMethod.POST)
+    @RequestMapping(value = "create", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> add(User user, HttpSession session) {
+    public ServerResponse<String> create(User user, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
         if(login == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请先登录");
@@ -41,7 +41,7 @@ public class UserManageController {
         }
     }
 
-    @RequestMapping(value = "update.do", method = RequestMethod.POST)
+    @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> update(User user, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
@@ -51,8 +51,7 @@ public class UserManageController {
 
         if(userService.isAdmin(login)) {
             if(user.getId() == null) {
-                return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
-                        "参数不合法（没有传递用户id）");
+                return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), "参数不合法");
             }
 
             return userService.createOrUpdate(user);
@@ -61,7 +60,7 @@ public class UserManageController {
         }
     }
 
-    @RequestMapping(value = "list.do", method = RequestMethod.GET)
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List<User>> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
@@ -72,13 +71,13 @@ public class UserManageController {
         }
 
         if(userService.isAdmin(user)) {
-            return userService.getUserList(pageNum, pageSize);
+            return userService.getUsers(pageNum, pageSize);
         } else {
             return ServerResponse.createByErrorMessage("没有权限");
         }
     }
 
-    @RequestMapping(value = "get.do", method = RequestMethod.GET)
+    @RequestMapping(value = "get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<User> get(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
@@ -93,7 +92,7 @@ public class UserManageController {
         }
     }
 
-    @RequestMapping(value = "delete.do", method = RequestMethod.POST)
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> delete(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);

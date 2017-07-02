@@ -5,15 +5,18 @@
          version="3.1">
 
     <display-name>My12306 Web Application</display-name>
+
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>*.do</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>

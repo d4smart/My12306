@@ -30,7 +30,7 @@ public class StationManageController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "list.do", method = RequestMethod.GET)
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List<Station>> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                               @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
@@ -41,13 +41,13 @@ public class StationManageController {
         }
 
         if(userService.isAdmin(user)) {
-            return stationService.getStationList(pageNum, pageSize);
+            return stationService.getStations(pageNum, pageSize);
         } else {
             return ServerResponse.createByErrorMessage("没有权限");
         }
     }
 
-    @RequestMapping(value = "get.do", method = RequestMethod.GET)
+    @RequestMapping(value = "get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<Station> get(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
@@ -62,7 +62,7 @@ public class StationManageController {
         }
     }
 
-    @RequestMapping(value = "create.do", method = RequestMethod.POST)
+    @RequestMapping(value = "create", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> create(Station station, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
@@ -78,7 +78,7 @@ public class StationManageController {
         }
     }
 
-    @RequestMapping(value = "update.do", method = RequestMethod.POST)
+    @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> update(Station station, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
@@ -97,7 +97,7 @@ public class StationManageController {
         }
     }
 
-    @RequestMapping(value = "delete.do", method = RequestMethod.POST)
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> update(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);

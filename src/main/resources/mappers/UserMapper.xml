@@ -214,7 +214,7 @@
     and password = #{password}
   </select>
 
-  <select id="selectUserList" parameterType="map" resultMap="BaseResultMap">
+  <select id="selectUsersByPage" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from user
