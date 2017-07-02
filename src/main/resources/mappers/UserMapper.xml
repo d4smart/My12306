@@ -213,4 +213,12 @@
     where id = #{id}
     and password = #{password}
   </select>
+
+  <select id="selectUserList" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    order by id desc
+    limit #{offset}, #{limit}
+  </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.d4smart.my12306.service;
 
 import com.d4smart.my12306.common.Const;
+import com.d4smart.my12306.common.ResponseCode;
 import com.d4smart.my12306.common.ServerResponse;
 import com.d4smart.my12306.dao.UserMapper;
 import com.d4smart.my12306.pojo.User;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by d4smart on 2017/6/30 18:29
@@ -154,5 +156,78 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    /*
+     * 后台功能
+     */
+
+    public ServerResponse<String> createOrUpdate(User user) {
+        if(user.getPhone() == null && user.getEmail() == null && user.getIdentityNumber() == null) {
+            return ServerResponse.createByErrorMessage("用户信息不完整");
+        }
+
+        // 注册信息的唯一性检查
+        ServerResponse serverResponse;
+        if(user.getPhone() != null) {
+            serverResponse = checkValid(Const.PHONE, user.getPhone());
+            if(serverResponse.isFailed()) return serverResponse;
+        }
+        if(user.getEmail() != null) {
+            serverResponse = checkValid(Const.EMAIL, user.getEmail());
+            if(serverResponse.isFailed()) return serverResponse;
+        }
+        if(user.getIdentityNumber() != null) {
+            serverResponse = checkValid(Const.IDENTITY_NUMBER, user.getIdentityNumber());
+            if(serverResponse.isFailed()) return serverResponse;
+        }
+
+        if(user.getId() == null) {
+            // 添加用户
+            user.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD));
+            user.setStatus(Const.UserStatus.NORMAL);
+
+            if(userMapper.insertSelective(user) > 0) {
+                return ServerResponse.createBySuccessMessage("新增用户成功");
+            } else {
+                return ServerResponse.createByErrorMessage("新增用户失败");
+            }
+        } else {
+            if(userMapper.updateByPrimaryKeySelective(user) > 0) {
+                return ServerResponse.createBySuccessMessage("更新用户成功");
+            } else {
+                return ServerResponse.createByErrorMessage("更新用户失败");
+            }
+        }
+    }
+
+    public ServerResponse<List<User>> getUserList(int pageNum, int pageSize) {
+        int offset = (pageNum - 1) * pageSize;
+        int limit = pageSize;
+
+        List<User> users = userMapper.selectUserList(offset, limit);
+
+        return ServerResponse.createBySuccess(users);
+    }
+
+    public ServerResponse<User> get(Integer id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        if(user == null) {
+            return ServerResponse.createByErrorMessage("用户不存在");
+        }
+
+        return ServerResponse.createBySuccess(user);
+    }
+
+    public ServerResponse<String> delete(Integer id) {
+        if(userMapper.deleteByPrimaryKey(id) > 0) {
+            return ServerResponse.createBySuccessMessage("删除用户成功");
+        } else {
+            return ServerResponse.createByErrorMessage("删除用户失败");
+        }
+    }
+
+    public Boolean isAdmin(User user) {
+        return user != null && user.getRole() == Const.Role.ROLE_ADMIN;
     }
 }

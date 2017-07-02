@@ -4,6 +4,7 @@ import com.d4smart.my12306.pojo.User;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -33,4 +34,6 @@ public interface UserMapper {
     int updateLastLoginTime(Integer id);
 
     int checkPassword(@Param("id") Integer id, @Param("password") String password);
+
+    List<User> selectUserList(@Param("offset") Integer offset, @Param("limit") Integer limit);
 }
