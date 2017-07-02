@@ -25,7 +25,7 @@ public class PageInfo<T> implements Serializable {
     public PageInfo(Integer pageNum, Integer pageSize, Integer totalRow) {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
-        this.totalPage = totalRow / pageSize + 1;
+        this.totalPage = totalRow % pageSize == 0 ? totalRow / pageSize : totalRow / pageSize + 1;
         this.totalRow = totalRow;
     }
 

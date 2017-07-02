@@ -1,5 +1,7 @@
 package com.d4smart.my12306.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -79,6 +81,7 @@ public class Line {
         this.stationNames = stationNames == null ? null : stationNames.trim();
     }
 
+    @JsonFormat(pattern="HH:mm:ss",timezone = "GMT+8")
     public Date getBeginTime() {
         return beginTime;
     }
@@ -87,6 +90,7 @@ public class Line {
         this.beginTime = beginTime;
     }
 
+    @JsonFormat(pattern="HH:mm:ss",timezone = "GMT+8")
     public Date getEndTime() {
         return endTime;
     }

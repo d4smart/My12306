@@ -1,5 +1,7 @@
 package com.d4smart.my12306.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -89,6 +91,7 @@ public class Ticket {
         this.trip = trip == null ? null : trip.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     public Date getDate() {
         return date;
     }
