@@ -104,6 +104,15 @@
 		</div>
 		
 		<script>
+			// 登录按钮绑定回车时间
+			document.onkeydown = function(event) {
+			    if (event.keyCode == 13) {
+			        event.cancelBubble = true;
+			        event.returnValue = false;
+			        login();
+				}
+			}
+
 			var code;
 			function createCode() {
 				code = "";
@@ -166,7 +175,7 @@
 				// 向后台查询用户名和密码是否匹配，若匹配，检测权限并跳转到index.html
 				$.ajax({
 					type: "post",
-					url: "/user/login.do",
+					url: "/user/login",
 					data: user,
 					dataType: "json",
 					success: function(data) {

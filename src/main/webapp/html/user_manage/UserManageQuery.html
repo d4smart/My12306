@@ -87,22 +87,19 @@
 					<div class="form-group">
 						性别：
 						<select name="" id="gender">
-							<option value="male">男</option>
-							<option value="female">女</option>
+							<option value="male" id="male">男</option>
+							<option value="female" id="female">女</option>
 						</select>
 					</div>
 					<div class="form-group">
 						证件类型：
-						<select name="" id="certificate">
-							<option value="idCard">二代身份证</option>
-							<option value="passport">护照</option>
-						</select>
+						<span>二代身份证</span>
 					</div>
 					<div class="form-group">
 						证件号码：<input type="text" name="" id="certificateNo" />
 					</div>
 					<div class="form-group">
-						<input type="button" class="searchBtn" id="searchBtn" value="" onclick="search()" />
+						<input type="button" class="searchBtn" id="searchBtn" value="" onclick="search(true)" />
 					</div>
 				</div>
 			</form>
@@ -116,6 +113,7 @@
 			<table class="table table-striped" id="userList">
 				<thead>
 				<th width="10%">选择</th>
+				<th width="5%">id</th>
 				<th width="12%">姓名</th>
 				<th width="10%">性别</th>
 				<th width="25%">证件类型</th>
@@ -131,7 +129,7 @@
 					<label for="selectAll">全选</label>
 				</div>
 				<div class="col-xs-3 col-xs-offset-7 text-right">
-					<input type="button" id="btn-delete" onclick="deteleUser()"/>
+					<input type="button" id="btn-delete" onclick="deleteUser()"/>
 					<input type="button" id="btn-excel" onclick="getExcel()"/>
 				</div>
 			</div>
@@ -139,14 +137,10 @@
 	</div>
 	<div class="col-xs-10 col-xs-offset-1">
 		<div class="row">
-			<div class="col-xs-4 col-xs-offset-6 text-right">
+			<div class="col-xs-8 col-xs-offset-2 text-right">
 				<ul class="pagination" id="page">
 					<li><a href="#" onclick="previous()">&laquo;</a></li>
-					<li class="active"><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
+					<li class="active"><a href="#" onclick="callSearch(this)">1</a></li>
 					<li><a href="#" onclick="next()">&raquo;</a></li>
 				</ul>
 			</div>
@@ -155,7 +149,7 @@
 				<option value="five">5</option>
 				<option value="eight">8</option>
 				<option value="ten">10</option>
-				<option value="twenty">12</option>
+				<option value="twelve">12</option>
 				<option value="fifteen">15</option>
 			</select>条信息
 			</div>
@@ -166,11 +160,16 @@
 
 <script>
     // 窗口初始化，加载完成后执行
-    window.onload = function() {
-        for (var i = 0; i < 5; i++) {
-            addRow();
-        }
-    }
+//    window.onload = function() {
+//        for (var i = 0; i < 5; i++) {
+//            var data = {
+//                "name": "用户" + i,
+//                "gender": "男",
+//                "identityNumber": "23621519701208110x"
+//            };
+//            addRow(data);
+//        }
+//    }
     // 搜索按钮绑定回车事件
     document.onkeydown = function(event) {
         if (event.keyCode == 13) {
@@ -178,10 +177,6 @@
             event.returnValue = false;
             search();
         }
-    }
-
-    function search() {
-        alert("search");
     }
 
     // 向前翻页
@@ -198,7 +193,7 @@
         if (previousPage > 0) {
             lis[currentPage].className = "";
             lis[previousPage].className = "active";
-//					search();
+			search();
         }
 
     }
@@ -216,14 +211,114 @@
         if (nextPage < lis.length - 1) {
             lis[currentPage].className = "";
             lis[nextPage].className = "active";
-//					search();
+			search();
         }
 
     }
 
+    function callSearch(thisAnchor) {
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 0; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                lis[i].className = "";
+                break;
+			}
+		}
+        lis[thisAnchor.innerHTML].className = "active";
+        search();
+	}
+
+    function search(flag) {
+        var flag = arguments[0] ? arguments : false;
+
+        var name = document.getElementById("name").value;
+        var gender = document.getElementById("male").selected ? "男" : "女";
+        var id = document.getElementById("certificateNo").value;
+        var oUserCount = document.getElementById("userCount");
+        var userCount = oUserCount[oUserCount.selectedIndex].innerHTML;
+        var currentPage = 1;
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 1; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                currentPage = i;
+                break;
+            }
+        }
+
+        var user = {
+            "sex": gender,
+            "pageSize": userCount,
+            "pageNum": currentPage
+        };
+
+        if (name != "") {
+            user["actualName"] = name;
+        }
+        if (id != "") {
+            user["identityNumber"] = id;
+        }
+
+        $.ajax({
+            type: "get",
+            url: "/manage/user/list",
+            data: user,
+            dataType: "json",
+            success: function(data) {
+                if (data.status == 0) {
+                    if (flag) {
+//                        alert(data.data.totalPage);
+                        createPageCode(data.data.totalPage);
+					}
+                    createTable(data.data.pageSize, data.data.list);
+                }
+            }
+        });
+    }
+
+    function createPageCode(number) {
+		// 删除以前创建的页码条
+        var oul = document.getElementById("page");
+        for (var i = oul.childNodes.length - 1; i > 2; i--) {
+            oul.removeChild(oul.childNodes[i]);
+        }
+        // 根据参数创建新的页码条
+//		alert("delete done");
+        var oli = document.createElement("li");
+        oli.setAttribute("class", "active");
+        oli.innerHTML = "<a href='#' onclick='callSearch(this)'>1</a>";
+        oul.appendChild(oli);
+        for (var i = 1; i < number; i++) {
+            var oli = document.createElement("li");
+            oli.innerHTML = "<a href='#' onclick='callSearch(this)'>" + (i+1) + "</a>";
+            oul.appendChild(oli);
+		}
+        var oli = document.createElement("li");
+        oli.innerHTML = "<a href='#' onclick='next()'>&raquo;</a>";
+        oul.appendChild(oli);
+	}
+
+    function createTable(pageSize, list) {
+		var pageSize = arguments[0] ? arguments[0] : 5;
+		// 清除除表头之外的tr行
+        var rows = document.getElementById("userList").rows.length;
+        for (var i = rows - 1; i > 0; i--) {
+            document.getElementById("userList").deleteRow(i);
+        }
+        // 根据从后台取来的信息创建新的表
+		for (var i = 0; i < pageSize; i++) {
+            var data = {
+                "id": list[i].id,
+                "name": list[i].actualName,
+				"gender": list[i].sex,
+				"identityNumber": list[i].identityNumber
+			};
+            addRow(data);
+		}
+	}
+
     // 分页功能
     // addRow()从数据库取出信息查出信息并创建新的行
-    function addRow() {
+    function addRow(data) {
         var newTr = document.getElementById("userList").insertRow(document.getElementById("userList").rows.length);
         var newTd = newTr.insertCell(0);
         var newTd2 = newTr.insertCell(1);
@@ -231,28 +326,19 @@
         var newTd4 = newTr.insertCell(3);
         var newTd5 = newTr.insertCell(4);
         var newTd6 = newTr.insertCell(5);
+        var newTd7 = newTr.insertCell(6);
         newTd.innerHTML = "<input type='checkbox' name='userSelect' id='' />";
-        newTd2.innerHTML = "用户1";
-        newTd3.innerHTML = "男";
-        newTd4.innerHTML = "二代身份证";
-        newTd5.innerHTML = "23621519701208110x";
-        newTd6.innerHTML = "<a href='UserManageInfo_Admin_Edit.html'><span style='color:orangered'>编辑</span></a>";
+        newTd2.innerHTML = data.id;
+        newTd3.innerHTML = data.name;
+        newTd4.innerHTML = data.gender;
+        newTd5.innerHTML = "二代身份证";
+        newTd6.innerHTML = data.identityNumber;
+        newTd7.innerHTML = "<a href='UserManageInfo_Admin_Edit.html'><span style='color:orangered'>编辑</span></a>";
     }
-    // 获取每页显示的用户条目数量创建相应表
-    var selectBox = document.getElementById("userCount");
-    selectBox.onchange = function() {
-        var index = document.getElementById("userCount").selectedIndex;
-        var userCount = document.getElementById("userCount")[index].innerHTML;
-        //alert(userCount);
-        var rows = document.getElementById("userList").rows.length;
-        //alert(rows);
-        for (var i = rows - 1; i > 0; i--) {
-            document.getElementById("userList").deleteRow(i);
-        }
-        for (var j = 0; j < userCount; j++) {
-            addRow();
-        }
-    }
+
+    document.getElementById("userCount").onchange = function() {
+        search(true);
+	}
 
     // 实现全选功能
     var oSelectAll = document.getElementById("selectAll");

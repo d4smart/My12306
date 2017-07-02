@@ -43,10 +43,7 @@
 					<img src="../images/ny_top_img.gif" alt="" />
 				</div>
 				<div class="col-xs-12 register-top2">
-					<div class="col-xs-2 col-xs-offset-1" >
-						<p>当前位置：所有用户管理</p>
-					</div>
-					<div class="col-xs-2  col-xs-offset-3 text-left">
+					<div class="col-xs-2  col-xs-offset-6 text-left">
 						<span id="timeBar">时间</span>
 					</div>
 					<div class="col-xs-3 text-left" style="padding-left: 90px;">
@@ -64,7 +61,7 @@
                 var name = "";
                 $.ajax({
                     type: "get",
-                    url: "/user/get_user_info.do",
+                    url: "/user/get_user_info",
                     success: function(data) {
                         if (data.status == 1) {
                             alert("请先登陆");
@@ -81,7 +78,7 @@
 			function logout() {
 			    $.ajax({
 					type: "post",
-					url: "/user/logout.do",
+					url: "/user/logout",
 					dataType: "json",
 					success: function(data) {
 					    if (data.status == 0) {

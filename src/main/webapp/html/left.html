@@ -198,13 +198,13 @@
 						<div class="panel-body">
 							<ul>
 								<li>
-									<a href="admin/UserManageQuery.html" target="main">
+									<a href="user_manage/UserManageQuery.html" target="main">
 										<img src="../images/ny_arrow1.gif" alt="" />
 										<span>用户管理</span>
 									</a>
 								</li>
 								<li>
-									<a href="admin/UserInfo_Add.html" target="main">
+									<a href="user_manage/UserInfo_Add.html" target="main">
 										<img src="../images/ny_arrow1.gif" alt="" />
 										<span>新增用户</span>
 									</a>
@@ -254,7 +254,7 @@
                 var role = 0;
                 $.ajax({
                     type: "get",
-                    url: "/user/get_user_info.do",
+                    url: "/user/get_user_info",
                     success: function(data) {
                        if (data.status == 0) {
                             role = data.data.role;

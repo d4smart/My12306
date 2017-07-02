@@ -126,7 +126,7 @@
 			window.onload = function() {
 			    $.ajax({
 					type: "get",
-					url: "/user/get_user_info.do",
+					url: "/user/get_user_info",
 					success: function(data) {
 					    srcEmail = data.data.email;
 					    srcRole = data.data.role;
@@ -197,7 +197,7 @@
                 }
                 $.ajax({
                     type: "post",
-                    url: "/manage/user/update.do",
+                    url: "/manage/user/update",
                     data: user,
                     dataType: "json",
                     success: function(data) {
