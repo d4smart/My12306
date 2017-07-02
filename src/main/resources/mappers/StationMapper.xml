@@ -4,9 +4,8 @@
   <resultMap id="BaseResultMap" type="com.d4smart.my12306.pojo.Station" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="pinyin_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="bureau" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="level" jdbcType="CHAR" javaType="java.lang.String" />
       <arg column="region" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -16,7 +15,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, code, name, pinyin_code, bureau, level, region, address, create_time, update_time
+    id, name, code, bureau, level, region, address, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -29,11 +28,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.d4smart.my12306.pojo.Station" >
-    insert into station (id, code, name, 
-      pinyin_code, bureau, level, 
+    insert into station (id, name, code,
+      bureau, level,
       region, address, create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{pinyinCode,jdbcType=VARCHAR}, #{bureau,jdbcType=VARCHAR}, #{level,jdbcType=CHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
+      #{bureau,jdbcType=VARCHAR}, #{level,jdbcType=CHAR},
       #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Station" >
@@ -42,14 +41,11 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="code != null" >
-        code,
-      </if>
       <if test="name != null" >
         name,
       </if>
-      <if test="pinyinCode != null" >
-        pinyin_code,
+      <if test="code != null" >
+        code,
       </if>
       <if test="bureau != null" >
         bureau,
@@ -69,14 +65,11 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="code != null" >
-        #{code,jdbcType=VARCHAR},
-      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="pinyinCode != null" >
-        #{pinyinCode,jdbcType=VARCHAR},
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
       </if>
       <if test="bureau != null" >
         #{bureau,jdbcType=VARCHAR},
@@ -96,14 +89,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Station" >
     update station
     <set >
-      <if test="code != null" >
-        code = #{code,jdbcType=VARCHAR},
-      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="pinyinCode != null" >
-        pinyin_code = #{pinyinCode,jdbcType=VARCHAR},
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
       </if>
       <if test="bureau != null" >
         bureau = #{bureau,jdbcType=VARCHAR},
@@ -123,9 +113,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.d4smart.my12306.pojo.Station" >
     update station
-    set code = #{code,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      pinyin_code = #{pinyinCode,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
       bureau = #{bureau,jdbcType=VARCHAR},
       level = #{level,jdbcType=CHAR},
       region = #{region,jdbcType=VARCHAR},
@@ -133,4 +122,12 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectStationList" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from station
+    order by id desc
+    limit #{offset}, #{limit}
+  </select>
 </mapper>

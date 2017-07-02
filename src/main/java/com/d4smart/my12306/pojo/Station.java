@@ -5,11 +5,9 @@ import java.util.Date;
 public class Station {
     private Integer id;
 
-    private String code;
-
     private String name;
 
-    private String pinyinCode;
+    private String code;
 
     private String bureau;
 
@@ -23,11 +21,10 @@ public class Station {
 
     private Date updateTime;
 
-    public Station(Integer id, String code, String name, String pinyinCode, String bureau, String level, String region, String address, Date createTime, Date updateTime) {
+    public Station(Integer id, String name, String code, String bureau, String level, String region, String address, Date createTime, Date updateTime) {
         this.id = id;
-        this.code = code;
         this.name = name;
-        this.pinyinCode = pinyinCode;
+        this.code = code;
         this.bureau = bureau;
         this.level = level;
         this.region = region;
@@ -62,14 +59,6 @@ public class Station {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public String getPinyinCode() {
-        return pinyinCode;
-    }
-
-    public void setPinyinCode(String pinyinCode) {
-        this.pinyinCode = pinyinCode == null ? null : pinyinCode.trim();
     }
 
     public String getBureau() {

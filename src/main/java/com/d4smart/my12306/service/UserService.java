@@ -163,10 +163,6 @@ public class UserService {
      */
 
     public ServerResponse<String> createOrUpdate(User user) {
-        if(user.getPhone() == null && user.getEmail() == null && user.getIdentityNumber() == null) {
-            return ServerResponse.createByErrorMessage("用户信息不完整");
-        }
-
         // 注册信息的唯一性检查
         ServerResponse serverResponse;
         if(user.getPhone() != null) {
@@ -184,6 +180,10 @@ public class UserService {
 
         if(user.getId() == null) {
             // 添加用户
+            if(user.getPhone() == null && user.getEmail() == null && user.getIdentityNumber() == null) {
+                return ServerResponse.createByErrorMessage("用户信息不完整");
+            }
+
             user.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD));
             user.setStatus(Const.UserStatus.NORMAL);
 
