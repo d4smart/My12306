@@ -50,7 +50,7 @@
 						<span id="timeBar">时间</span>
 					</div>
 					<div class="col-xs-3 text-left" style="padding-left: 90px;">
-						欢迎您，<span id="loginName"></span>
+						欢迎您，<span id="name"></span>
 					</div>
 					<div class="col-xs-1 text-right">
 						<a href="login.html" target="_parent">退出</a>
@@ -59,10 +59,24 @@
 			</div>
 		</div>
 		<script>
-			var address = parent.location.href;
-			var indexOfPara = address.indexOf("username");
-			var username = address.substring(indexOfPara + 9, address.length);
-			document.getElementById("loginName").innerHTML = username;
+
+			window.onload = function() {
+                var name = "";
+                $.ajax({
+                    type: "get",
+                    url: "/user/get_user_info.do",
+                    success: function(data) {
+                        if (data.status == 1) {
+                            alert("请先登陆");
+                            parent.location.href = "login.html";
+                        }
+                        else if (data.status == 0) {
+                            name = data.data.actualName;
+                            document.getElementById("name").innerHTML = name;
+                        }
+                    }
+                });
+			}
 			
 			function showTime() {
 				var now = new Date();
