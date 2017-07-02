@@ -250,15 +250,25 @@
 			</div>
 		</div>
 		<script>
-			var address = parent.location.href;
-			var indexOfPara = address.indexOf("username");
-			var username = address.substring(indexOfPara + 9, address.length);
-			if(username == "admin01@my12306.com") {
-				document.getElementById("user").className = "noDisplay";
-				document.getElementById("admin").className = "show";
-			} else {
-				document.getElementById("admin").className = "noDisplay";
-				document.getElementById("user").className = "show";
+			window.onload = function() {
+                var role = 0;
+                $.ajax({
+                    type: "get",
+                    url: "/user/get_user_info.do",
+                    success: function(data) {
+                       if (data.status == 0) {
+                            role = data.data.role;
+                            if (role == 0) {
+                                document.getElementById("admin").className = "noDisplay";
+                                document.getElementById("user").className = "show";
+                            }
+                            else if (role == 1) {
+                                document.getElementById("user").className = "noDisplay";
+                                document.getElementById("admin").className = "show";
+                            }
+                        }
+                    }
+                });
 			}
 		</script>
 

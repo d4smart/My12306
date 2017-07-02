@@ -73,8 +73,8 @@
 					<div class=" col-xs-12 loginInfo">
 						<h5 style="color:orangered">个人详细信息</h5>
 						<div class="info">
-							<span for="loginName" class="col-xs-2"><span style="color:orangered">*</span>登录名：</span>
-							<input type="text" name="" id="loginName" placeholder="用户1"/>
+							<span for="email" class="col-xs-2"><span style="color:orangered">*</span>邮箱：</span>
+							<input type="text" name="" id="email"/>
 							<div id="userPic">
 								<img src="../../images/photo_mr.jpg" alt="" id="imgBox"/>
 								<br />
@@ -86,11 +86,11 @@
 						</div>
 						<div class="info">
 							<span for="name" class="col-xs-2"><span style="color:orangered">*</span>真实姓名：</span>
-							<input type="text" name="" id="name" placeholder="王小明"/>
+							<input type="text" name="" id="name"/>
 						</div>
 						<div class="info">
 							<span for="male" class="col-xs-2"><span style="color:orangered">*</span>性别：</span>
-							<input type="radio" name="gender" id="male" checked/>男
+							<input type="radio" name="gender" id="male"/>男
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<input type="radio" name="gender" id="female"/>女
 						</div>
@@ -115,6 +115,36 @@
 		</div>
 		
 		<script>
+			var srcEmail = "";
+			var srcName = "";
+			var srcGender = "";
+			var srcId = "";
+			var srcPhone = "";
+
+            window.onload = function() {
+                $.ajax({
+                    type: "get",
+                    url: "/user/get_user_info.do",
+                    success: function(data) {
+                        if (data.status == 0) {
+                            srcEmail = data.data.email;
+                            document.getElementById("email").value = data.data.email;
+                            srcName = data.data.actualName;
+                            document.getElementById("name").value = data.data.actualName;
+                            srcGender = data.data.sex == "男" ? "男" : "女";
+                            data.data.sex == "男" ? document.getElementById("male").checked = true : document.getElementById("female").checked = true;
+                            srcId = data.data.identityNumber;
+                            document.getElementById("certificateNo").value = data.data.identityNumber;
+                            srcPhone = data.data.phone;
+                            document.getElementById("phone").value = data.data.phone;
+                        }
+                    },
+                    error: function() {
+                        alert("服务器内部出错...");
+                        return;
+                    }
+                });
+            }
             
             function previewImg(thisBox) {
             	var imgBox = document.getElementById("imgBox");
@@ -133,26 +163,62 @@
             }
             
             function submitBtn() {
-            	var loginName = document.getElementById("loginName");
-            	var name = document.getElementById("name");           	
+            	var email = document.getElementById("email");
+            	var name = document.getElementById("name");
+            	var gender = document.getElementById("male").checked == true ? "男" : "女";
             	var certificateNo = document.getElementById("certificateNo");
-            	var loginNameReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+            	var phone = document.getElementById("phone");
+            	var emailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
             	var idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                var phoneReg = /^1\d{10}$/;
             	
-            	if (!loginNameReg.test(loginName.value)) {
-            		alert("登录名非法");
+            	if (!emailReg.test(email.value)) {
+            		alert("邮箱格式错误");
             		return;
             	}
             	if (name.value == "") {
             		alert("真实姓名不能为空");
             		return;
             	}
-            	if (!idReg.test(certificateNo)) {
+            	if (!idReg.test(certificateNo.value)) {
             		alert("证件号码格式有误");
             		return;
             	}
-            	// 保存信息到数据库
-            	location.href = "UserManageInfo.html";
+            	if (!phoneReg.test(phone.value)) {
+            	    alert("联系电话格式有误");
+            	    return;
+				}
+				var user = {};
+				if (srcEmail != email.value) {
+				    user["email"] = email.value;
+				}
+				if (srcName != name.value) {
+				    user["actualName"] = name.value;
+				}
+				if (srcGender != gender) {
+				    user["sex"] = gender;
+				}
+				if (srcId != certificateNo.value) {
+				    user["identityNumber"] = certificateNo.value;
+				}
+				if (srcPhone != phone.value) {
+					user["phone"] = phone.value;
+                }
+				$.ajax({
+					type: "post",
+					url: "/user/update_user_info.do",
+					data: user,
+					dataType: "json",
+					success: function(data) {
+						if (data.status == 0) {
+							alert(data.msg);
+							location.href = "UserManageInfo.html";
+						}
+						else {
+							alert(data.msg);
+						}
+					}
+				});
             }
             
             function returnBtn() {

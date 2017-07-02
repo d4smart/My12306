@@ -56,17 +56,17 @@
 					<div class=" col-xs-12 loginInfo">
 						<h5 style="color:orangered">个人详细信息</h5>
 						<div class="info">
-							<span for="loginName" class="col-xs-2"><span style="color:orangered">*</span>登录名：</span>
-							<span id="loginName">用户1</span>
+							<span for="email" class="col-xs-2"><span style="color:orangered">*</span>邮箱：</span>
+							<span id="email"></span>
 							<img src="../../images/photo.jpg" alt="../images/photo_mr.jpg" />
 						</div>
 						<div class="info">
 							<span for="name" class="col-xs-2"><span style="color:orangered">*</span>真实姓名：</span>
-							<span id="name">王小明</span>
+							<span id="name"></span>
 						</div>
 						<div class="info">
 							<span for="male" class="col-xs-2"><span style="color:orangered">*</span>性别：</span>
-							<span id="gender">男</span>
+							<span id="gender"></span>
 						</div>
 						<div class="info">
 							<span class="col-xs-2"><span style="color:orangered">*</span>证件类型：</span>
@@ -74,11 +74,11 @@
 						</div>
 						<div class="info">
 							<span class="col-xs-2"><span style="color:orangered">*</span>证件号码：</span>
-							<span id="certificateNo">220221199802051028</span>
+							<span id="certificateNo"></span>
 						</div>
 						<div class="info">
 							<span class="col-xs-2"><span style="color:orangered">*</span>联系电话：</span>
-							<span id="phone">15827012648</span>
+							<span id="phone"></span>
 						</div>
 						<div class="info" style="margin-top:45px; margin-bottom:25px;">
 							<span class="col-xs-3"></span>
@@ -90,6 +90,26 @@
 		</div>
 		
 		<script>
+            window.onload = function() {
+                $.ajax({
+                    type: "get",
+                    url: "/user/get_user_info.do",
+                    success: function(data) {
+                        if (data.status == 0) {
+                            document.getElementById("email").innerHTML = data.data.email;
+                            document.getElementById("name").innerHTML = data.data.actualName;
+                            document.getElementById("gender").innerHTML = data.data.sex;
+                            document.getElementById("certificateNo").innerHTML = data.data.identityNumber;
+                            document.getElementById("phone").innerHTML = data.data.phone;
+                        }
+                    },
+                    error: function() {
+                        alert("服务器内部出错...");
+                        return;
+					}
+                });
+            }
+
             function infoEdit() {
             	location.href = "UserManageInfo_Edit.html";
             }

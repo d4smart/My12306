@@ -1,410 +1,311 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<link rel="stylesheet" href="../../css/bootstrap.css" />
-		<!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/libs/html5shiv/
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/bootstrap.css" />
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/
 			.3.7.0/html5shiv.js"></script>
-			<script src="https://oss.maxcdn.com/libs/respond.js/
+	<script src="https://oss.maxcdn.com/libs/respond.js/
 			.1.4.2/respond.min.js"></script>
-		<![endif]-->
-		<title></title>
-		<style>
-			body {
-				background: url(../../images/bg_point_write.gif);
-			}
-			
-			.searchBtn {
-				width: 60px;
-				background: url(../../images/button_cx.gif);
-			}
-			
-			#formSearch{
-				margin-top: 30px;
-			}
-			
-			.form-group {
-				margin-left: 15px;
-				margin-right: 25px;
-			}
-			
-			#formResult table{
-				margin-top: 40px;
-				border: 1px solid #DFDCDF;
-			}
-			
-			#formResult th{
-				text-align: center;
-				padding-top: 12px;
-				padding-bottom: 12px;
-			}
-			
-			#formResult td{
-				text-align: center;
-				padding-top: 12px;
-				padding-bottom: 12px;
-			}
-			
-			.table-control{
-				margin: 15px auto;
-			}
-			
-			#btn-delete {
-				width: 80px;
-				background: url(../../images/button_sc.gif);
-			}
-			
-			#btn-excel {
-				width: 80px;
-				background: url(../../images/button_dc.gif);
-				margin-left: 15px;
-			}
-			
-			.bottom-control{
-				font-size: 14px;
-				margin-top: 26px;
-			}
-		</style>
-	</head>
+	<![endif]-->
+	<title></title>
+	<style>
+		body {
+			background: url(../../images/bg_point_write.gif);
+		}
 
-	<body>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-xs-10 col-xs-offset-1 header">
-					<h3 style="color:#0A3C5F;">用户管理</h3>
-					<img src="../../images/line1.jpg" alt="" />
-				</div>
-				<div class="col-xs-10 col-xs-offset-1 searchBar">
-					<form action="" role="form" class="form-inline" id="formSearch">
-						<div class="row">
-							<div class="form-group">
-								姓名：<input type="text" name="" id="name" />
-							</div>
-							<div class="form-group">
-								性别：
-								<select name="" id="gender">
-									<option value="male">男</option>
-									<option value="female">女</option>
-								</select>
-							</div>
-							<div class="form-group">
-								证件类型：
-								<select name="" id="certificate">
-									<option value="idCard">二代身份证</option>
-									<option value="passport">护照</option>
-								</select>
-							</div>
-							<div class="form-group">
-								证件号码：<input type="text" name="" id="certificateNo" />
-							</div>
-							<div class="form-group">
-								<input type="button" class="searchBtn" value="" onclick="search()" />
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
+		.searchBtn {
+			width: 60px;
+			background: url(../../images/button_cx.gif);
+		}
+
+		#formSearch{
+			margin-top: 30px;
+		}
+
+		.form-group {
+			margin-left: 15px;
+			margin-right: 25px;
+		}
+
+		#formResult table{
+			margin-top: 40px;
+			border: 1px solid #DFDCDF;
+		}
+
+		#formResult th{
+			text-align: center;
+			padding-top: 12px;
+			padding-bottom: 12px;
+		}
+
+		#formResult td{
+			text-align: center;
+			padding-top: 12px;
+			padding-bottom: 12px;
+		}
+
+		.table-control{
+			margin: 15px auto;
+		}
+
+		#btn-delete {
+			width: 80px;
+			background: url(../../images/button_sc.gif);
+		}
+
+		#btn-excel {
+			width: 80px;
+			background: url(../../images/button_dc.gif);
+			margin-left: 15px;
+		}
+
+		.bottom-control{
+			font-size: 14px;
+			margin-top: 26px;
+		}
+	</style>
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1 header">
+			<h3 style="color:#0A3C5F;">用户管理</h3>
+			<img src="../../images/line1.jpg" alt="" />
 		</div>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-xs-10 col-xs-offset-1 style="">
-					<form action="" role="form" id="formResult">
-						<table class="table table-striped">
-							<thead>
-								<th width="10%">选择</th>
-								<th width="12%">姓名</th>
-								<th width="10%">性别</th>
-								<th width="25%">证件类型</th>
-								<th width="26%">证件号码</th>
-								<th width="12%">操作</th>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户1
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户2
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户3
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户4
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户5
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户6
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户7
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户8
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户9
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" name="userSelect" id="" />
-									</td>
-									<td>
-										用户10
-									</td>
-									<td>
-										男
-									</td>
-									<td>
-										二代身份证
-									</td>
-									<td>
-										23621519701208110x
-									</td>
-									<td>
-										<a href="UserManageInfo_Admin_Edit.html"><span style="color:orangered">编辑</span></a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<div class="row table-control">
-							<div class="col-xs-2">
-								<input type="checkbox" id="selectAll" onclick="selectAllUser(this)"/>
-								<label for="selectAll">全选</label>
-							</div>
-							<div class="col-xs-3 col-xs-offset-7 text-right">
-								<input type="button" id="btn-delete" onclick="detele()"/>
-								<input type="button" id="btn-excel" onclick="getExcel()"/>
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="col-xs-10 col-xs-offset-1">
-					<div class="row">
-						<div class="col-xs-4 col-xs-offset-6 text-right">
-							<ul class="pagination ">
-								<li><a href="# ">&laquo;</a></li>
-								<li><a href="# ">1</a></li>
-								<li><a href="# ">2</a></li>
-								<li><a href="# ">3</a></li>
-								<li><a href="# ">4</a></li>
-								<li><a href="# ">5</a></li>
-								<li><a href="# ">&raquo;</a></li>
-							</ul>
-						</div>
-						<div class="col-xs-2 text-right bottom-control">
-							每页显示<select name="" id="userNum">
-								<option value="one">10</option>
-								<option value="one">15</option>
-								<option value="one">20</option>
-							</select>条信息
-						</div>
+		<div class="col-xs-10 col-xs-offset-1 searchBar">
+			<form action="" role="form" class="form-inline" id="formSearch">
+				<div class="row">
+					<div class="form-group">
+						姓名：<input type="text" name="" id="name" />
+					</div>
+					<div class="form-group">
+						性别：
+						<select name="" id="gender">
+							<option value="male">男</option>
+							<option value="female">女</option>
+						</select>
+					</div>
+					<div class="form-group">
+						证件类型：
+						<select name="" id="certificate">
+							<option value="idCard">二代身份证</option>
+							<option value="passport">护照</option>
+						</select>
+					</div>
+					<div class="form-group">
+						证件号码：<input type="text" name="" id="certificateNo" />
+					</div>
+					<div class="form-group">
+						<input type="button" class="searchBtn" id="searchBtn" value="" onclick="search()" />
 					</div>
 				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1 style="">
+		<form action="" role="form" id="formResult">
+			<table class="table table-striped" id="userList">
+				<thead>
+				<th width="10%">选择</th>
+				<th width="12%">姓名</th>
+				<th width="10%">性别</th>
+				<th width="25%">证件类型</th>
+				<th width="26%">证件号码</th>
+				<th width="12%">操作</th>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<div class="row table-control">
+				<div class="col-xs-2">
+					<input type="checkbox" id="selectAll" onclick="selectAllUser(this)"/>
+					<label for="selectAll">全选</label>
+				</div>
+				<div class="col-xs-3 col-xs-offset-7 text-right">
+					<input type="button" id="btn-delete" onclick="deteleUser()"/>
+					<input type="button" id="btn-excel" onclick="getExcel()"/>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="col-xs-10 col-xs-offset-1">
+		<div class="row">
+			<div class="col-xs-4 col-xs-offset-6 text-right">
+				<ul class="pagination" id="page">
+					<li><a href="#" onclick="previous()">&laquo;</a></li>
+					<li class="active"><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+					<li><a href="#" onclick="next()">&raquo;</a></li>
+				</ul>
+			</div>
+			<div class="col-xs-2 text-right bottom-control">
+				每页显示<select name="" id="userCount">
+				<option value="five">5</option>
+				<option value="eight">8</option>
+				<option value="ten">10</option>
+				<option value="twenty">12</option>
+				<option value="fifteen">15</option>
+			</select>条信息
 			</div>
 		</div>
+	</div>
+</div>
+</div>
 
-		<script>
-			var oSelectAll = document.getElementById("selectAll");
-			var oCheckBoxes = document.getElementsByName("userSelect");
-			for (var i = 0; i < oCheckBoxes.length; i++) {
-				oCheckBoxes[i].index = i;
-				oCheckBoxes[i].onchange = function() {
-					if (oCheckBoxes[this.index].checked) {
-						for (var j = 0; j < oCheckBoxes.length; j++) {
-							if (!oCheckBoxes[j].checked) {
-								break;
-							}
-							else if (j == oCheckBoxes.length - 1) {
-								oSelectAll.checked = true;
-							}
-						}
-					}
-					else {
-						for (var j = 0; j < oCheckBoxes.length; j++) {
-							if (oCheckBoxes[j].checked) {
-								oSelectAll.checked = false;
-							}
-						}
-					}
-				}
-			}
-			
-			function selectAllUser(thisBox) {
-				
-				if (thisBox.checked) {
-					for (var i = 0; i < oCheckBoxes.length; i++) {
-						oCheckBoxes[i].checked = true;
-					}
-				}
-				else {
-					for (var i = 0; i < oCheckBoxes.length; i++) {
-						oCheckBoxes[i].checked = false;
-					}
-				}
-			}
-		</script>
+<script>
+    // 窗口初始化，加载完成后执行
+    window.onload = function() {
+        for (var i = 0; i < 5; i++) {
+            addRow();
+        }
+    }
+    // 搜索按钮绑定回车事件
+    document.onkeydown = function(event) {
+        if (event.keyCode == 13) {
+            event.cancelBubble = true;
+            event.returnValue = false;
+            search();
+        }
+    }
 
-		<script src="../../js/jquery.js"></script>
-		<script src="../../js/bootstrap.js"></script>
-	</body>
+    function search() {
+        alert("search");
+    }
+
+    // 向前翻页
+    function previous() {
+        var currentPage = 0;
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 1; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                currentPage = i;
+                break;
+            }
+        }
+        var previousPage = currentPage - 1;
+        if (previousPage > 0) {
+            lis[currentPage].className = "";
+            lis[previousPage].className = "active";
+//					search();
+        }
+
+    }
+    // 向后翻页
+    function next() {
+        var currentPage = 0;
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 1; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                currentPage = i;
+                break;
+            }
+        }
+        var nextPage = currentPage + 1;
+        if (nextPage < lis.length - 1) {
+            lis[currentPage].className = "";
+            lis[nextPage].className = "active";
+//					search();
+        }
+
+    }
+
+    // 分页功能
+    // addRow()从数据库取出信息查出信息并创建新的行
+    function addRow() {
+        var newTr = document.getElementById("userList").insertRow(document.getElementById("userList").rows.length);
+        var newTd = newTr.insertCell(0);
+        var newTd2 = newTr.insertCell(1);
+        var newTd3 = newTr.insertCell(2);
+        var newTd4 = newTr.insertCell(3);
+        var newTd5 = newTr.insertCell(4);
+        var newTd6 = newTr.insertCell(5);
+        newTd.innerHTML = "<input type='checkbox' name='userSelect' id='' />";
+        newTd2.innerHTML = "用户1";
+        newTd3.innerHTML = "男";
+        newTd4.innerHTML = "二代身份证";
+        newTd5.innerHTML = "23621519701208110x";
+        newTd6.innerHTML = "<a href='UserManageInfo_Admin_Edit.html'><span style='color:orangered'>编辑</span></a>";
+    }
+    // 获取每页显示的用户条目数量创建相应表
+    var selectBox = document.getElementById("userCount");
+    selectBox.onchange = function() {
+        var index = document.getElementById("userCount").selectedIndex;
+        var userCount = document.getElementById("userCount")[index].innerHTML;
+        //alert(userCount);
+        var rows = document.getElementById("userList").rows.length;
+        //alert(rows);
+        for (var i = rows - 1; i > 0; i--) {
+            document.getElementById("userList").deleteRow(i);
+        }
+        for (var j = 0; j < userCount; j++) {
+            addRow();
+        }
+    }
+
+    // 实现全选功能
+    var oSelectAll = document.getElementById("selectAll");
+    var oCheckBoxes = document.getElementsByName("userSelect");
+    for (var i = 0; i < oCheckBoxes.length; i++) {
+        oCheckBoxes[i].index = i;
+        oCheckBoxes[i].onchange = function() {
+            if (oCheckBoxes[this.index].checked) {
+                for (var j = 0; j < oCheckBoxes.length; j++) {
+                    if (!oCheckBoxes[j].checked) {
+                        break;
+                    }
+                    else if (j == oCheckBoxes.length - 1) {
+                        oSelectAll.checked = true;
+                    }
+                }
+            }
+            else {
+                for (var j = 0; j < oCheckBoxes.length; j++) {
+                    if (oCheckBoxes[j].checked) {
+                        oSelectAll.checked = false;
+                    }
+                }
+            }
+        }
+    }
+    function selectAllUser(thisBox) {
+
+        if (thisBox.checked) {
+            for (var i = 0; i < oCheckBoxes.length; i++) {
+                oCheckBoxes[i].checked = true;
+            }
+        }
+        else {
+            for (var i = 0; i < oCheckBoxes.length; i++) {
+                oCheckBoxes[i].checked = false;
+            }
+        }
+    }
+
+    function deleteUser() {
+
+    }
+
+    function getExcel() {
+
+    }
+
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
+</body>
 
 </html>

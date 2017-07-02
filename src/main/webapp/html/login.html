@@ -32,7 +32,7 @@
 			}
 			
 			.main-form .form-group input{
-				width: 18%;
+				width: 20%;
 			}
 			
 			.main-form .form-group .picCode{
@@ -74,12 +74,12 @@
 				<div class="col-xs-8 col-xs-offset-2 main-wrap">
 					<form action="" role="form" class="form-horizontal main-form">
 						<div class="form-group">
-							<label for="username" class="col-xs-2 col-xs-offset-6 text-right" placeholder="请输入邮箱">邮&nbsp;&nbsp;&nbsp;&nbsp;箱：</label>
-							<input type="text" name="" id="username"/>
+							<label for="loginName" class="col-xs-2 col-xs-offset-6 text-right">登录名：</label>
+							<input type="text" name="" id="loginName" placeholder="请输入邮箱/电话号码/身份证号"/>
 						</div>
 						<div class="form-group">
-							<label for="password" class="col-sm-2 col-sm-offset-6 text-right" placeholder="请输入密码">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
-							<input type="password" name="" id="password" />
+							<label for="password" class="col-sm-2 col-sm-offset-6 text-right">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+							<input type="password" name="" id="password" placeholder="请输入密码"/>
 						</div>
 						<div class="form-group">
 							<label for="vertifyCode" class="col-sm-2 col-sm-offset-6 text-right" placeholder="请输入验证码">验证码：</label>
@@ -123,26 +123,67 @@
 			createCode();
 			
 			function login() {
-				var username = document.getElementById("username").value;
+				var loginName = document.getElementById("loginName").value;
 				var passwd = document.getElementById("password").value;
+				var email = null;
+				var phone = null;
+				var idNo = null;
 				var vertifyCode = document.getElementById("vertifyCode").value;
-				var picCode = new RegExp("^"+picCode+"$", "i");
-				var username_test = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+
+                var passwdReg = /^[\w_]{6,16}$/;
+                var emailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+                var idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                var phoneReg = /^1\d{10}$/;
+                var picCode = new RegExp("^"+picCode+"$", "i");
 			
-				if (!username_test.test(username)) {
-					alert("请输入正确的邮箱");
-					return;
+				if (emailReg.test(loginName)) {
+					email = loginName;
 				}
-				if (passwd.length < 6) {
-					alert("密码为6-12位");
+				else if (phoneReg.test(loginName)) {
+				    phone = loginName;
+				}
+				else if (idReg.test(loginName)) {
+				    idNo = loginName;
+				}
+				else {
+				    alert("登录名格式有误");
+				    return;
+				}
+				if (!passwdReg.test(passwd)) {
+					alert("密码格式有误");
 					return;
 				}
 				if(picCode.test(vertifyCode)) {
 					alert("验证码错误");
 					return;
 				}
+				var user = {
+				    "email": email,
+					"phone": phone,
+					"identifyNumber": idNo,
+					"password": passwd
+				}
 				// 向后台查询用户名和密码是否匹配，若匹配，检测权限并跳转到index.html
-				location.href = ("index.html?" + "username=" + username);
+				$.ajax({
+					type: "post",
+					url: "/user/login.do",
+					data: user,
+					dataType: "json",
+					success: function(data) {
+					    if (data.status == 0) {
+					        location.href = "index.html";
+						}
+						else {
+					        alert(data.msg);
+					        createCode();
+					        return;
+						}
+					},
+					error: function() {
+                        alert("服务器内部发生错误，程序猿正在拼命调bug中......");
+                        return;
+					}
+				});
 			}
 		</script>
 		

@@ -72,12 +72,12 @@
 					<div class=" col-xs-12 loginInfo">
 						<h5 style="color:orangered">登录信息</h5>
 						<div class="info">
-							<lable for="loginName" class="col-xs-2"><span style="color:orangered">*</span>登录名：</lable>
-							<input type="text" name="" id="loginName" />&nbsp;&nbsp;&nbsp;&nbsp;请使用有效邮箱作为用户名
+							<lable for="email" class="col-xs-2"><span style="color:orangered">*</span>邮箱：</lable>
+							<input type="text" name="email" id="email" />&nbsp;&nbsp;&nbsp;&nbsp;请输入有效邮箱账户
 						</div>
 						<div class="info">
 							<lable for="password" class="col-xs-2"><span style="color:orangered">*</span>密码：</lable>
-							<input type="password" name="" id="password" />&nbsp;&nbsp;&nbsp;&nbsp;不少于6位字符
+							<input type="password" name="password" id="password" />&nbsp;&nbsp;&nbsp;&nbsp;请输入6-16位字符作为密码
 						</div>
 						<div class="info">
 							<lable for="rePassword" class="col-xs-2"><span style="color:orangered">*</span>确认密码：</lable>
@@ -88,7 +88,7 @@
 						<h5 style="color:orangered">详细信息</h5>
 						<div class="info">
 							<lable for="name" class="col-xs-2"><span style="color:orangered">*</span>真实姓名：</lable>
-							<input type="text" name="" id="name" />
+							<input type="text" name="actualName" id="name" />
 						</div>
 						<div class="info">
 							<lable for="male" class="col-xs-2"><span style="color:orangered">*</span>性别：</lable>
@@ -134,22 +134,25 @@
 		<script>
             
             function btn_submit() {
-            	var loginName = document.getElementById("loginName");
+            	var email = document.getElementById("email");
             	var passwd = document.getElementById("password");
             	var rePassword = document.getElementById("rePassword");
             	var name = document.getElementById("name");   
             	var idNo = document.getElementById("idNo");
+            	var phone = document.getElementById("phone");
             	var rule = document.getElementById("rule");
-            	var loginNameReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-            	var passwdReg = /^[\w_]{6,}$/;
-            	var idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
             	
-            	if (!loginNameReg.test(loginName.value)) {
-            		alert("登录名非法");
+            	var emailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+            	var passwdReg = /^[\w_]{6,16}$/;
+            	var idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            	var phoneReg = /^1\d{10}$/;
+            	
+            	if (!emailReg.test(email.value)) {
+            		alert("邮箱格式有误");
             		return;
             	}
-            	if (passwdReg.test(passwd.value)) {
-            		alert("密码非法");
+            	if (!passwdReg.test(passwd.value)) {
+            		alert("密码格式有误");
             		return;
             	}
             	if (rePassword.value != passwd.value) {
@@ -160,16 +163,50 @@
             		alert("真实姓名不能为空");
             		return;
             	}
-            	if (!idReg.test(idNo)) {
+            	if (!idReg.test(idNo.value)) {
             		alert("身份证号码格式有误");
             		return;
             	}
+            	if (!phoneReg.test(phone.value)) {
+            	    alert("联系电话格式有误");
+            	    return;
+				}
             	if (!rule.checked) {
             		alert("请同意服务条款");
             		return;
             	}
+            	var user = {
+            		"email": email.value,
+            		"password": passwd.value,
+            		"actualName": name.value,
+            		"sex": document.getElementById("male").checked ? "男" : "女",
+            		"identityNumber": idNo.value,
+            		"phone": phone.value
+            	};
             	
-            	location.href = ("Index.html?" + "username=" + loginName);
+            	$.ajax({
+            		type: "post",
+            		url: "/user/register.do",
+//                    contentType: "application/json; charset=utf-8",
+            		data: user,
+            		dataType: "json",
+            		success: function(data) {
+                        if (data.status == 0) {
+                            alert(data.msg);
+                            location.href = ("login.html");
+                        }
+                        else if (data.status != 0) {
+                            alert(data.msg);
+                            return;
+                        }
+                    },
+                    error: function() {
+            		    alert("服务器内部发生错误，程序猿正在拼命调bug中......");
+            		    return;
+					}
+            	});
+            	
+            	
             }
             
 		</script>
