@@ -30,6 +30,7 @@
 			
 			.register-bottom{
 				background: url(../../images/bottom_ny_bg.gif) repeat-x;
+				margin-top: 24px;
 			}
 		</style>
 	</head>
@@ -46,8 +47,8 @@
 					<div class=" col-xs-12 loginInfo">
 						<h5 style="color:orangered">登录信息</h5>
 						<div class="info">
-							<span for="loginName" class="col-xs-2"><span style="color:orangered">*</span>登录名：</span>
-							<input type="text" name="" id="loginName"/>&nbsp;&nbsp;&nbsp;&nbsp;请用有效邮箱作为用户名
+							<span for="email" class="col-xs-2"><span style="color:orangered">*</span>邮箱：</span>
+							<input type="text" name="" id="email"/>&nbsp;&nbsp;&nbsp;&nbsp;请用输入有效邮箱
 						</div>
 					</div>
 					<div class=" col-xs-12 userRights">
@@ -55,8 +56,8 @@
 						<div class="info">
 							<span for="" class="col-xs-2"><span style="color:orangered">*</span>用户权限：</span>
 							<select name="" id="userType">
-								<option value="admin">管理员</option>
 								<option value="user">普通用户</option>
+								<option value="admin">管理员</option>
 							</select>
 						</div>
 					</div>
@@ -73,7 +74,7 @@
 							<input type="radio" name="gender" id="female"/>女
 						</div>	
 						<div class="info">
-							<span for="certificateNo" class="col-xs-2"><span style="color:orangered">*</span>证件号码：</span>
+							<span for="certificateNo" class="col-xs-2"><span style="color:orangered">*</span>身份证号码：</span>
 							<input type="text" name="" id="certificateNo" />
 						</div>
 						<div class="info">
@@ -104,29 +105,63 @@
 		<script>
             
             function btn_submit() {
-            	var loginName = document.getElementById("loginName");
+            	var email = document.getElementById("email");
+            	var roleIndex = document.getElementById("userType").selectedIndex;
+            	var role = document.getElementById("userType")[roleIndex].value == "admin" ? 1 : 0;
             	var name = document.getElementById("name");
+            	var gender =document.getElementById("male").checked ? "男" : "女";
             	var certificateNo = document.getElementById("certificateNo");
            		var phone = document.getElementById("phone");
-            	var loginNameReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-            	var idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+
+                var emailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+                var idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                var phoneReg = /^1\d{10}$/;
             	
-            	if (!loginNameReg.test(loginName.value)) {
-            		alert("登录名非法");
+            	if (!emailReg.test(email.value)) {
+            		alert("登录名格式错误");
             		return;
             	}
             	if (name.value == "") {
             		alert("真实姓名不能为空");
             		return;
             	}
-            	if (!idReg.test(certificateNo)) {
-            		alert("证件号码格斯有误");
+            	if (!idReg.test(certificateNo.value)) {
+            		alert("证件号码格式有误");
             		return;
             	}
-            	if (phone.value == "") {
-            		alert("联系电话不能为空");
+            	if (!phoneReg.test(phone.value)) {
+            		alert("联系电话格式有误");
             		return;
             	}
+
+            	var user = {
+            	    "email": email.value,
+					"role": role,
+					"actualName": name.value,
+					"sex": gender,
+					"identityNumber": certificateNo.value,
+					"phone": phone.value
+				}
+
+				$.ajax({
+					type: "post",
+					url: "/manage/user/add.do",
+					data: user,
+					dataType: "json",
+					success: function(data) {
+					    if (data.status == 0) {
+					        alert(data.msg);
+					        parent.location.href = "../index.html";
+						}
+						else {
+					        alert(data.msg);
+					        return;
+						}
+					},
+					error: function(data) {
+					  alert("服务器内部错误...");
+					}
+				});
             }
             
 		</script>
