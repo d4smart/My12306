@@ -3,14 +3,14 @@ Navicat MySQL Data Transfer
 
 Source Server         : my12306
 Source Server Version : 50548
-Source Host           : 138.68.30.118:3306
+Source Host           : www.d4smarter.com:3306
 Source Database       : my12306
 
 Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-07-02 14:01:21
+Date: 2017-07-03 00:22:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -50,8 +50,8 @@ CREATE TABLE `line` (
   `name` varchar(30) NOT NULL DEFAULT '' COMMENT '线路名称',
   `station_ids` text NOT NULL COMMENT '车站序号，多个',
   `station_names` text NOT NULL COMMENT '车站名，多个',
-  `begin_time` time NOT NULL DEFAULT '00:00:00',
-  `end_time` time NOT NULL DEFAULT '00:00:00',
+  `begin_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
   `price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '线路的基础价格，最终价格按车座类型乘对应系数',
   `mileage` int(11) NOT NULL DEFAULT '0',
   `stay_times` text NOT NULL COMMENT '停留时间，以分钟为单位',
@@ -117,7 +117,7 @@ CREATE TABLE `station` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for ticket
@@ -165,7 +165,7 @@ CREATE TABLE `train` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for user
@@ -185,5 +185,5 @@ CREATE TABLE `user` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 SET FOREIGN_KEY_CHECKS=1;
