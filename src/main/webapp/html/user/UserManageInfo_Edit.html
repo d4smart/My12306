@@ -212,6 +212,7 @@
 					success: function(data) {
 						if (data.status == 0) {
 							alert(data.msg);
+							parent.location.reload();
 							location.href = "UserManageInfo.html";
 						}
 						else {

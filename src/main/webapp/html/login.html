@@ -135,15 +135,20 @@
                 var idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
                 var phoneReg = /^1\d{10}$/;
                 var picCode = new RegExp("^"+picCode+"$", "i");
+
+                var user = {"password": passwd};
 			
 				if (emailReg.test(loginName)) {
 					email = loginName;
+					user["email"] = email;
 				}
 				else if (phoneReg.test(loginName)) {
 				    phone = loginName;
+				    user["phone"] = phone;
 				}
 				else if (idReg.test(loginName)) {
 				    idNo = loginName;
+				    user["identityNumber"] = idNo;
 				}
 				else {
 				    alert("登录名格式有误");
@@ -157,12 +162,7 @@
 					alert("验证码错误");
 					return;
 				}
-				var user = {
-				    "email": email,
-					"phone": phone,
-					"identifyNumber": idNo,
-					"password": passwd
-				}
+
 				// 向后台查询用户名和密码是否匹配，若匹配，检测权限并跳转到index.html
 				$.ajax({
 					type: "post",
