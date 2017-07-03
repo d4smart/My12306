@@ -100,7 +100,7 @@ public class StationManageController {
 
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> update(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
+    public ServerResponse<String> delete(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
         if(login == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请先登录");

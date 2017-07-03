@@ -1,10 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title></title>
+    <style>
+        body{
+            background: url(../../images/bg_point_write.gif);
+        }
 
+        .header{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info{
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .register-bottom{
+            background: url(../../images/bottom_ny_bg.gif) repeat-x;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 header">
+            <h3 style="color:#0A3C5F;">新增车站信息</h3>
+            <img src="../../images/line1.jpg" alt=""/>
+            <p style="margin-top:10px;">注：标有<span style="color:orangered">*</span>处，均为必填项</p>
+        </div>
+        <div class="col-xs-10 col-xs-offset-2 content">
+            <div class=" col-xs-12 stationInfo">
+                <h5 style="color:orangered">车站信息</h5>
+                <div class="info">
+                    <span for="name" class="col-xs-2"><span style="color:orangered">*</span>车站名：</span>
+                    <input type="text" name="" id="name"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="info">
+                    <span for="code" class="col-xs-2"><span style="color:orangered">*</span>拼音码：</span>
+                    <input type="text" name="" id="code"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="info">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>所属铁路局：</span>
+                    <select name="" id="bureau">
+                        <option value="">所属铁路局</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class=" col-xs-12 detailInfo">
+                <h5 style="color:orangered">详细信息</h5>
+                <div class="info">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>车站等级：</span>
+                    <select name="" id="level">
+                        <option value="">一等站</option>
+                        <option value="">二等站</option>
+                        <option value="">三等站</option>
+                        <option value="">四等站</option>
+                        <option value="">五等站</option>
+                    </select>
+                </div>
+                <div class="info">
+                    <span for="region" class="col-xs-2"><span style="color:orangered">*</span>所属行政区：</span>
+                    <input type="text" name="" id="region"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="info">
+                    <span for="address" class="col-xs-2"><span style="color:orangered">*</span>联系地址：</span>
+                    <input type="text" name="" id="address"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="info" style="margin-top:25px; margin-bottom:25px;">
+                    <span class="col-xs-3"></span>
+                    <input type="button" name="" id="" value="提交" onclick="btn_submit()"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset" name="" id="" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 register-bottom">
+            <div class="col-xs-2 col-xs-offset-5" style="margin-top: 5px;">
+                <p>copyright@12306 购票网</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        // 从后台请求bureau表创建bureau下拉菜单
+        var oSelectBox = document.getElementById("bureau");
+        $.ajax({
+            type: "post",
+            url: "",
+            dataType: "json",
+            success: function(data) {
+
+            },
+            error: function(data) {
+                alert("服务器内部错误，请求bureau表失败...");
+                return;
+            }
+        });
+
+        // 临时模拟取值创建bureau
+        oSelectBox.length = 0;
+        for (var i = 0; i < 3; i++) {
+            oSelectBox.options[i] = new Option("哈");
+        }
+    }
+
+    function btn_submit() {
+        var name = document.getElementById("name");
+        var code = document.getElementById("code");
+        var oBureau = document.getElementById("bureau");
+        var bureau = oBureau[oBureau.selectedIndex].innerHTML;
+        var oLevel = document.getElementById("level");
+        var level = oLevel[oLevel.selectedIndex].innerHTML;
+        var region = document.getElementById("region");
+        var address = document.getElementById("address");
+
+        if (name.value == "") {
+            alert("车站名不能为空");
+            return;
+        }
+        if (code.value == "") {
+            alert("拼音码不能为空");
+            return;
+        }
+        if (region.value == "") {
+            alert("所属行政区不能为空");
+            return;
+        }
+        if (address.value == "") {
+            alert("联系地址不能为空");
+            return;
+        }
+
+        var station = {
+            "name": name.value,
+            "code": code.value,
+            "bureau": bureau,
+            "level": level,
+            "region": region.value,
+            "address": address.value
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/manage/station/create",
+            data: station,
+            dataType: "json",
+            success: function(data) {
+                if (data.status == 0) {
+                    alert(data.msg);
+                    parent.location.href = "../index.html";
+                }
+                else {
+                    alert(data.msg);
+                    return;
+                }
+            },
+            error: function(data) {
+                alert("添加车站失败，服务器内部错误...");
+            }
+        });
+    }
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
 </body>
+
 </html>

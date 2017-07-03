@@ -87,6 +87,7 @@
 					<div class="form-group">
 						性别：
 						<select name="" id="gender">
+							<option value="" id="all">全部</option>
 							<option value="male" id="male">男</option>
 							<option value="female" id="female">女</option>
 						</select>
@@ -229,10 +230,19 @@
 	}
 
     function search(flag) {
-        var flag = arguments[0] ? arguments : false;
+        var flag = arguments[0] ? arguments[0] : false;
 
         var name = document.getElementById("name").value;
-        var gender = document.getElementById("male").selected ? "男" : "女";
+        var gender;
+        if (document.getElementById("male").selected) {
+            gender = "男";
+		}
+		else if (document.getElementById("female").selected) {
+            gender = "女";
+		}
+		else {
+            gender = "全部";
+		}
         var id = document.getElementById("certificateNo").value;
         var oUserCount = document.getElementById("userCount");
         var userCount = oUserCount[oUserCount.selectedIndex].innerHTML;
@@ -246,7 +256,6 @@
         }
 
         var user = {
-            "sex": gender,
             "pageSize": userCount,
             "pageNum": currentPage
         };
@@ -254,6 +263,9 @@
         if (name != "") {
             user["actualName"] = name;
         }
+        if (gender != "全部") {
+            user["sex"] = gender;
+		}
         if (id != "") {
             user["identityNumber"] = id;
         }
