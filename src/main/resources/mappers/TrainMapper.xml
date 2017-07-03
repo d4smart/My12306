@@ -191,7 +191,7 @@
       <if test="beginStation != null">
         and begin_station = #{beginStation}
       </if>
-      <if test="toStation != null">
+      <if test="endStation != null">
         and end_station = #{endStation}
       </if>
     </where>
@@ -206,7 +206,7 @@
       <if test="beginStation != null">
         and begin_station = #{beginStation}
       </if>
-      <if test="toStation != null">
+      <if test="endStation != null">
         and end_station = #{endStation}
       </if>
     </where>
