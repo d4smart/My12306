@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title></title>
+    <style>
+        body{
+            background: url(../../images/bg_point_write.gif);
+        }
+
+        .header{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .loginInfo{
+            position: relative;
+        }
+
+        .info{
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .register-bottom{
+            background: url(../../images/bottom_ny_bg.gif) repeat-x;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2 header">
+            <h3 style="color:#0A3C5F;">修改旅程区段信息</h3>
+            <img src="../../images/line1.jpg" alt=""/>
+            <p style="margin-top:10px;">注：标有<span style="color:orangered">*</span>处，均为必填项</p>
+        </div>
+        <div class="col-xs-8 col-xs-offset-3 content">
+            <div class=" col-xs-12 sectionInfo">
+                <h5 style="color:orangered">区段信息</h5>
+                <div class="info">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>里程区段From：</span>
+                    <select name="" id="fromStation">
+                        <option value="" selected>from</option>
+                    </select>
+                </div>
+                <div class="info">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>里程区段To：</span>
+                    <select name="" id="toStation">
+                        <option value="" selected>to</option>
+                    </select>
+                </div>
+            </div>
+            <div class=" col-xs-12 detailInfo">
+                <h5 style="color:orangered">详细信息</h5>
+                <div class="info">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>里程：</span>
+                    <input type="text" name="" id="mileage"/>
+                </div>
+                <div class="info">
+                    <span for="region" class="col-xs-2"><span style="color:orangered">*</span>价格：</span>
+                    <input type="text" name="" id="price"/>
+                </div>
+                <div class="info" style="margin-top:25px; margin-bottom:25px;">
+                    <span class="col-xs-3"></span>
+                    <input type="button" name="" id="" value="提交" onclick="btn_submit()"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset" name="" id="" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 register-bottom">
+            <div class="col-xs-2 col-xs-offset-5" style="margin-top: 5px;">
+                <p>copyright@12306 购票网</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var link = location.href;
+    var sectionId = Number(link.substr(link.indexOf("sectionId") + 10));
+    var srcFrom = "";
+    var srcTO = "";
+    var srcMileage = "";
+    var srcPrice = "";
+    window.onload = function() {
+
+        // 从后台请求station表创建From To下拉菜单
+        var oFrom = document.getElementById("fromStation");
+        var oTo = document.getElementById("toStation");
+        var para = {"pageSize": 50}; // 根据具体城市数量可以更改
+        $.ajax({
+            type: "get",
+            url: "/manage/station/list",
+            data: para,
+            dataType: "json",
+            success: function(data) {
+                if (data.status == 0) {
+                    oFrom.length = 0;
+                    oTo.length = 0;
+                    for (var i = 1; i <= para.pageSize; i++) {
+                        oFrom.options[i] = new Option(data.data.list[i].name);
+                        oTo.options[i] = new Option(data.data.list[i].name);
+                    }
+                }
+            },
+            error: function(data) {
+                alert("服务器内部错误，请求Station表失败...");
+                return;
+            }
+        });
+
+
+        // 从后台获取车站信息并填写
+        var section = {"id": sectionId};
+        $.ajax({
+            type: "get",
+            url: "/manage/section/get",
+            data: section,
+            dataType: "json",
+            success: function(data) {
+                srcFrom = data.data.fromStation;
+                srcTo = data.data.toStation;
+                srcMileage = data.data.mileage;
+                srcPrice = data.data.price;
+                document.getElementById("mileage").value = srcMileage;
+                document.getElementById("price").value = srcPrice;
+                var oFrom = document.getElementById("fromStation");
+                for (var i = 0; i < oFrom.length; i++) {
+                    if (oFrom[i].innerHTML == srcFrom) {
+                        oFrom[i].selected = true;
+                    }
+                }
+                var oTo = document.getElementById("toStation");
+                for (var i = 0; i < oTo.length; i++) {
+                    if (oTo[i].innerHTML == srcTo) {
+                        oTo[i].selected = true;
+                    }
+                }
+            },
+            error: function(data) {
+                alert("获取车站信息失败，服务器内部错误...");
+            }
+        });
+    }
+
+    function btn_submit() {
+        var oFrom = document.getElementById("fromStation");
+        var oTo = document.getElementById("toStation");
+        var from = oFrom[oFrom.selectedIndex].innerHTML;
+        var to = oTo[oTo.selectedIndex].innerHTML;
+        var mileage = document.getElementById("mileage").value;
+        var price = document.getElementById("price").value;
+
+        if (from == "") {
+            alert("区段起始车站不能为空");
+            return;
+        }
+        if (to == "") {
+            alert("区段终点车站不能为空");
+            return;
+        }
+        if (mileage == "") {
+            alert("区段里程不能为空");
+            return;
+        }
+        if (price == "") {
+            alert("区段价格不能为空");
+            return;
+        }
+
+        var section = {
+            "fromStation": from,
+            "toStation": to,
+            "mileage": mileage,
+            "price": price
+        };
+
+        var section = {"id": sectionId};
+        if (srcFrom != from) {
+            section["fromStation"] = from;
+        }
+        if (srcTo != to) {
+            section["toStation"] = to;
+        }
+        if (srcMileage != mileage) {
+            section["mileage"] = mileage;
+        }
+        if (srcPrice != price) {
+            section["price"] = price;
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/manage/section/update",
+            data: section,
+            dataType: "json",
+            success: function(data) {
+                if (data.status == 0) {
+                    alert(data.msg);
+                    parent.location.href = "../index.html";
+                }
+                else {
+                    alert(data.msg);
+                    return;
+                }
+            },
+            error: function(data) {
+                alert("区段信息修改失败，服务器内部错误...");
+                return;
+            }
+        });
+
+    }
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
+</body>
+
+</html>
