@@ -327,13 +327,13 @@
         var newTd5 = newTr.insertCell(4);
         var newTd6 = newTr.insertCell(5);
         var newTd7 = newTr.insertCell(6);
-        newTd.innerHTML = "<input type='checkbox' name='userSelect' id='' />";
+        newTd.innerHTML = "<input type='checkbox' name='userSelect' id='" + data.id + "' />";
         newTd2.innerHTML = data.id;
         newTd3.innerHTML = data.name;
         newTd4.innerHTML = data.gender;
         newTd5.innerHTML = "二代身份证";
         newTd6.innerHTML = data.identityNumber;
-        newTd7.innerHTML = "<a href='UserManageInfo_Admin_Edit.html'><span style='color:orangered'>编辑</span></a>";
+        newTd7.innerHTML = "<a href='#' onclick='user_edit(" + data.id + ")'><span style='color:orangered'>编辑</span></a>";
     }
 
     document.getElementById("userCount").onchange = function() {
@@ -379,8 +379,46 @@
         }
     }
 
-    function deleteUser() {
+    function user_edit(userId) {
+        location.href = "UserManageInfo_Admin_Edit.html?userId=" + userId;
+	}
 
+    function deleteUser() {
+		var oCheckBoxes = document.getElementsByName("userSelect");
+		var ids = new Array();
+		for (var i = 0; i < oCheckBoxes.length; i++) {
+		    if (oCheckBoxes[i].checked == true) {
+				ids = ids.concat(oCheckBoxes[i].id);
+			}
+		}
+		// 循环删除选中的用户
+		var isDelete = confirm("确认删除选中账户？");
+		if (isDelete) {
+            //console.log("ids.length:" + ids.length);
+		    for (var i = 0; i < ids.length; i++) {
+				var user = {"id": ids[i]};
+				$.ajax({
+					type: "post",
+					url: "/manage/user/delete",
+					data: user,
+					dataType: "json",
+					success: function(data) {
+					    if (data.status == 0) {
+					        alert(data.msg);
+					        location.reload();
+						}
+						else {
+					        alert(data.msg);
+					        return;
+						}
+					},
+					error: function(data) {
+					    alert("服务器内部错误...");
+					    return;
+					}
+				});
+			}
+		}
     }
 
     function getExcel() {

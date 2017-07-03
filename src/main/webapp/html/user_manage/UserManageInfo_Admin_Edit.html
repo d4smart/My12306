@@ -117,6 +117,8 @@
 		</div>
 		
 		<script>
+            var link = location.href;
+            var userId = Number(link.substr(link.indexOf("userId") + 7));
 			var srcEmail = "";
 			var srcRole = 0;
 			var srcName = "";
@@ -124,9 +126,12 @@
 			var srcId = "";
 			var srcPhone = "";
 			window.onload = function() {
+                var user = {"id": userId};
 			    $.ajax({
 					type: "get",
-					url: "/user/get_user_info",
+					url: "/manage/user/get",
+					data: user,
+					dataType: "json",
 					success: function(data) {
 					    srcEmail = data.data.email;
 					    srcRole = data.data.role;
@@ -176,7 +181,7 @@
                     alert("联系电话格式有误");
                     return;
                 }
-                var user = {};
+                var user = {"id": userId};
                 if (srcEmail != email.value) {
                     user["email"] = email.value;
                 }
