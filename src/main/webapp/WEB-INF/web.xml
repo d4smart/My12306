@@ -6,6 +6,16 @@
 
     <display-name>My12306 Web Application</display-name>
 
+    <!-- 使用默认的静态资源处理Servlet处理静态资源 -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/html/*</url-pattern>
+        <url-pattern>/css/*</url-pattern>
+        <url-pattern>/js/*</url-pattern>
+        <url-pattern>/fonts/*</url-pattern>
+        <url-pattern>/images/*</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
