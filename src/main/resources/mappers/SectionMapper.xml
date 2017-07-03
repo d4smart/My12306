@@ -111,4 +111,12 @@
     select count(1)
     from section
   </select>
+
+  <select id="selectSectionsByIds" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from section
+    where id in (${sectionIds})
+    order by field(id,${sectionIds})
+  </select>
 </mapper>

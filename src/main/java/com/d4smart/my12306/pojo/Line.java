@@ -1,6 +1,7 @@
 package com.d4smart.my12306.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,12 +11,14 @@ public class Line {
 
     private String name;
 
-    private String stationIds;
+    private String sectionIds;
 
     private String stationNames;
 
+    @DateTimeFormat(pattern = "HH:mm")
     private Date beginTime;
 
+    @DateTimeFormat(pattern = "HH:mm")
     private Date endTime;
 
     private BigDecimal price;
@@ -30,10 +33,10 @@ public class Line {
 
     private Date updateTime;
 
-    public Line(Integer id, String name, String stationIds, String stationNames, Date beginTime, Date endTime, BigDecimal price, Integer mileage, String stayTimes, Integer spendTime, Date createTime, Date updateTime) {
+    public Line(Integer id, String name, String sectionIds, String stationNames, Date beginTime, Date endTime, BigDecimal price, Integer mileage, String stayTimes, Integer spendTime, Date createTime, Date updateTime) {
         this.id = id;
         this.name = name;
-        this.stationIds = stationIds;
+        this.sectionIds = sectionIds;
         this.stationNames = stationNames;
         this.beginTime = beginTime;
         this.endTime = endTime;
@@ -47,6 +50,24 @@ public class Line {
 
     public Line() {
         super();
+    }
+
+    @Override
+    public String toString() {
+        return "Line{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sectionIds='" + sectionIds + '\'' +
+                ", stationNames='" + stationNames + '\'' +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                ", price=" + price +
+                ", mileage=" + mileage +
+                ", stayTimes='" + stayTimes + '\'' +
+                ", spendTime=" + spendTime +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 
     public Integer getId() {
@@ -65,12 +86,12 @@ public class Line {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getStationIds() {
-        return stationIds;
+    public String getSectionIds() {
+        return sectionIds;
     }
 
-    public void setStationIds(String stationIds) {
-        this.stationIds = stationIds == null ? null : stationIds.trim();
+    public void setSectionIds(String sectionIds) {
+        this.sectionIds = sectionIds;
     }
 
     public String getStationNames() {
@@ -81,7 +102,7 @@ public class Line {
         this.stationNames = stationNames == null ? null : stationNames.trim();
     }
 
-    @JsonFormat(pattern="HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern="HH:mm",timezone = "GMT+8")
     public Date getBeginTime() {
         return beginTime;
     }
@@ -90,7 +111,7 @@ public class Line {
         this.beginTime = beginTime;
     }
 
-    @JsonFormat(pattern="HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern="HH:mm",timezone = "GMT+8")
     public Date getEndTime() {
         return endTime;
     }

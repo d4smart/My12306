@@ -67,7 +67,7 @@
         <table tableName="station" domainObjectName="Station" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <table tableName="section" domainObjectName="Section" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <table tableName="line" domainObjectName="Line" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <columnOverride column="station_ids" jdbcType="VARCHAR" />
+            <columnOverride column="section_ids" jdbcType="VARCHAR" />
             <columnOverride column="station_names" jdbcType="VARCHAR" />
             <columnOverride column="stay_times" jdbcType="VARCHAR" />
         </table>
