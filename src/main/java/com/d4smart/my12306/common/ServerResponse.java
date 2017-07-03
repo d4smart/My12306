@@ -33,6 +33,14 @@ public class ServerResponse<T> implements Serializable {
         this.msg = msg;
     }
 
+    @JsonIgnore
+    public String toJson() {
+        return "{" +
+                "\"status\":" + status +
+                ",\"msg\":\"" + msg +
+                "\"}";
+    }
+
     // 根据响应判断操作是否成功（在json序列化结果中隐藏方法）
     @JsonIgnore
     public boolean isSuccess() {

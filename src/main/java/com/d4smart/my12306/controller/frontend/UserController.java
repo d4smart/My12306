@@ -43,10 +43,6 @@ public class UserController {
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
-        if(user == null) {
-            return ServerResponse.createByErrorMessage("请先登录");
-        }
-
         return ServerResponse.createBySuccess(user);
     }
 
@@ -54,25 +50,20 @@ public class UserController {
     @ResponseBody
     public ServerResponse<User> updateUserInfo(User user, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
-        if(login == null) {
-            return ServerResponse.createByErrorMessage("请先登录");
-        }
 
-        user.setId(login.getId());
+        user.setId(login.getId()); //只能更新自己
         ServerResponse<User> serverResponse = userService.updateUserInfo(user);
-        if(serverResponse.isSuccess()) session.setAttribute(Const.LOGIN_USER, serverResponse.getData());
+        if(serverResponse.isSuccess()) {
+            session.setAttribute(Const.LOGIN_USER, serverResponse.getData());
+        }
 
         return serverResponse;
     }
 
     @RequestMapping(value = "reset_password", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> resetPassword(HttpSession session, String oldPassword, String newPassword) {
+    public ServerResponse<String> resetPassword(String oldPassword, String newPassword, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
-        if(user == null) {
-            return ServerResponse.createByErrorMessage("你还没有登陆");
-        }
-
         return userService.resetPassword(user, oldPassword, newPassword);
     }
 

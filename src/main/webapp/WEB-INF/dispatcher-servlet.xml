@@ -47,6 +47,23 @@
     <mvc:resources mapping="/fonts/**" location="/fonts/" />
     <mvc:resources mapping="/images/**" location="/images/" />
 
+    <!-- 拦截器配置 -->
+    <mvc:interceptors>
+        <!-- 登陆拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/user/register"/>
+            <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/user/check_valid"/>
+            <bean class="com.d4smart.my12306.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+        <!-- 管理员拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/manage/**"/>
+            <bean class="com.d4smart.my12306.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <!-- 文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="10485760"/>

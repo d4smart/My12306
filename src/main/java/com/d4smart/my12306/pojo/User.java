@@ -1,5 +1,8 @@
 package com.d4smart.my12306.pojo;
 
+import com.d4smart.my12306.common.Const;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class User {
@@ -158,5 +161,10 @@ public class User {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @JsonIgnore
+    public Boolean isAdmin() {
+        return this != null && role == Const.Role.ROLE_ADMIN;
     }
 }

@@ -12,24 +12,23 @@ import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 
 /**
- * Created by d4smart on 2017/7/2 17:25
+ * Created by d4smart on 2017/7/3 16:36
  */
-public class LoginInterceptor implements HandlerInterceptor {
-
+public class AdminInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(Const.LOGIN_USER);
 
-        if(user == null) {
+        if(user != null && user.isAdmin()) {
+            return true;
+        } else {
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();
-            out.write(ServerResponse.createByErrorMessage("请先登陆").toJson());
+            out.write(ServerResponse.createByErrorMessage("没有权限").toJson());
             out.flush();
             out.close();
             return false;
-        } else {
-            return true;
         }
     }
 
