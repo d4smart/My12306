@@ -53,14 +53,20 @@
             margin: 15px auto;
         }
 
+        #btn-create {
+            width: 160px;
+            background-color: #ADD2EC;
+        }
+
         #btn-delete {
             width: 80px;
-            background: url(../../images/button_sc.gif);
+            background-color: #ADD2EC;
+            margin-left: 15px;
         }
 
         #btn-excel {
             width: 80px;
-            background: url(../../images/button_dc.gif);
+            background-color: #ADD2EC;
             margin-left: 15px;
         }
 
@@ -94,7 +100,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="button" class="searchBtn" id="searchBtn" value="" onclick="search()" />
+                        <input type="button" class="searchBtn" id="searchBtn" value="" onclick="search(true)" />
                     </div>
                 </div>
             </form>
@@ -105,7 +111,7 @@
     <div class="row">
         <div class="col-xs-10 col-xs-offset-1 style="">
         <form action="" role="form" id="formResult">
-            <table class="table table-striped" id="userList">
+            <table class="table table-striped" id="stationList">
                 <thead>
                 <th width="10%">选择</th>
                 <th width="10%">车站名</th>
@@ -121,12 +127,13 @@
             </table>
             <div class="row table-control">
                 <div class="col-xs-2">
-                    <input type="checkbox" id="selectAll" onclick="selectAllUser(this)"/>
+                    <input type="checkbox" id="selectAll" onclick="selectAll(this)"/>
                     <label for="selectAll">全选</label>
                 </div>
-                <div class="col-xs-3 col-xs-offset-7 text-right">
-                    <input type="button" id="btn-delete" onclick="deleteStation()"/>
-                    <input type="button" id="btn-excel" onclick="getExcel()"/>
+                <div class="col-xs-5 col-xs-offset-5 text-right">
+                    <input type="button" id="btn-create" onclick="createStation()" value="添加新车站" />
+                    <input type="button" id="btn-delete" onclick="deleteStation()" value="删除"/>
+                    <input type="button" id="btn-excel" onclick="getExcel()" value="Excel导出"/>
                 </div>
             </div>
         </form>
@@ -136,16 +143,12 @@
             <div class="col-xs-4 col-xs-offset-6 text-right">
                 <ul class="pagination" id="page">
                     <li><a href="#" onclick="previous()">&laquo;</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
+                    <li class="active"><a href="#" onclick="callSearch(this)">1</a></li>
                     <li><a href="#" onclick="next()">&raquo;</a></li>
                 </ul>
             </div>
             <div class="col-xs-2 text-right bottom-control">
-                每页显示<select name="" id="userCount">
+                每页显示<select name="" id="pageSize">
                 <option value="five">5</option>
                 <option value="eight">8</option>
                 <option value="ten">10</option>
@@ -161,13 +164,25 @@
 <script>
     // 窗口初始化，加载完成后执行
     window.onload = function() {
-        for (var i = 0; i < 5; i++) {
-            var data = {
-                "name": "用户" + i,
-                "gender": "男",
-                "identityNumber": "23621519701208110x"
-            };
-            addRow(data);
+        // 从后台请求bureau表创建bureau下拉菜单
+        var oSelectBox = document.getElementById("bureau");
+        $.ajax({
+            type: "post",
+            url: "",
+            dataType: "json",
+            success: function(data) {
+
+            },
+            error: function(data) {
+                alert("服务器内部错误，请求bureau表失败...");
+                return;
+            }
+        });
+
+        // 临时模拟取值创建bureau
+        oSelectBox.length = 1;
+        for (var i = 1; i < 4; i++) {
+            oSelectBox.options[i] = new Option("哈");
         }
     }
     // 搜索按钮绑定回车事件
@@ -216,16 +231,30 @@
 
     }
 
-    function search() {
-        alert("search");
+    function callSearch(thisAnchor) {
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 0; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                lis[i].className = "";
+                break;
+            }
+        }
+        lis[thisAnchor.innerHTML].className = "active";
+        search();
+    }
+
+    function search(flag) {
+        var flag = arguments[0] ? arguments[0] : false;
 
         var name = document.getElementById("name").value;
-        var gender = document.getElementById("male").checked ? "男" : "女";
-        var id = document.getElementById("certificateNo").value;
-        var oUserCount = document.getElementById("userCount");
-        var userCount = oUserCount[oUserCount.selectedIndex].innerHTML;
+        var code = document.getElementById("code").value;
+        var index = document.getElementById("bureau").selectedIndex;
+        var bureau = document.getElementById("bureau")[index].innerHTML;
+
+        var oPageSize = document.getElementById("pageSize");
+        var pageSize = oPageSize[oPageSize.selectedIndex].innerHTML;
         var currentPage = 1;
-        var lis = document.getElementById("page").document.getElementsByTagName("li");
+        var lis = document.getElementById("page").getElementsByTagName("li");
         for (var i = 1; i < lis.length; i++) {
             if (lis[i].className == "active") {
                 currentPage = i;
@@ -233,45 +262,76 @@
             }
         }
 
-        var user = {
-            "sex": gender,
-            "userCount": userCount,
-            "currentPage": currentPage
+        var station = {
+            "pageSize": pageSize,
+            "pageNum": currentPage
         };
 
         if (name != "") {
-            user["actualName"] = name;
+            station["name"] = name;
         }
-        if (id != "") {
-            user["identityNumber"] = id;
+        if (code != "") {
+            station["code"] = code;
+        }
+        if (bureau != "所属铁路局") {
+            station["bureau"] = bureau;
         }
 
         $.ajax({
-            type: "post",
-            url: "/manage/user/list",
-            data: user,
+            type: "get",
+            url: "/manage/station/list",
+            data: station,
             dataType: "json",
             success: function(data) {
                 if (data.status == 0) {
-                    createTable(userCount);
+                    if (flag) {
+                        createPageCode(data.data.totalPage);
+                    }
+                    createTable(data.data.pageSize, data.data.list);
                 }
             }
         });
     }
 
-    function createTable(userCount) {
-        var userCount = arguments[0] ? arguments[0] : 5;
+    function createPageCode(number) {
+        // 删除以前创建的页码条
+        var oul = document.getElementById("page");
+        for (var i = oul.childNodes.length - 1; i > 2; i--) {
+            oul.removeChild(oul.childNodes[i]);
+        }
+        // 根据参数创建新的页码条
+//		alert("delete done");
+        var oli = document.createElement("li");
+        oli.setAttribute("class", "active");
+        oli.innerHTML = "<a href='#' onclick='callSearch(this)'>1</a>";
+        oul.appendChild(oli);
+        for (var i = 1; i < number; i++) {
+            var oli = document.createElement("li");
+            oli.innerHTML = "<a href='#' onclick='callSearch(this)'>" + (i+1) + "</a>";
+            oul.appendChild(oli);
+        }
+        var oli = document.createElement("li");
+        oli.innerHTML = "<a href='#' onclick='next()'>&raquo;</a>";
+        oul.appendChild(oli);
+    }
+
+    function createTable(pageSize, list) {
+        var pageSize = arguments[0] ? arguments[0] : 5;
         // 清除除表头之外的tr行
-        var rows = document.getElementById("userList").rows.length;
+        var rows = document.getElementById("stationList").rows.length;
         for (var i = rows - 1; i > 0; i--) {
-            document.getElementById("userList").deleteRow(i);
+            document.getElementById("stationList").deleteRow(i);
         }
         // 根据从后台取来的信息创建新的表
-        for (var i = 0; i < userCount; i++) {
+        for (var i = 0; i < pageSize; i++) {
             var data = {
-                "name": "用户" + i,
-                "gender": "男",
-                "identityNumber": "23621519701208110x"
+                "id": list[i].id,
+                "name": list[i].name,
+                "code": list[i].code,
+                "bureau": list[i].bureau,
+                "level": list[i].level,
+                "region": list[i].region,
+                "address": list[i].address
             };
             addRow(data);
         }
@@ -280,24 +340,32 @@
     // 分页功能
     // addRow()从数据库取出信息查出信息并创建新的行
     function addRow(data) {
-        var newTr = document.getElementById("userList").insertRow(document.getElementById("userList").rows.length);
+        var newTr = document.getElementById("stationList").insertRow(document.getElementById("stationList").rows.length);
         var newTd = newTr.insertCell(0);
         var newTd2 = newTr.insertCell(1);
         var newTd3 = newTr.insertCell(2);
         var newTd4 = newTr.insertCell(3);
         var newTd5 = newTr.insertCell(4);
         var newTd6 = newTr.insertCell(5);
-        newTd.innerHTML = "<input type='checkbox' name='userSelect' id='' />";
+        var newTd7 = newTr.insertCell(6);
+        var newTd8 = newTr.insertCell(7);
+        newTd.innerHTML = "<input type='checkbox' name='select' id='" + data.id + "' />";
         newTd2.innerHTML = data.name;
-        newTd3.innerHTML = data.gender;
-        newTd4.innerHTML = "二代身份证";
-        newTd5.innerHTML = data.identityNumber;
-        newTd6.innerHTML = "<a href='UserManageInfo_Admin_Edit.html'><span style='color:orangered'>编辑</span></a>";
+        newTd3.innerHTML = data.code;
+        newTd4.innerHTML = data.bureau;
+        newTd5.innerHTML = data.level;
+        newTd6.innerHTML = data.region;
+        newTd7.innerHTML = data.address;
+        newTd8.innerHTML = "<a href='#' onclick='station_edit(" + data.id + ")'><span style='color:orangered'>编辑</span></a>";
+    }
+
+    document.getElementById("pageSize").onchange = function() {
+        search(true);
     }
 
     // 实现全选功能
     var oSelectAll = document.getElementById("selectAll");
-    var oCheckBoxes = document.getElementsByName("userSelect");
+    var oCheckBoxes = document.getElementsByName("select");
     for (var i = 0; i < oCheckBoxes.length; i++) {
         oCheckBoxes[i].index = i;
         oCheckBoxes[i].onchange = function() {
@@ -320,7 +388,7 @@
             }
         }
     }
-    function selectAllUser(thisBox) {
+    function selectAll(thisBox) {
 
         if (thisBox.checked) {
             for (var i = 0; i < oCheckBoxes.length; i++) {
@@ -334,8 +402,50 @@
         }
     }
 
-    function deleteStation() {
+    function station_edit(stationId) {
+        location.href = "StationManageInfo_Admin_Edit.html?stationId=" + stationId;
+    }
 
+    function createStation() {
+        location.href = "StationInfo_Add.html";
+    }
+
+    function deleteStation() {
+        var oCheckBoxes = document.getElementsByName("select");
+        var ids = new Array();
+        for (var i = 0; i < oCheckBoxes.length; i++) {
+            if (oCheckBoxes[i].checked == true) {
+                ids = ids.concat(oCheckBoxes[i].id);
+            }
+        }
+        // 循环删除选中的用户
+        var isDelete = confirm("确认删除选中车站？");
+        if (isDelete) {
+            //console.log("ids.length:" + ids.length);
+            for (var i = 0; i < ids.length; i++) {
+                var station = {"id": ids[i]};
+                $.ajax({
+                    type: "post",
+                    url: "/manage/station/delete",
+                    data: station,
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.status == 0) {
+                            alert(data.msg);
+                            location.reload();
+                        }
+                        else {
+                            alert(data.msg);
+                            return;
+                        }
+                    },
+                    error: function(data) {
+                        alert("服务器内部错误...");
+                        return;
+                    }
+                });
+            }
+        }
     }
 
     function getExcel() {
