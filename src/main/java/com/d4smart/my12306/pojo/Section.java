@@ -6,9 +6,9 @@ import java.util.Date;
 public class Section {
     private Integer id;
 
-    private String from;
+    private String fromStation;
 
-    private String to;
+    private String toStation;
 
     private Integer mileage;
 
@@ -18,10 +18,10 @@ public class Section {
 
     private Date updateTime;
 
-    public Section(Integer id, String from, String to, Integer mileage, BigDecimal price, Date createTime, Date updateTime) {
+    public Section(Integer id, String fromStation, String toStation, Integer mileage, BigDecimal price, Date createTime, Date updateTime) {
         this.id = id;
-        this.from = from;
-        this.to = to;
+        this.fromStation = fromStation;
+        this.toStation = toStation;
         this.mileage = mileage;
         this.price = price;
         this.createTime = createTime;
@@ -40,20 +40,20 @@ public class Section {
         this.id = id;
     }
 
-    public String getFrom() {
-        return from;
+    public String getFromStation() {
+        return fromStation;
     }
 
-    public void setFrom(String from) {
-        this.from = from == null ? null : from.trim();
+    public void setFromStation(String fromStation) {
+        this.fromStation = fromStation;
     }
 
-    public String getTo() {
-        return to;
+    public String getToStation() {
+        return toStation;
     }
 
-    public void setTo(String to) {
-        this.to = to == null ? null : to.trim();
+    public void setToStation(String toStation) {
+        this.toStation = toStation;
     }
 
     public Integer getMileage() {

@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.d4smart.my12306.pojo.Section" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="from" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="to" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="from_station" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="to_station" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="mileage" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -13,7 +13,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, from, to, mileage, price, create_time, update_time
+    id, from_station, to_station, mileage, price, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,9 +26,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.d4smart.my12306.pojo.Section" >
-    insert into section (id, from, to, 
+    insert into section (id, from_station, to_station,
       mileage, price, create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{from,jdbcType=VARCHAR}, #{to,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{fromStation,jdbcType=VARCHAR}, #{toStation,jdbcType=VARCHAR},
       #{mileage,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Section" >
@@ -37,11 +37,11 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="from != null" >
-        from,
+      <if test="fromStation != null" >
+        from_station,
       </if>
-      <if test="to != null" >
-        to,
+      <if test="toStation != null" >
+        to_station,
       </if>
       <if test="mileage != null" >
         mileage,
@@ -55,11 +55,11 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="from != null" >
-        #{from,jdbcType=VARCHAR},
+      <if test="fromStation != null" >
+        #{fromStation,jdbcType=VARCHAR},
       </if>
-      <if test="to != null" >
-        #{to,jdbcType=VARCHAR},
+      <if test="toStation != null" >
+        #{toStation,jdbcType=VARCHAR},
       </if>
       <if test="mileage != null" >
         #{mileage,jdbcType=INTEGER},
@@ -73,11 +73,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Section" >
     update section
     <set >
-      <if test="from != null" >
-        from = #{from,jdbcType=VARCHAR},
+      <if test="fromStation != null" >
+        from_station = #{fromStation,jdbcType=VARCHAR},
       </if>
-      <if test="to != null" >
-        to = #{to,jdbcType=VARCHAR},
+      <if test="toStation != null" >
+        to_station = #{toStation,jdbcType=VARCHAR},
       </if>
       <if test="mileage != null" >
         mileage = #{mileage,jdbcType=INTEGER},
@@ -91,11 +91,24 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.d4smart.my12306.pojo.Section" >
     update section
-    set from = #{from,jdbcType=VARCHAR},
-      to = #{to,jdbcType=VARCHAR},
+    set from_station = #{fromStation,jdbcType=VARCHAR},
+      to_station = #{toStation,jdbcType=VARCHAR},
       mileage = #{mileage,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getSectionsByPage" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from section
+    order by id desc
+    limit #{offset}, #{limit}
+  </select>
+
+  <select id="getSectionCount" resultType="int">
+    select count(1)
+    from section
+  </select>
 </mapper>
