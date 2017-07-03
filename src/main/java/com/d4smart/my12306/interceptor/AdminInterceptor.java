@@ -1,6 +1,7 @@
 package com.d4smart.my12306.interceptor;
 
 import com.d4smart.my12306.common.Const;
+import com.d4smart.my12306.common.ResponseCode;
 import com.d4smart.my12306.common.ServerResponse;
 import com.d4smart.my12306.pojo.User;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -25,7 +26,8 @@ public class AdminInterceptor implements HandlerInterceptor {
         } else {
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();
-            out.write(ServerResponse.createByErrorMessage("没有权限").toJson());
+            out.write(ServerResponse.createByErrorCodeMessage(ResponseCode.PERMISSION_DENIED.getCode(),
+                    ResponseCode.PERMISSION_DENIED.getDesc()).toJson());
             out.flush();
             out.close();
             return false;

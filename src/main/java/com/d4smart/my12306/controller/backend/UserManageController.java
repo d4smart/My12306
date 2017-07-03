@@ -33,7 +33,8 @@ public class UserManageController {
     @ResponseBody
     public ServerResponse<String> update(User user) {
         if(user.getId() == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), "参数不合法");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
+                    ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 
         return userService.createOrUpdate(user);

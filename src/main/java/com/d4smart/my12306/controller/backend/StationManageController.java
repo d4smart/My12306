@@ -46,7 +46,8 @@ public class StationManageController {
     @ResponseBody
     public ServerResponse<String> update(Station station) {
         if(station.getId() == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), "参数不合法");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
+                    ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 
         return stationService.update(station);

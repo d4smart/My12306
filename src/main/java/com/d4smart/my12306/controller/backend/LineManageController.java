@@ -46,7 +46,8 @@ public class LineManageController {
     @ResponseBody
     public ServerResponse<String> update(Line line) {
         if(line.getId() == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), "参数不合法");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
+                    ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 
         return lineService.update(line);

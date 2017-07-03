@@ -1,6 +1,7 @@
 package com.d4smart.my12306.interceptor;
 
 import com.d4smart.my12306.common.Const;
+import com.d4smart.my12306.common.ResponseCode;
 import com.d4smart.my12306.common.ServerResponse;
 import com.d4smart.my12306.pojo.User;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,7 +25,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(user == null) {
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();
-            out.write(ServerResponse.createByErrorMessage("请先登陆").toJson());
+            out.write(ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
+                    ResponseCode.NEED_LOGIN.getDesc()).toJson());
             out.flush();
             out.close();
             return false;

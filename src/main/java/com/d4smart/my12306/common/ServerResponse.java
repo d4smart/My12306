@@ -12,47 +12,58 @@ import java.io.Serializable;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class ServerResponse<T> implements Serializable {
 
-    private int status;
+    private int code;
     private String msg;
     private T data;
 
-    private ServerResponse(int status) {
-        this.status = status;
+    private ServerResponse(int code) {
+        this.code = code;
     }
-    private ServerResponse(int status, T data) {
-        this.status = status;
+    private ServerResponse(int code, T data) {
+        this.code = code;
         this.data = data;
     }
-    private ServerResponse(int status, String msg, T data) {
-        this.status = status;
+    private ServerResponse(int code, String msg, T data) {
+        this.code = code;
         this.msg = msg;
         this.data = data;
     }
-    private ServerResponse(int status, String msg) {
-        this.status = status;
+    private ServerResponse(int code, String msg) {
+        this.code = code;
         this.msg = msg;
     }
 
+    /**
+     * 将对象转换成json字符串
+     * @return json字符串
+     */
     @JsonIgnore
     public String toJson() {
         return "{" +
-                "\"status\":" + status +
+                "\"code\":" + code +
                 ",\"msg\":\"" + msg +
                 "\"}";
     }
 
-    // 根据响应判断操作是否成功（在json序列化结果中隐藏方法）
+    /**
+     * 判断响应是否成功
+     * @return 判断结果
+     */
     @JsonIgnore
     public boolean isSuccess() {
-        return this.status == ResponseCode.SUCCESS.getCode();
+        return this.code == ResponseCode.SUCCESS.getCode();
     }
+    /**
+     * 判断响应是否失败
+     * @return 判断结果
+     */
     @JsonIgnore
     public boolean isFailed() {
-        return this.status != ResponseCode.SUCCESS.getCode();
+        return this.code != ResponseCode.SUCCESS.getCode();
     }
 
-    public int getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
     public T getData() {
