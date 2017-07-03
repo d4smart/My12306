@@ -1,5 +1,6 @@
 package com.d4smart.my12306.service;
 
+import com.d4smart.my12306.common.PageInfo;
 import com.d4smart.my12306.common.ServerResponse;
 import com.d4smart.my12306.dao.LineMapper;
 import com.d4smart.my12306.dao.SectionMapper;
@@ -23,6 +24,27 @@ public class LineService {
 
     @Autowired
     private SectionMapper sectionMapper;
+
+    public ServerResponse<Line> get(Integer id) {
+        Line line = lineMapper.selectByPrimaryKey(id);
+        if(line == null) {
+            return ServerResponse.createByErrorMessage("线路不存在");
+        }
+
+        return ServerResponse.createBySuccess(line);
+    }
+
+    public ServerResponse<PageInfo> list(int pageNum, int pageSize) {
+        int offset = (pageNum - 1) * pageSize;
+        int limit = pageSize;
+
+        List<Line> lines = lineMapper.getLinesByPage(offset, limit);
+        int count = lineMapper.getLineCount();
+        PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
+        pageInfo.setList(lines);
+
+        return ServerResponse.createBySuccess(pageInfo);
+    }
 
     public ServerResponse<String> create(Line line) {
         if(line.getSectionIds() == null || line.getBeginTime() == null || line.getEndTime() == null || line.getStayTimes() == null) {
@@ -53,6 +75,58 @@ public class LineService {
             return ServerResponse.createBySuccessMessage("线路添加成功");
         } else {
             return ServerResponse.createByErrorMessage("线路添加失败");
+        }
+    }
+
+    public ServerResponse<String> update(Line line) {
+        Line update = new Line();
+
+        update.setId(line.getId()); //设置要更新的线路的id
+        // 设置要更新的字段（部分级联更新）
+        update.setName(line.getName());
+        if(line.getSectionIds() != null) {
+            List<Section> sections = sectionMapper.selectSectionsByIds(line.getSectionIds());
+
+            StringBuilder stationNames = new StringBuilder(sections.get(0).getFromStation());
+            BigDecimal price = new BigDecimal("0");
+            int mileage = 0;
+            for(Section section : sections) {
+                stationNames.append(",").append(section.getToStation());
+                price = BigDecimalUtil.add(price.doubleValue(), section.getPrice().doubleValue());
+                mileage += section.getMileage();
+            }
+
+            update.setSectionIds(line.getSectionIds());
+            update.setStationNames(stationNames.toString());
+            update.setPrice(price);
+            update.setMileage(mileage);
+        }
+        if(line.getBeginTime() != null && line.getEndTime() != null) {
+            int MINUTE = 60 * 1000;
+            int spendTime = (int) (line.getEndTime().getTime() - line.getBeginTime().getTime()) / MINUTE;
+
+            update.setBeginTime(line.getBeginTime());
+            update.setEndTime(line.getEndTime());
+            update.setSpendTime(spendTime);
+        }
+        update.setStayTimes(line.getStayTimes());
+
+        int count = lineMapper.updateByPrimaryKeySelective(update);
+
+        if(count > 0) {
+            return ServerResponse.createBySuccessMessage("线路更新成功");
+        } else {
+            return ServerResponse.createByErrorMessage("线路更新失败");
+        }
+    }
+
+    public ServerResponse<String> delete(Integer id) {
+        int count = lineMapper.deleteByPrimaryKey(id);
+
+        if(count > 0) {
+            return ServerResponse.createBySuccessMessage("线路删除成功");
+        } else {
+            return ServerResponse.createByErrorMessage("线路删除失败");
         }
     }
 }
