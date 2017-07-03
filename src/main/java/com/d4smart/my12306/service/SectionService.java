@@ -27,12 +27,12 @@ public class SectionService {
         return ServerResponse.createBySuccess(section);
     }
 
-    public ServerResponse<PageInfo> getSections(int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> getSections(String fromStation, String toStation, int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<Section> sections = sectionMapper.getSectionsByPage(pageNum, pageSize);
-        int count = sectionMapper.getSectionCount();
+        List<Section> sections = sectionMapper.getSectionsByPage(fromStation, toStation, offset, limit);
+        int count = sectionMapper.getSectionCount(fromStation, toStation);
         PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
         pageInfo.setList(sections);
 

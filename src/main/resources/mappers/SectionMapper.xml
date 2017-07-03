@@ -103,13 +103,29 @@
     select
     <include refid="Base_Column_List"/>
     from section
+    <where>
+      <if test="fromStation != null">
+        and from_station = #{fromStation}
+      </if>
+      <if test="toStation != null">
+        and to_station = #{toStation}
+      </if>
+    </where>
     order by id desc
     limit #{offset}, #{limit}
   </select>
 
-  <select id="getSectionCount" resultType="int">
+  <select id="getSectionCount" parameterType="map" resultType="int">
     select count(1)
     from section
+    <where>
+      <if test="fromStation != null">
+        and from_station = #{fromStation}
+      </if>
+      <if test="toStation != null">
+        and to_station = #{toStation}
+      </if>
+    </where>
   </select>
 
   <select id="selectSectionsByIds" parameterType="string" resultMap="BaseResultMap">

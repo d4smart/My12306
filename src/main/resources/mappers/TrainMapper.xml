@@ -182,4 +182,33 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getTrainsByPage" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from train
+    <where>
+      <if test="beginStation != null">
+        and begin_station = #{beginStation}
+      </if>
+      <if test="toStation != null">
+        and end_station = #{endStation}
+      </if>
+    </where>
+    order by id desc
+    limit #{offset}, #{limit}
+  </select>
+
+  <select id="getTrainCount" parameterType="map" resultType="int">
+    select count(1)
+    from train
+    <where>
+      <if test="beginStation != null">
+        and begin_station = #{beginStation}
+      </if>
+      <if test="toStation != null">
+        and end_station = #{endStation}
+      </if>
+    </where>
+  </select>
 </mapper>

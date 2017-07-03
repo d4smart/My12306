@@ -18,9 +18,10 @@ public interface SectionMapper {
 
     int updateByPrimaryKey(Section record);
 
-    List<Section> getSectionsByPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<Section> getSectionsByPage(@Param("fromStation") String fromStation, @Param("toStation") String toStation,
+                                    @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    int getSectionCount();
+    int getSectionCount(@Param("fromStation") String fromStation, @Param("toStation") String toStation);
 
     List<Section> selectSectionsByIds(@Param("sectionIds") String sectionIds);
 }
