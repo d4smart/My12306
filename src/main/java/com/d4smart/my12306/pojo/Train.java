@@ -1,6 +1,7 @@
 package com.d4smart.my12306.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -15,8 +16,10 @@ public class Train {
 
     private String endStation;
 
+    @DateTimeFormat(pattern = "HH:mm")
     private Date beginTime;
 
+    @DateTimeFormat(pattern = "HH:mm")
     private Date endTime;
 
     private Integer spendTime;
@@ -94,7 +97,7 @@ public class Train {
         this.endStation = endStation == null ? null : endStation.trim();
     }
 
-    @JsonFormat(pattern="HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern="HH:mm",timezone = "GMT+8")
     public Date getBeginTime() {
         return beginTime;
     }
@@ -103,7 +106,7 @@ public class Train {
         this.beginTime = beginTime;
     }
 
-    @JsonFormat(pattern="HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern="HH:mm",timezone = "GMT+8")
     public Date getEndTime() {
         return endTime;
     }

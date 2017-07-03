@@ -5,7 +5,7 @@
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="station_ids" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="section_ids" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="station_names" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="begin_time" jdbcType="TIME" javaType="java.util.Date" />
       <arg column="end_time" jdbcType="TIME" javaType="java.util.Date" />
@@ -18,7 +18,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, station_ids, station_names, begin_time, end_time, price, mileage, stay_times, 
+    id, name, section_ids, station_names, begin_time, end_time, price, mileage, stay_times,
     spend_time, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -32,11 +32,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.d4smart.my12306.pojo.Line" >
-    insert into line (id, name, station_ids, 
+    insert into line (id, name, section_ids,
       station_names, begin_time, end_time, 
       price, mileage, stay_times, 
       spend_time, create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{stationIds,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{sectionIds,jdbcType=VARCHAR},
       #{stationNames,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIME}, #{endTime,jdbcType=TIME}, 
       #{price,jdbcType=DECIMAL}, #{mileage,jdbcType=INTEGER}, #{stayTimes,jdbcType=VARCHAR}, 
       #{spendTime,jdbcType=INTEGER}, now(), now())
@@ -50,8 +50,8 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="stationIds != null" >
-        station_ids,
+      <if test="sectionIds != null" >
+        section_ids,
       </if>
       <if test="stationNames != null" >
         station_names,
@@ -83,8 +83,8 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="stationIds != null" >
-        #{stationIds,jdbcType=VARCHAR},
+      <if test="sectionIds != null" >
+        #{sectionIds,jdbcType=VARCHAR}
       </if>
       <if test="stationNames != null" >
         #{stationNames,jdbcType=VARCHAR},
@@ -116,8 +116,8 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="stationIds != null" >
-        station_ids = #{stationIds,jdbcType=VARCHAR},
+      <if test="sectionIds != null" >
+        section_ids = #{sectionIds,jdbcType=VARCHAR},
       </if>
       <if test="stationNames != null" >
         station_names = #{stationNames,jdbcType=VARCHAR},
@@ -147,7 +147,7 @@
   <update id="updateByPrimaryKey" parameterType="com.d4smart.my12306.pojo.Line" >
     update line
     set name = #{name,jdbcType=VARCHAR},
-      station_ids = #{stationIds,jdbcType=VARCHAR},
+      section_ids = #{sectionIds,jdbcType=VARCHAR},
       station_names = #{stationNames,jdbcType=VARCHAR},
       begin_time = #{beginTime,jdbcType=TIME},
       end_time = #{endTime,jdbcType=TIME},

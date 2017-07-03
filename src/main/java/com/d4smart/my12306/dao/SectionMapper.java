@@ -21,4 +21,6 @@ public interface SectionMapper {
     List<Section> getSectionsByPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
 
     int getSectionCount();
+
+    List<Section> selectSectionsByIds(@Param("sectionIds") String sectionIds);
 }

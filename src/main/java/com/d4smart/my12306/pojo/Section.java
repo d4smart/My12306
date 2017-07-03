@@ -32,6 +32,19 @@ public class Section {
         super();
     }
 
+    @Override
+    public String toString() {
+        return "Section{" +
+                "id=" + id +
+                ", fromStation='" + fromStation + '\'' +
+                ", toStation='" + toStation + '\'' +
+                ", mileage=" + mileage +
+                ", price=" + price +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }
