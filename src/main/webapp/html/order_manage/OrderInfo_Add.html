@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title></title>
+    <style>
+        body{
+            background: url(../../images/bg_point_write.gif);
+        }
+
+        .header{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info{
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .register-bottom{
+            background: url(../../images/bottom_ny_bg.gif) repeat-x;
+            margin-top: 108px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 header">
+            <h3 style="color:#0A3C5F;">新增订单</h3>
+            <img src="../../images/line1.jpg" alt=""/>
+            <p style="margin-top:10px;">注：标有<span style="color:orangered">*</span>处，均为必填项</p>
+        </div>
+        <div class="col-xs-10 col-xs-offset-2 content">
+            <div class="col-xs-12 trainInfo">
+                <h5 style="color:orangered">车次详细信息</h5>
+                <div class="col-xs-3 info" id="trainInfo">
+
+                </div>
+            </div>
+            <div class="col-xs-12 orderInfo">
+                <h5 style="color:orangered">订单信息</h5>
+                <div class="info">
+                    <span class="col-xs-3"><span style="color:orangered">*</span>车次代码：</span>
+                    <input type="text" name="" id="code"/>
+                </div>
+                <div class="info">
+                    <span class="col-xs-3"><span style="color:orangered">*</span>出发日期：</span>
+                    <input type="text" name="" id="date"/>&nbsp;&nbsp;&nbsp;&nbsp;例如：2017-07-04
+                </div>
+                <div class="info">
+                    <span class="col-xs-3"><span style="color:orangered">*</span>车厢坐席类型：</span>
+                    <select name="" id="seatType">
+
+                    </select>
+                </div>
+                <div class="info row">
+                    <span class="col-xs-3"><span style="color:orangered">*</span>乘客身份证号码：</span>
+                    <div class="col-xs-9" id="idBox">
+                        <input type="text" name="identityNo" id=""/>
+                    </div>
+                </div>
+                <div class="info col-xs-3">
+                    <input type="button" value="增加乘客" onclick="addPassenger()" />
+                    <input type="button" value="删除乘客" onclick="deletePassenger()" style="margin-left: 24px;"/>
+                </div>
+                <div class="info" style="margin-top:25px; margin-bottom:25px;">
+                    <span class="col-xs-3"></span>
+                    <input type="button" name="" id="" value="提交" onclick="btn_submit()"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset" name="" id="" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 register-bottom">
+            <div class="col-xs-2 col-xs-offset-5" style="margin-top: 5px;">
+                <p>copyright@12306 购票网</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var link = location.href;
+    var trainId = Number(link.substr(link.indexOf("trainId") + 8));
+
+    window.onload = function() {
+        // 从后台请求该列车的详细座位信息
+        $.ajax({
+            type: "get",
+            url: "/train/get_detail_by_id",
+            data: {"id": trainId},
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    var tickets = data.data.tickets;
+                    createDetails(tickets);
+                }
+                else {
+                    alert(data.msg);
+                    return;
+                }
+            },
+            error: function(data) {
+                alert("服务器内部错误，列车详细信息查询失败...");
+                return;
+            }
+        });
+    };
+
+    function createDetails(tickets) {
+        var trainInfo = document.getElementById("trainInfo");
+        var seatType = document.getElementById("seatType");
+        for (var key in tickets) {
+            // 列车详细信息
+            var oLebal = document.createElement("lebal");
+            oLebal.setAttribute("style", "margin-right: 20px");
+            oLebal.innerHTML = key + ":" + tickets[key];
+            trainInfo.appendChild(oLebal);
+
+            // 列车座位信息
+            var oOption = document.createElement("option");
+            oOption.innerHTML = key;
+            seatType.appendChild(oOption);
+        }
+    }
+
+    function addPassenger() {
+        var inputBox = document.createElement("input");
+        inputBox.setAttribute("type", "text");
+        inputBox.setAttribute("name", "identityNo");
+        document.getElementById("idBox").appendChild(inputBox);
+    }
+
+    function deletePassenger() {
+        var inputBoxes = document.getElementsByName("identityNo");
+        if (inputBoxes.length > 1) {
+            document.getElementById("idBox").removeChild(inputBoxes[inputBoxes.length - 1]);
+        }
+    }
+
+    function btn_submit() {
+        var code = document.getElementById("code").value;
+        var date = document.getElementById("date");
+        var seatType = document.getElementById("seatType")[document.getElementById("seatType").selectedIndex].innerHTML;
+        var identityNos = document.getElementsByName("identityNo");
+        var userIds = "";
+        var regId = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+
+        for (var i = 0; i < identityNos.length; i++) {
+            if (regId.test(identityNos[i].value)) {
+                if (userIds != "") {
+                    userId += ",";
+                }
+                $.ajax({
+                    type: "get",
+                    url: "/manage/user/",
+                    async: false,
+                    data: {"identityNumber": identityNos[i].value},
+                    dataType: "json",
+                    success: function(data) {
+                        userId += data.data.id;
+                    }
+                });
+            }
+        }
+
+        if (code.value == "") {
+            alert("车次代码不能为空");
+            return;
+        }
+        if (date == "") {
+            alert("出发日期不能为空");
+            return;
+        }
+        if (userIds == "") {
+            alert("请添加乘客");
+            return;
+        }
+
+
+        var order = {
+            "code": code,
+            "date": date,
+            "seatType": seatType,
+            "userIds": userIds
+        };
+
+        $.ajax({
+            type: "post",
+            url: "/order/create",
+            data: order,
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    alert(data.msg);
+                    parent.location.href = "../index.html";
+                }
+                else {
+                    alert(data.msg);
+                    return;
+                }
+            },
+            error: function(data) {
+                alert("创建订单失败，服务器内部错误...");
+            }
+        });
+    }
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
+</body>
+
+</html>
