@@ -23,4 +23,10 @@ public interface TicketMapper {
     List<Ticket> getTicketsByOrderId(Integer orderId);
 
     int deleteByOrderId(@Param("orderId") Integer orderId);
+
+    Ticket selectByIdAndUserId(@Param("id") Integer id, @Param("userId") Integer userId);
+
+    List<Ticket> getTicketsByPage(@Param("userId") Integer userId, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    int getTicketCount(@Param("userId") Integer userId);
 }

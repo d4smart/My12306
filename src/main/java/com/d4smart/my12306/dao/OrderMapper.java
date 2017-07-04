@@ -26,5 +26,5 @@ public interface OrderMapper {
 
     List<Order> getOrdersByPage(@Param("userId") Integer userId, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    int getOrderCount(Integer userId);
+    int getOrderCount(@Param("userId") Integer userId);
 }

@@ -26,6 +26,8 @@ public class Ticket {
 
     private BigDecimal price;
 
+    private Integer passengerId;
+
     private String passengerName;
 
     private String passengerType;
@@ -42,7 +44,7 @@ public class Ticket {
 
     private Date updateTime;
 
-    public Ticket(Integer id, Integer orderId, String trip, Date date, String cabin, String seat, String seatType, String beginStation, String endStation, BigDecimal price, String passengerName, String passengerType, String identityNumber, String saleMethod, Date saleTime, Integer status, Date createTime, Date updateTime) {
+    public Ticket(Integer id, Integer orderId, String trip, Date date, String cabin, String seat, String seatType, String beginStation, String endStation, BigDecimal price, Integer passengerId, String passengerName, String passengerType, String identityNumber, String saleMethod, Date saleTime, Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.orderId = orderId;
         this.trip = trip;
@@ -53,6 +55,7 @@ public class Ticket {
         this.beginStation = beginStation;
         this.endStation = endStation;
         this.price = price;
+        this.passengerId = passengerId;
         this.passengerName = passengerName;
         this.passengerType = passengerType;
         this.identityNumber = identityNumber;
@@ -146,6 +149,14 @@ public class Ticket {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getPassengerId() {
+        return passengerId;
+    }
+
+    public void setPassengerId(Integer passengerId) {
+        this.passengerId = passengerId;
     }
 
     public String getPassengerName() {

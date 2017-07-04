@@ -132,6 +132,7 @@ public class OrderService {
             ticket.setBeginStation(train.getBeginStation());
             ticket.setEndStation(train.getEndStation());
             ticket.setPrice(price);
+            ticket.setPassengerId(passenger.getId());
             ticket.setPassengerName(passenger.getActualName());
             ticket.setPassengerType(Const.PassengerType.ADULT);
             ticket.setIdentityNumber(passenger.getIdentityNumber());

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-07-04 10:46:59
+Date: 2017-07-04 23:39:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -62,13 +62,13 @@ CREATE TABLE `marshalling` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for order
+-- Table structure for orders
 -- ----------------------------
-DROP TABLE IF EXISTS `order`;
-CREATE TABLE `order` (
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `actual_name` varchar(60) NOT NULL DEFAULT '',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单创建人的id',
+  `actual_name` varchar(60) NOT NULL DEFAULT '' COMMENT '订单创建人的真实姓名',
   `status` int(10) unsigned NOT NULL DEFAULT '0',
   `price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '订单总价',
   `order_time` datetime DEFAULT NULL COMMENT '下单时间',
@@ -134,6 +134,7 @@ CREATE TABLE `ticket` (
   `begin_station` varchar(60) NOT NULL DEFAULT '',
   `end_station` varchar(60) NOT NULL DEFAULT '',
   `price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `passenger_id` int(10) unsigned NOT NULL DEFAULT '0',
   `passenger_name` varchar(60) NOT NULL DEFAULT '',
   `passenger_type` enum('成人','儿童','学生') NOT NULL DEFAULT '成人',
   `identity_number` varchar(18) NOT NULL DEFAULT '',

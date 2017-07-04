@@ -13,6 +13,7 @@
       <arg column="begin_station" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="end_station" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="passenger_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="passenger_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="passenger_type" jdbcType="CHAR" javaType="java.lang.String" />
       <arg column="identity_number" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -25,7 +26,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, order_id, trip, date, cabin, seat, seat_type, begin_station, end_station, price, 
-    passenger_name, passenger_type, identity_number, sale_method, sale_time, status, create_time, update_time
+    passenger_id, passenger_name, passenger_type, identity_number, sale_method, sale_time, status, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -41,13 +42,13 @@
     insert into ticket (id, order_id, trip, 
       date, cabin, seat, seat_type, 
       begin_station, end_station, price, 
-      passenger_name, passenger_type, identity_number, 
+      passenger_id, passenger_name, passenger_type, identity_number,
       sale_method, sale_time, status,
       create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{trip,jdbcType=VARCHAR}, 
       #{date,jdbcType=DATE}, #{cabin,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, #{seatType,jdbcType=CHAR}, 
       #{beginStation,jdbcType=VARCHAR}, #{endStation,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{passengerName,jdbcType=VARCHAR}, #{passengerType,jdbcType=CHAR}, #{identityNumber,jdbcType=VARCHAR}, 
+      #{passengerId,jdbcType=INTEGER}, #{passengerName,jdbcType=VARCHAR}, #{passengerType,jdbcType=CHAR}, #{identityNumber,jdbcType=VARCHAR},
       #{saleMethod,jdbcType=CHAR}, #{saleTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
       now(), now())
   </insert>
@@ -83,6 +84,9 @@
       </if>
       <if test="price != null" >
         price,
+      </if>
+      <if test="passengerId != null" >
+        passenger_id,
       </if>
       <if test="passengerName != null" >
         passenger_name,
@@ -135,6 +139,9 @@
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
+      <if test="passengerId != null" >
+        #{passengerId,jdbcType=INTEGER},
+      </if>
       <if test="passengerName != null" >
         #{passengerName,jdbcType=VARCHAR},
       </if>
@@ -186,6 +193,9 @@
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
+      <if test="passengerId != null" >
+        passenger_id = #{passengerId,jdbcType=INTEGER},
+      </if>
       <if test="passengerName != null" >
         passenger_name = #{passengerName,jdbcType=VARCHAR},
       </if>
@@ -219,6 +229,7 @@
       begin_station = #{beginStation,jdbcType=VARCHAR},
       end_station = #{endStation,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
+      passenger_id = #{passengerId,jdbcType=INTEGER},
       passenger_name = #{passengerName,jdbcType=VARCHAR},
       passenger_type = #{passengerType,jdbcType=CHAR},
       identity_number = #{identityNumber,jdbcType=VARCHAR},
@@ -246,4 +257,35 @@
     delete from ticket
     where order_id = #{orderId}
   </delete>
+
+  <select id="selectByIdAndUserId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from ticket
+    where id = #{id}
+    and passenger_id = #{userId}
+  </select>
+
+  <select id="getTicketsByPage" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from ticket
+    <where>
+      <if test="userId != null">
+        and passenger_id = #{userId}
+      </if>
+    </where>
+    order by id desc
+    limit #{offset}, #{limit}
+  </select>
+
+  <select id="getTicketCount" parameterType="java.lang.Integer" resultType="int">
+    select count(1)
+    from ticket
+    <where>
+      <if test="userId != null">
+        and passenger_id = #{userId}
+      </if>
+    </where>
+  </select>
 </mapper>
