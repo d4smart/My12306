@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title></title>
+    <style>
+        body{
+            background: url(../../images/bg_point_write.gif);
+        }
+
+        .header{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .loginInfo{
+            position: relative;
+        }
+
+        .info{
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .register-bottom{
+            background: url(../../images/bottom_ny_bg.gif) repeat-x;
+            margin-top: 116px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2 header">
+            <h3 style="color:#0A3C5F;">修改列车编组信息</h3>
+            <img src="../../images/line1.jpg" alt=""/>
+            <p style="margin-top:10px;">注：标有<span style="color:orangered">*</span>处，均为必填项</p>
+        </div>
+        <div class="col-xs-8 col-xs-offset-3 content">
+            <div class=" col-xs-12 marshallingInfo">
+                <h5 style="color:orangered">列车编组信息</h5>
+                <div class="info">
+                    <span for="code" class="col-xs-3"><span style="color:orangered">*</span>车次代码：</span>
+                    <input type="text" name="" id="code"/>
+                </div>
+                <div class="info">
+                    <span for="cabin" class="col-xs-3"><span style="color:orangered">*</span>车厢号：</span>
+                    <input type="text" name="" id="cabin"/>
+                </div>
+                <div class="info">
+                    <span for="count" class="col-xs-3"><span style="color:orangered">*</span>车厢坐席数量：</span>
+                    <input type="text" name="" id="count"/>
+                </div>
+                <div class="info">
+                    <span class="col-xs-3"><span style="color:orangered">*</span>车厢坐席类型：</span>
+                    <select name="" id="seatType">
+                        <option value="">硬座</option>
+                        <option value="">软座</option>
+                        <option value="">硬卧</option>
+                        <option value="">软卧</option>
+                        <option value="">餐车</option>
+                    </select>
+                </div>
+                <div class="info">
+                    <span class="col-xs-3"><span style="color:orangered">*</span>车厢类型：</span>
+                    <select name="" id="type">
+                        <option value="">硬座车</option>
+                        <option value="">软座车</option>
+                        <option value="">硬卧车</option>
+                        <option value="">软卧车</option>
+                        <option value="">餐车</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="info" style="margin-top:25px; margin-bottom:25px;">
+                <span class="col-xs-3"></span>
+                <input type="button" name="" id="" value="提交" onclick="btn_submit()"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="reset" name="" id="" />
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 register-bottom">
+            <div class="col-xs-2 col-xs-offset-5" style="margin-top: 5px;">
+                <p>copyright@12306 购票网</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var seatType = document.getElementById("seatType");
+    var type = document.getElementById("type");
+    seatType.onchange = function() {
+        type[seatType.selectedIndex].selected = true;
+    };
+    type.onchange = function() {
+        seatType[type.selectedIndex].selected = true;
+    }
+
+
+    var link = location.href;
+    var marshallingId = Number(link.substr(link.indexOf("marshallingId") + 14));
+    var srcCode = "";
+    var srcCabin = "";
+    var srcCount = "";
+    var srcSeatType = "";
+    var srcType = "";
+    window.onload = function() {
+
+        // 从后台获取列车编组信息并填写
+        var marshalling = {"id": marshallingId};
+        $.ajax({
+            type: "get",
+            url: "/manage/group/get",
+            data: marshalling,
+            dataType: "json",
+            success: function(data) {
+                srcCode = data.data.code;
+                srcCabin = data.data.cabin;
+                srcCount = data.data.count;
+                srcSeatType = data.data.seatType;
+                srcType = data.data.type;
+                document.getElementById("code").value = srcCode;
+                document.getElementById("cabin").value = srcCabin;
+                document.getElementById("count").value = srcCount;
+                var seatType = document.getElementById("seatType");
+                for (var i = 0; i < seatType.length; i++) {
+                    if (seatType[i].innerHTML == srcSeatType) {
+                        seatType[i].selected = true;
+                    }
+                }
+            },
+            error: function(data) {
+                alert("获取列车编组信息失败，服务器内部错误...");
+            }
+        });
+    }
+
+    function btn_submit() {
+        var code = document.getElementById("code");
+        var cabin = document.getElementById("cabin");
+        var count = document.getElementById("count");
+        var seatType = document.getElementById("seatType")[document.getElementById("seatType").selectedIndex].innerHTML;
+        var type = document.getElementById("type")[document.getElementById("type").selectedIndex].innerHTML;
+
+        if (code.value == "") {
+            alert("车次代码不能为空");
+            return;
+        }
+        if (cabin.value == "") {
+            alert("车厢号不能为空");
+            return;
+        }
+        if (count.value == "") {
+            alert("车厢坐席数量不能为空");
+            return;
+        }
+
+        var marshalling = {"id": marshallingId};
+        if (srcCode != code.value) {
+            marshalling["code"] = code;
+        }
+        if (srcCabin != cabin.value) {
+            marshalling["cabin"] = cabin;
+        }
+        if (srcCount != count.value) {
+            marshalling["count"] = count;
+        }
+        if (srcSeatType != seatType) {
+            marshalling["seatType"] = seatType;
+        }
+        if (srcType != type) {
+            marshalling["type"] = type;
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/manage/group/update",
+            data: marshalling,
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    alert(data.msg);
+                    parent.location.href = "../index.html";
+                }
+                else {
+                    alert(data.msg);
+                    return;
+                }
+            },
+            error: function(data) {
+                alert("列车编组信息修改失败，服务器内部错误...");
+                return;
+            }
+        });
+
+    }
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
+</body>
+
+</html>

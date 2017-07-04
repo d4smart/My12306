@@ -88,9 +88,18 @@
             <form action="" role="form" class="form-inline" id="formSearch">
                 <div class="row">
                     <div class="form-group">
-                        车次：<input type="text" name="" id="code" />
+                        车次代码：<input type="text" name="" id="code" />
                     </div>
-
+                    <div class="form-group">
+                        车厢类型：
+                        <select name="" id="type">
+                            <option value="">硬座车</option>
+                            <option value="">软座车</option>
+                            <option value="">硬卧车</option>
+                            <option value="">软卧车</option>
+                            <option value="">餐车</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <div class="col-xs-1 col-xs-offset-5">
                             <input type="button" class="searchBtn" id="searchBtn" value="" onclick="search(true)" />
@@ -105,15 +114,16 @@
     <div class="row">
         <div class="col-xs-10 col-xs-offset-1 style="">
         <form action="" role="form" id="formResult">
-            <table class="table table-striped" id="stationList">
+            <table class="table table-striped" id="marshallingList">
                 <thead>
-                <th width="10%">列车编组编号</th>
-                <th width="10%">车次代码</th>
-                <th width="10%">车厢号</th>
-                <th width="10%">车厢坐席类型</th>
-                <th width="10%">车厢坐席数量</th>
-                <th width="10%">车厢类型</th>
-
+                    <th width="10%">选择</th>
+                    <th width="10%">id</th>
+                    <th width="10%">车次代码</th>
+                    <th width="10%">车厢号</th>
+                    <th width="10%">车厢坐席类型</th>
+                    <th width="10%">车厢坐席数量</th>
+                    <th width="10%">车厢类型</th>
+                    <th width="10%">操作</th>
                 </thead>
                 <tbody>
                 </tbody>
@@ -124,8 +134,8 @@
                     <label for="selectAll">全选</label>
                 </div>
                 <div class="col-xs-5 col-xs-offset-5 text-right">
-                    <input type="button" id="btn-create" onclick="createStation()" value="添加" />
-                    <input type="button" id="btn-delete" onclick="deleteStation()" value="删除"/>
+                    <input type="button" id="btn-create" onclick="createMarshalling()" value="添加" />
+                    <input type="button" id="btn-delete" onclick="deleteMarshalling()" value="删除"/>
                     <input type="button" id="btn-excel" onclick="getExcel()" value="Excel导出"/>
                 </div>
             </div>
@@ -157,26 +167,7 @@
 <script>
     // 窗口初始化，加载完成后执行
     window.onload = function() {
-        // 从后台请求bureau表创建bureau下拉菜单
-        var oSelectBox = document.getElementById("bureau");
-        $.ajax({
-            type: "post",
-            url: "",
-            dataType: "json",
-            success: function(data) {
 
-            },
-            error: function(data) {
-                alert("服务器内部错误，请求bureau表失败...");
-                return;
-            }
-        });
-
-        // 临时模拟取值创建bureau
-        oSelectBox.length = 1;
-        for (var i = 1; i < 4; i++) {
-            oSelectBox.options[i] = new Option("哈");
-        }
     }
     // 搜索按钮绑定回车事件
     document.onkeydown = function(event) {
@@ -239,10 +230,9 @@
     function search(flag) {
         var flag = arguments[0] ? arguments[0] : false;
 
-        var name = document.getElementById("name").value;
         var code = document.getElementById("code").value;
-        var index = document.getElementById("bureau").selectedIndex;
-        var bureau = document.getElementById("bureau")[index].innerHTML;
+        var oType = document.getElementById("type");
+        var type = oType[oType.selectedIndex].innerHTML;
 
         var oPageSize = document.getElementById("pageSize");
         var pageSize = oPageSize[oPageSize.selectedIndex].innerHTML;
@@ -255,25 +245,20 @@
             }
         }
 
-        var station = {
+        var marshalling = {
             "pageSize": pageSize,
-            "pageNum": currentPage
+            "pageNum": currentPage,
+            "type": type
         };
 
-        if (name != "") {
-            station["name"] = name;
-        }
         if (code != "") {
-            station["code"] = code;
-        }
-        if (bureau != "所属铁路局") {
-            station["bureau"] = bureau;
+            marshalling["code"] = code;
         }
 
         $.ajax({
             type: "get",
-            url: "/manage/train/list",
-            data: station,
+            url: "/manage/group/list",
+            data: marshalling,
             dataType: "json",
             success: function(data) {
                 if (data.code == 0) {
@@ -311,20 +296,19 @@
     function createTable(pageSize, list) {
         var pageSize = arguments[0] ? arguments[0] : 5;
         // 清除除表头之外的tr行
-        var rows = document.getElementById("stationList").rows.length;
+        var rows = document.getElementById("marshallingList").rows.length;
         for (var i = rows - 1; i > 0; i--) {
-            document.getElementById("stationList").deleteRow(i);
+            document.getElementById("marshallingList").deleteRow(i);
         }
         // 根据从后台取来的信息创建新的表
         for (var i = 0; i < pageSize; i++) {
             var data = {
                 "id": list[i].id,
-                "name": list[i].name,
                 "code": list[i].code,
-                "bureau": list[i].bureau,
-                "level": list[i].level,
-                "region": list[i].region,
-                "address": list[i].address
+                "cabin": list[i].cabin,
+                "seatType": list[i].seatType,
+                "count": list[i].count,
+                "type": list[i].type
             };
             addRow(data);
         }
@@ -333,7 +317,7 @@
     // 分页功能
     // addRow()从数据库取出信息查出信息并创建新的行
     function addRow(data) {
-        var newTr = document.getElementById("stationList").insertRow(document.getElementById("stationList").rows.length);
+        var newTr = document.getElementById("marshallingList").insertRow(document.getElementById("marshallingList").rows.length);
         var newTd = newTr.insertCell(0);
         var newTd2 = newTr.insertCell(1);
         var newTd3 = newTr.insertCell(2);
@@ -343,13 +327,13 @@
         var newTd7 = newTr.insertCell(6);
         var newTd8 = newTr.insertCell(7);
         newTd.innerHTML = "<input type='checkbox' name='select' id='" + data.id + "' />";
-        newTd2.innerHTML = data.name;
+        newTd2.innerHTML = data.id;
         newTd3.innerHTML = data.code;
-        newTd4.innerHTML = data.bureau;
-        newTd5.innerHTML = data.level;
-        newTd6.innerHTML = data.region;
-        newTd7.innerHTML = data.address;
-        newTd8.innerHTML = "<a href='#' onclick='station_edit(" + data.id + ")'><span style='color:orangered'>编辑</span></a>";
+        newTd4.innerHTML = data.cabin;
+        newTd5.innerHTML = data.seatType;
+        newTd6.innerHTML = data.count;
+        newTd7.innerHTML = data.type;
+        newTd8.innerHTML = "<a href='#' onclick='marshalling_edit(" + data.id + ")'><span style='color:orangered'>编辑</span></a>";
     }
 
     document.getElementById("pageSize").onchange = function() {
@@ -395,15 +379,15 @@
         }
     }
 
-    function station_edit(stationId) {
-        location.href = "MarshallingManageInfo_Admin_Edit.html?stationId=" + stationId;
+    function marshalling_edit(marshallingId) {
+        location.href = "MarshallingManageInfo_Admin_Edit.html?marshallingId=" + marshallingId;
     }
 
-    function createStation() {
+    function createMarshalling() {
         location.href = "MarshallingInfo_Add.html";
     }
 
-    function deleteStation() {
+    function deleteMarshalling() {
         var oCheckBoxes = document.getElementsByName("select");
         var ids = new Array();
         for (var i = 0; i < oCheckBoxes.length; i++) {
@@ -416,11 +400,11 @@
         if (isDelete) {
             //console.log("ids.length:" + ids.length);
             for (var i = 0; i < ids.length; i++) {
-                var station = {"id": ids[i]};
+                var marshalling = {"id": ids[i]};
                 $.ajax({
                     type: "post",
-                    url: "/manage/train/delete",
-                    data: station,
+                    url: "/manage/group/delete",
+                    data: marshalling,
                     dataType: "json",
                     success: function(data) {
                         if (data.code == 0) {
