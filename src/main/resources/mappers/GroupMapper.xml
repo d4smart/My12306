@@ -132,4 +132,11 @@
       </if>
     </where>
   </select>
+
+  <select id="getGroupsByCode" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from marshalling
+    where code = #{code}
+  </select>
 </mapper>

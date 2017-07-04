@@ -21,4 +21,6 @@ public interface GroupMapper {
     List<Group> getGroupsByPage(@Param("code") String code, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     int getGroupCount(@Param("code") String code);
+
+    List<Group> getGroupsByCode(@Param("code") String code);
 }
