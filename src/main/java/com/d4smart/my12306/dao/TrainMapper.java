@@ -22,4 +22,6 @@ public interface TrainMapper {
                                 @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     int getTrainCount(@Param("beginStation") String beginStation, @Param("endStation") String endStation);
+
+    Train selectByCode(String code);
 }

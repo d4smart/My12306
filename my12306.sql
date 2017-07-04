@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-07-03 00:22:50
+Date: 2017-07-04 10:46:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,36 +26,36 @@ CREATE TABLE `bureau` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for group
--- ----------------------------
-DROP TABLE IF EXISTS `group`;
-CREATE TABLE `group` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(60) NOT NULL DEFAULT '' COMMENT '车次代码，与车次多对一',
-  `cabin` varchar(60) NOT NULL DEFAULT '' COMMENT '车厢号',
-  `seat_type` enum('硬座','软座','硬卧','软卧') NOT NULL DEFAULT '硬座',
-  `count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '车厢坐席数量',
-  `type` enum('硬座车','软座车','硬卧车','软卧车','餐车') NOT NULL DEFAULT '硬座车' COMMENT '车厢类型',
-  `create_time` datetime DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
 -- Table structure for line
 -- ----------------------------
 DROP TABLE IF EXISTS `line`;
 CREATE TABLE `line` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL DEFAULT '' COMMENT '线路名称',
-  `station_ids` text NOT NULL COMMENT '车站序号，多个',
+  `section_ids` text NOT NULL,
   `station_names` text NOT NULL COMMENT '车站名，多个',
   `begin_time` time DEFAULT NULL,
   `end_time` time DEFAULT NULL,
   `price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '线路的基础价格，最终价格按车座类型乘对应系数',
   `mileage` int(11) NOT NULL DEFAULT '0',
   `stay_times` text NOT NULL COMMENT '停留时间，以分钟为单位',
-  `spend_time` int(11) NOT NULL DEFAULT '0',
+  `spend_time` int(11) NOT NULL DEFAULT '0' COMMENT '分钟',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for marshalling
+-- ----------------------------
+DROP TABLE IF EXISTS `marshalling`;
+CREATE TABLE `marshalling` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(60) NOT NULL DEFAULT '' COMMENT '车次代码，与车次多对一',
+  `cabin` varchar(60) NOT NULL DEFAULT '' COMMENT '车厢号',
+  `seat_type` enum('硬座','软座','硬卧','软卧') NOT NULL DEFAULT '硬座',
+  `count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '车厢坐席数量',
+  `type` enum('硬座车','软座车','硬卧车','软卧车','餐车') NOT NULL DEFAULT '硬座车' COMMENT '车厢类型',
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -93,8 +93,8 @@ CREATE TABLE `region` (
 DROP TABLE IF EXISTS `section`;
 CREATE TABLE `section` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `from` varchar(60) NOT NULL DEFAULT '',
-  `to` varchar(60) NOT NULL DEFAULT '',
+  `from_station` varchar(60) NOT NULL DEFAULT '',
+  `to_station` varchar(60) NOT NULL DEFAULT '',
   `mileage` int(11) NOT NULL DEFAULT '0',
   `price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '区段的基础价格，最终价格按车座类型乘对应系数',
   `create_time` datetime DEFAULT NULL,

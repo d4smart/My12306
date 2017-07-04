@@ -19,21 +19,21 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from group
+    from marshalling
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from group
+    delete from marshalling
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.d4smart.my12306.pojo.Group" >
-    insert into group (id, code, cabin, 
+    insert into marshalling (id, code, cabin,
       seat_type, count, type, create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{cabin,jdbcType=VARCHAR}, 
       #{seatType,jdbcType=CHAR}, #{count,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.d4smart.my12306.pojo.Group" >
-    insert into group
+    insert into marshalling
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -78,7 +78,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.d4smart.my12306.pojo.Group" >
-    update group
+    update marshalling
     <set >
       <if test="code != null" >
         code = #{code,jdbcType=VARCHAR},
@@ -100,7 +100,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.d4smart.my12306.pojo.Group" >
-    update group
+    update marshalling
     set code = #{code,jdbcType=VARCHAR},
       cabin = #{cabin,jdbcType=VARCHAR},
       seat_type = #{seatType,jdbcType=CHAR},
@@ -109,4 +109,34 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getGroupsByPage" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from marshalling
+    <where>
+      <if test="code != null">
+        and code = #{code}
+      </if>
+    </where>
+    order by id desc
+    limit #{offset}, #{limit}
+  </select>
+
+  <select id="getGroupCount" parameterType="map" resultType="int">
+    select count(1)
+    from marshalling
+    <where>
+      <if test="code != null">
+        and code = #{code}
+      </if>
+    </where>
+  </select>
+
+  <select id="getGroupsByCode" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from marshalling
+    where code = #{code}
+  </select>
 </mapper>
