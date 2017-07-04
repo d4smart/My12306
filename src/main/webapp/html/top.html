@@ -63,13 +63,13 @@
                     type: "get",
                     url: "/user/get_user_info",
                     success: function(data) {
-                        if (data.status == 1) {
-                            alert("请先登陆");
-                            parent.location.href = "login.html";
-                        }
-                        else if (data.status == 0) {
+                        if (data.code == 0) {
                             name = data.data.actualName;
                             document.getElementById("name").innerHTML = name;
+                        }
+                        else {
+                            alert("请先登陆");
+                            parent.location.href = "login.html";
                         }
                     }
                 });
@@ -81,7 +81,7 @@
 					url: "/user/logout",
 					dataType: "json",
 					success: function(data) {
-					    if (data.status == 0) {
+					    if (data.code == 0) {
 					        parent.location.href = "login.html";
 						}
 					}

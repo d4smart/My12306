@@ -1,10 +1,244 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title></title>
+    <style>
+        body{
+            background: url(../../images/bg_point_write.gif);
+        }
 
+        .header{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info{
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .register-bottom{
+            background: url(../../images/bottom_ny_bg.gif) repeat-x;
+            margin-top: 64px;
+        }
+
+        select {
+            margin-top: 4px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 header">
+            <h3 style="color:#0A3C5F;">新增线路</h3>
+            <img src="../../images/line1.jpg" alt=""/>
+            <p style="margin-top:10px;">注：标有<span style="color:orangered">*</span>处，均为必填项</p>
+        </div>
+        <div class="col-xs-10 col-xs-offset-2 content">
+            <div class=" col-xs-12 lineInfo">
+                <h5 style="color:orangered">线路信息</h5>
+                <div class="info">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>线路名：</span>
+                    <input type="text" name="" id="name"/>
+                </div>
+                <div class="info row">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>途经车站：</span>
+                    <div class="col-xs-10" id="stations">
+                        <select name="stations" id="beginStation">
+                            <option value="" selected>起点车站</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-xs-offset-2">
+                    <input type="button" value="增加车站" onclick="addStation()" style="margin-left:-18px;"/>
+                    <input type="button" value="删除车站" onclick="deleteStation()" style="margin-left: 24px;"/>
+                </div>
+            </div>
+
+            <div class=" col-xs-12 detailInfo">
+                <h5 style="color:orangered">详细信息</h5>
+                <div class="info">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>发车时间：</span>
+                    <input type="text" name="" id="beginTime"/>
+                </div>
+                <div class="info">
+                    <span for="region" class="col-xs-2"><span style="color:orangered">*</span>到站时间：</span>
+                    <input type="text" name="" id="endTime"/>
+                </div>
+                <div class="info" style="margin-top:25px; margin-bottom:25px;">
+                    <span class="col-xs-3"></span>
+                    <input type="button" name="" id="" value="提交" onclick="btn_submit()"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset" name="" id="" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 register-bottom">
+            <div class="col-xs-2 col-xs-offset-5" style="margin-top: 5px;">
+                <p>copyright@12306 购票网</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        // 从后台请求station表创建beginStation拉菜单
+        var oStation = document.getElementById("beginStation");
+        var para = {"pageSize": 50}; // 根据具体城市数量可以更改
+        $.ajax({
+            type: "get",
+            url: "/manage/station/list",
+            data: para,
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    oStation.length = 1;
+                    for (var i = 1; i <= para.pageSize; i++) {
+//                        console.log(data.data.list[i].name);
+                        oStation.options[i] = new Option(data.data.list[i].name);
+                    }
+                }
+            },
+            error: function(data) {
+                alert("服务器内部错误，请求Station表失败...");
+                return;
+            }
+        });
+    }
+
+    function addStation() {
+        var oSelect = document.createElement("select");
+        oSelect.setAttribute("name", "stations");
+        oSelect.options[0] = new Option("选择车站");
+        document.getElementById("stations").appendChild(oSelect);
+    }
+
+    function deleteStation() {
+        var oSelectBoxes = document.getElementsByName("stations");
+        if (oSelectBoxes.length > 1) {
+            document.getElementById("stations").removeChild(oSelectBoxes[oSelectBoxes.length - 1]);
+        }
+    }
+
+
+    var oStations = document.getElementsByName("stations");
+    for (var i = 0; i < oStations.length; i++) {
+        var index2 = i;
+        oStations[i].onchange = function () {
+            var index = oStations[index2].selectedIndex;
+//            alert("current index:" + index + i);
+            if (index != 0) {
+                var thisStation = oStations[index2][index].innerHTML;
+                console.log("this:" + thisStation);
+                $.ajax({
+                    type: "get",
+                    url: "/manage/section/select?fromStation=" + thisStation + "&pageSize=50",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            console.log(index2+1, oStations.length);
+                            if (index2 + 1 < oStations.length) {
+                                alert(data.data.list)
+                                createNextSelect(data.data.list, index2 + 1);
+                            }
+                        }
+                    },
+                    error: function (data) {
+                        alert("station表查询失败，服务器内部错误...");
+                        return;
+                    }
+                });
+            }
+        }
+    }
+
+    function createNextSelect(list, index) {
+        var oSelect = document.getElementsByName("stations")[index];
+        oSelect.length = 1;
+        console.log("listlenght:" + list.length);
+        for (var i = 1; i <= list.length; i++) {
+            console.log(list[i].toStation);
+            oSelect.options[i] = new Option(list[i].toStation);
+        }
+    }
+
+    function btn_submit() {
+        var oFrom = document.getElementById("fromStation");
+        var oTo = document.getElementById("toStation");
+        var from = oFrom[oFrom.selectedIndex].innerHTML;
+        var to = oTo[oTo.selectedIndex].innerHTML;
+        var mileage = document.getElementById("mileage").value;
+        var price = document.getElementById("price").value;
+
+        if (from == "") {
+            alert("区段起始车站不能为空");
+            return;
+        }
+        if (to == "") {
+            alert("区段终点车站不能为空");
+            return;
+        }
+        if (mileage == "") {
+            alert("区段里程不能为空");
+            return;
+        }
+        if (price == "") {
+            alert("区段价格不能为空");
+            return;
+        }
+
+        var section = {
+            "fromStation": from,
+            "toStation": to,
+            "mileage": mileage,
+            "price": price
+        };
+
+        $.ajax({
+            type: "post",
+            url: "/manage/section/create",
+            data: section,
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    alert(data.msg);
+                    parent.location.href = "../index.html";
+                }
+                else {
+                    alert(data.msg);
+                    return;
+                }
+            },
+            error: function(data) {
+                alert("添加车站失败，服务器内部错误...");
+            }
+        });
+    }
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
 </body>
+
 </html>

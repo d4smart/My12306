@@ -95,7 +95,7 @@
                     type: "get",
                     url: "/user/get_user_info",
                     success: function(data) {
-                        if (data.status == 0) {
+                        if (data.code == 0) {
                             document.getElementById("email").innerHTML = data.data.email;
                             document.getElementById("name").innerHTML = data.data.actualName;
                             document.getElementById("gender").innerHTML = data.data.sex;

@@ -1,10 +1,450 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title></title>
+    <style>
+        body {
+            background: url(../../images/bg_point_write.gif);
+        }
 
+        .searchBtn {
+            width: 60px;
+            background: url(../../images/button_cx.gif);
+        }
+
+        #formSearch{
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-left: 15px;
+            margin-right: 25px;
+        }
+
+        #formResult table{
+            margin-top: 40px;
+            border: 1px solid #DFDCDF;
+        }
+
+        #formResult th{
+            text-align: center;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        #formResult td{
+            text-align: center;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        .table-control{
+            margin: 15px auto;
+        }
+
+        #btn-create {
+            width: 160px;
+            background-color: #ADD2EC;
+        }
+
+        #btn-delete {
+            width: 80px;
+            background-color: #ADD2EC;
+            margin-left: 15px;
+        }
+
+        #btn-excel {
+            width: 80px;
+            background-color: #ADD2EC;
+            margin-left: 15px;
+        }
+
+        .bottom-control{
+            font-size: 14px;
+            margin-top: 26px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 header">
+            <h3 style="color:#0A3C5F;">线路管理</h3>
+            <img src="../../images/line1.jpg" alt="" />
+        </div>
+        <div class="col-xs-10 col-xs-offset-1 searchBar">
+            <form action="" role="form" class="form-inline" id="formSearch">
+                <div class="row">
+                    <div class="form-group">
+                        线路名：<input type="text" name="" id="name" />
+                    </div>
+                    <div class="form-group">
+                        途经车站：<input type="text" name="" id="station" placeholder="车站名用逗号分隔"/>
+                    </div>
+                    <div class="form-group">
+                        车次：
+                        <input type="text" name="" id="train" />
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-1 col-xs-offset-5">
+                            <input type="button" class="searchBtn" id="searchBtn" value="" onclick="search(true)" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 style="">
+        <form action="" role="form" id="formResult">
+            <table class="table table-striped" id="lineList">
+                <thead>
+                <th width="8%">选择</th>
+                <th width="8%">线路名</th>
+                <th width="26%">途经车站</th>
+                <th width="8%">发车时间</th>
+                <th width="8%">到站时间</th>
+                <th width="6%">价格</th>
+                <th width="6%">里程</th>
+                <th width="16%">停留时间</th>
+                <th width="6%">历时</th>
+                <th width="18%">操作</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="row table-control">
+                <div class="col-xs-2">
+                    <input type="checkbox" id="selectAll" onclick="selectAll(this)"/>
+                    <label for="selectAll">全选</label>
+                </div>
+                <div class="col-xs-5 col-xs-offset-5 text-right">
+                    <input type="button" id="btn-create" onclick="createLine()" value="添加" />
+                    <input type="button" id="btn-delete" onclick="deleteLine()" value="删除"/>
+                    <input type="button" id="btn-excel" onclick="getExcel()" value="Excel导出"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-6 text-right">
+                <ul class="pagination" id="page">
+                    <li><a href="#" onclick="previous()">&laquo;</a></li>
+                    <li class="active"><a href="#" onclick="callSearch(this)">1</a></li>
+                    <li><a href="#" onclick="next()">&raquo;</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-2 text-right bottom-control">
+                每页显示<select name="" id="pageSize">
+                <option value="five">5</option>
+                <option value="eight">8</option>
+                <option value="ten">10</option>
+                <option value="twelve">12</option>
+                <option value="fifteen">15</option>
+            </select>条信息
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    // 窗口初始化，加载完成后执行
+    window.onload = function() {
+
+    };
+    // 搜索按钮绑定回车事件
+    document.onkeydown = function(event) {
+        if (event.keyCode == 13) {
+            event.cancelBubble = true;
+            event.returnValue = false;
+            search(true);
+        }
+    };
+
+    // 向前翻页
+    function previous() {
+        var currentPage = 0;
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 1; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                currentPage = i;
+                break;
+            }
+        }
+        var previousPage = currentPage - 1;
+        if (previousPage > 0) {
+            lis[currentPage].className = "";
+            lis[previousPage].className = "active";
+            search();
+        }
+
+    }
+    // 向后翻页
+    function next() {
+        var currentPage = 0;
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 1; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                currentPage = i;
+                break;
+            }
+        }
+        var nextPage = currentPage + 1;
+        if (nextPage < lis.length - 1) {
+            lis[currentPage].className = "";
+            lis[nextPage].className = "active";
+            search();
+        }
+
+    }
+
+    function callSearch(thisAnchor) {
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 0; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                lis[i].className = "";
+                break;
+            }
+        }
+        lis[thisAnchor.innerHTML].className = "active";
+        search();
+    }
+
+    function search(flag) {
+        var flag = arguments[0] ? arguments[0] : false;
+
+        var name = document.getElementById("name").value;
+        var station = document.getElementById("station").value;
+        var train = document.getElementById("train").value;
+
+        var oPageSize = document.getElementById("pageSize");
+        var pageSize = oPageSize[oPageSize.selectedIndex].innerHTML;
+        var currentPage = 1;
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 1; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                currentPage = i;
+                break;
+            }
+        }
+
+        var line = {
+            "pageSize": pageSize,
+            "pageNum": currentPage
+        };
+
+        if (name != "") {
+            line["name"] = name;
+        }
+        if (station != "") {
+            line["stationNames"] = station;
+        }
+        if (train != "") {
+            station["train"] = train;
+        }
+
+        $.ajax({
+            type: "get",
+            url: "/manage/line/list",
+            data: line,
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    if (flag) {
+                        createPageCode(data.data.totalPage);
+                    }
+                    createTable(data.data.pageSize, data.data.list);
+                }
+            }
+        });
+    }
+
+    function createPageCode(number) {
+        // 删除以前创建的页码条
+        var oul = document.getElementById("page");
+        for (var i = oul.childNodes.length - 1; i > 2; i--) {
+            oul.removeChild(oul.childNodes[i]);
+        }
+        // 根据参数创建新的页码条
+//		alert("delete done");
+        var oli = document.createElement("li");
+        oli.setAttribute("class", "active");
+        oli.innerHTML = "<a href='#' onclick='callSearch(this)'>1</a>";
+        oul.appendChild(oli);
+        for (var i = 1; i < number; i++) {
+            var oli = document.createElement("li");
+            oli.innerHTML = "<a href='#' onclick='callSearch(this)'>" + (i+1) + "</a>";
+            oul.appendChild(oli);
+        }
+        var oli = document.createElement("li");
+        oli.innerHTML = "<a href='#' onclick='next()'>&raquo;</a>";
+        oul.appendChild(oli);
+    }
+
+    function createTable(pageSize, list) {
+        var pageSize = arguments[0] ? arguments[0] : 5;
+        // 清除除表头之外的tr行
+        var rows = document.getElementById("lineList").rows.length;
+        for (var i = rows - 1; i > 0; i--) {
+            document.getElementById("lineList").deleteRow(i);
+        }
+        // 根据从后台取来的信息创建新的表
+        for (var i = 0; i < pageSize; i++) {
+            var data = {
+                "id": list[i].id,
+                "name": list[i].name,
+                "stationNames": list[i].stationNames,
+                "beginTime": list[i].beginTime,
+                "endTime": list[i].endTime,
+                "price": list[i].price,
+                "mileage": list[i].mileage,
+                "stayTimes": list[i].stayTimes,
+                "spendTime": list[i].spendTime
+            };
+            addRow(data);
+        }
+    }
+
+    // 分页功能
+    // addRow()从数据库取出信息查出信息并创建新的行
+    function addRow(data) {
+        var newTr = document.getElementById("lineList").insertRow(document.getElementById("lineList").rows.length);
+        var newTd = newTr.insertCell(0);
+        var newTd2 = newTr.insertCell(1);
+        var newTd3 = newTr.insertCell(2);
+        var newTd4 = newTr.insertCell(3);
+        var newTd5 = newTr.insertCell(4);
+        var newTd6 = newTr.insertCell(5);
+        var newTd7 = newTr.insertCell(6);
+        var newTd8 = newTr.insertCell(7);
+        var newTd9 = newTr.insertCell(8);
+        var newTd10 = newTr.insertCell(9);
+        newTd.innerHTML = "<input type='checkbox' name='select' id='" + data.id + "' />";
+        newTd2.innerHTML = data.name;
+        newTd3.innerHTML = data.stationNames;
+        newTd4.innerHTML = data.beginTime;
+        newTd5.innerHTML = data.endTime;
+        newTd6.innerHTML = data.price;
+        newTd7.innerHTML = data.mileage;
+        newTd8.innerHTML = data.stayTimes;
+        newTd9.innerHTML = data.spendTime;
+        newTd10.innerHTML = "<a href='#' onclick='line_edit(" + data.id + ")'><span style='color:orangered'>编辑</span></a>";
+    }
+
+    document.getElementById("pageSize").onchange = function() {
+        search(true);
+    }
+
+    // 实现全选功能
+    var oSelectAll = document.getElementById("selectAll");
+    var oCheckBoxes = document.getElementsByName("select");
+    for (var i = 0; i < oCheckBoxes.length; i++) {
+        oCheckBoxes[i].index = i;
+        oCheckBoxes[i].onchange = function() {
+            if (oCheckBoxes[this.index].checked) {
+                for (var j = 0; j < oCheckBoxes.length; j++) {
+                    if (!oCheckBoxes[j].checked) {
+                        break;
+                    }
+                    else if (j == oCheckBoxes.length - 1) {
+                        oSelectAll.checked = true;
+                    }
+                }
+            }
+            else {
+                for (var j = 0; j < oCheckBoxes.length; j++) {
+                    if (oCheckBoxes[j].checked) {
+                        oSelectAll.checked = false;
+                    }
+                }
+            }
+        }
+    }
+    function selectAll(thisBox) {
+
+        if (thisBox.checked) {
+            for (var i = 0; i < oCheckBoxes.length; i++) {
+                oCheckBoxes[i].checked = true;
+            }
+        }
+        else {
+            for (var i = 0; i < oCheckBoxes.length; i++) {
+                oCheckBoxes[i].checked = false;
+            }
+        }
+    }
+
+    function line_edit(lineId) {
+        location.href = "LineManageInfo_Admin_Edit.html?lineId=" + lineId;
+    }
+
+    function createLine() {
+        location.href = "LineInfo_Add.html";
+    }
+
+    function deleteLine() {
+        var oCheckBoxes = document.getElementsByName("select");
+        var ids = new Array();
+        for (var i = 0; i < oCheckBoxes.length; i++) {
+            if (oCheckBoxes[i].checked == true) {
+                ids = ids.concat(oCheckBoxes[i].id);
+            }
+        }
+        // 循环删除选中的用户
+        var isDelete = confirm("确认删除选中路线？");
+        if (isDelete) {
+            //console.log("ids.length:" + ids.length);
+            for (var i = 0; i < ids.length; i++) {
+                var line = {"id": ids[i]};
+                $.ajax({
+                    type: "post",
+                    url: "/manage/line/delete",
+                    data: line,
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.code == 0) {
+                            alert(data.msg);
+                            location.reload();
+                        }
+                        else {
+                            alert(data.msg);
+                            return;
+                        }
+                    },
+                    error: function(data) {
+                        alert("服务器内部错误...");
+                        return;
+                    }
+                });
+            }
+        }
+    }
+
+    function getExcel() {
+
+    }
+
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
 </body>
+
 </html>

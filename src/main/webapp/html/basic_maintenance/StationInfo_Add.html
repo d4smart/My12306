@@ -169,7 +169,7 @@
             data: station,
             dataType: "json",
             success: function(data) {
-                if (data.status == 0) {
+                if (data.code == 0) {
                     alert(data.msg);
                     parent.location.href = "../index.html";
                 }

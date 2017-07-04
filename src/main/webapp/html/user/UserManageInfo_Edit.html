@@ -126,7 +126,7 @@
                     type: "get",
                     url: "/user/get_user_info",
                     success: function(data) {
-                        if (data.status == 0) {
+                        if (data.code == 0) {
                             srcEmail = data.data.email;
                             document.getElementById("email").value = data.data.email;
                             srcName = data.data.actualName;
@@ -211,7 +211,7 @@
 					data: user,
 					dataType: "json",
 					success: function(data) {
-						if (data.status == 0) {
+						if (data.code == 0) {
 							alert(data.msg);
 							parent.location.reload();
 							location.href = "UserManageInfo.html";

@@ -172,9 +172,9 @@
             data: para,
             dataType: "json",
             success: function(data) {
-                if (data.status == 0) {
-                    oFrom.length = 0;
-                    oTo.length = 0;
+                if (data.code == 0) {
+                    oFrom.length = 1;
+                    oTo.length = 1;
                     for (var i = 1; i <= para.pageSize; i++) {
                         oFrom.options[i] = new Option(data.data.list[i].name);
                         oTo.options[i] = new Option(data.data.list[i].name);
@@ -282,7 +282,7 @@
             data: section,
             dataType: "json",
             success: function(data) {
-                if (data.status == 0) {
+                if (data.code == 0) {
                     if (flag) {
                         createPageCode(data.data.totalPage);
                     }
@@ -423,7 +423,7 @@
                     data: section,
                     dataType: "json",
                     success: function(data) {
-                        if (data.status == 0) {
+                        if (data.code == 0) {
                             alert(data.msg);
                             location.reload();
                         }

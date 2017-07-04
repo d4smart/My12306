@@ -285,7 +285,7 @@
             data: station,
             dataType: "json",
             success: function(data) {
-                if (data.status == 0) {
+                if (data.code == 0) {
                     if (flag) {
                         createPageCode(data.data.totalPage);
                     }
@@ -432,7 +432,7 @@
                     data: station,
                     dataType: "json",
                     success: function(data) {
-                        if (data.status == 0) {
+                        if (data.code == 0) {
                             alert(data.msg);
                             location.reload();
                         }

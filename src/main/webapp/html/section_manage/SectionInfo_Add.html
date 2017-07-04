@@ -30,7 +30,7 @@
 
         .register-bottom{
             background: url(../../images/bottom_ny_bg.gif) repeat-x;
-            margin-top: 24px;
+            margin-top: 112px;
         }
     </style>
 </head>
@@ -103,7 +103,7 @@
             data: para,
             dataType: "json",
             success: function(data) {
-                if (data.status == 0) {
+                if (data.code == 0) {
                     oFrom.length = 0;
                     oTo.length = 0;
                     for (var i = 1; i <= para.pageSize; i++) {
@@ -157,7 +157,7 @@
             data: section,
             dataType: "json",
             success: function(data) {
-                if (data.status == 0) {
+                if (data.code == 0) {
                     alert(data.msg);
                     parent.location.href = "../index.html";
                 }
