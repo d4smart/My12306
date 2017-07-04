@@ -112,8 +112,6 @@
     var srcStayTimes = "";
     var srcBeginTime = "";
     var srcEndTime = "";
-    var fromStation = "";
-    var toStation = "";
     window.onload = function() {
 
         // 从后台请求station表创建beginStation拉菜单
@@ -172,17 +170,19 @@
                 data: {"id": srcSectionIds[i]},
                 dataType: "json",
                 success: function(data) {
+                    var fromStation = "";
+                    var toStation = "";
                     fromStation = data.data.fromStation;
                     toStation = data.data.toStation;
                     addStation();
                     var oStations = document.getElementsByName("stations");
-                    alert(oStations[oStations.length - 2].length);
+                    // alert(oStations[oStations.length - 2].length);
                     for (var j = 0; j < oStations[oStations.length - 2].length; j++) {
                         if (oStations[oStations.length - 2][j].innerHTML == fromStation) {
                             oStations[oStations.length - 2][j].selected = true;
                         }
                     }
-                    alert(oStations[oStations.length - 1].length);
+                    // alert(oStations[oStations.length - 1].length);
                     for (var j = 0; j < oStations[oStations.length - 1].length; j++) {
                         if (oStations[oStations.length - 1][j].innerHTML == toStation) {
                             oStations[oStations.length - 1][j].selected = true;
@@ -336,7 +336,7 @@
         }
 
 
-        var line = {};
+        var line = {"id": lineId};
         if (srcName != name) {
             line["name"] = name;
         }
