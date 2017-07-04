@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -12,7 +12,6 @@
     <!-- context标签中如果扫描多个文件夹，可以逗号分隔也可以多次声明 -->
     <context:component-scan base-package="com.d4smart.my12306" annotation-config="true"/>
 
-    <!--<context:annotation-config/>-->
     <aop:aspectj-autoproxy/>
 
     <!--视图映射的配置 -->
