@@ -120,14 +120,11 @@
         $.ajax({
             type: "get",
             url: "/manage/station/list",
-            asnyc: false,
             data: para,
             dataType: "json",
             success: function(data) {
                 if (data.code == 0) {
-                    oStation.length = 1;
                     for (var i = 1; i <= para.pageSize; i++) {
-//                        console.log(data.data.list[i].name);
                         oStation.options[i] = new Option(data.data.list[i].name);
                     }
                 }
@@ -137,7 +134,6 @@
                 return;
             }
         });
-
 
         // 从后台获取车站信息并填写
         var line = {"id": lineId};
@@ -162,21 +158,20 @@
             }
         });
 
-
+        // console.log("sectionIds length: " + srcSectionIds.length);
         for (var i = 0; i < srcSectionIds.length; i++) {
+            console.log("hello" + i);
+            addStation();
             $.ajax({
                 type: "get",
                 url: "/manage/section/get",
                 data: {"id": srcSectionIds[i]},
                 dataType: "json",
                 success: function(data) {
-                    var fromStation = "";
-                    var toStation = "";
-                    fromStation = data.data.fromStation;
-                    toStation = data.data.toStation;
-                    addStation();
+                    var fromStation = data.data.fromStation;
+                    var toStation = data.data.toStation;
                     var oStations = document.getElementsByName("stations");
-                    // alert(oStations[oStations.length - 2].length);
+                    alert(oStations[oStations.length - 2].length);
                     for (var j = 0; j < oStations[oStations.length - 2].length; j++) {
                         if (oStations[oStations.length - 2][j].innerHTML == fromStation) {
                             oStations[oStations.length - 2][j].selected = true;
@@ -188,8 +183,9 @@
                             oStations[oStations.length - 1][j].selected = true;
                         }
                     }
+
+                    var oStayTimes = document.getElementsByName("stayTime");
                     for (var i = 0; i < srcStayTimes.length; i++) {
-                        var oStayTimes = document.getElementById("stayTime");
                         oStayTimes[i].value = srcStayTimes[i];
                     }
 
@@ -201,6 +197,9 @@
             });
         }
     };
+
+    var oStations = document.getElementsByName("stations");
+    alert("length" +oStations[oStations.length - 2].length);
 
     function addStation() {
         var oSelect = document.createElement("select");
