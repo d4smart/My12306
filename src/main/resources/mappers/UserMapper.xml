@@ -226,4 +226,11 @@
     select count(1)
     from user
   </select>
+
+  <select id="selectUsersByIds" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    where id in (${userIds})
+  </select>
 </mapper>

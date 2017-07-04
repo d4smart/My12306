@@ -133,10 +133,27 @@
     </where>
   </select>
 
-  <select id="getGroupsByCode" parameterType="string" resultMap="BaseResultMap">
+  <select id="getGroupsByCodeAndSeatType" parameterType="string" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from marshalling
-    where code = #{code}
+    <where>
+      <if test="code != null">
+        and code = #{code}
+      </if>
+      <if test="seatType != null">
+        and seat_type = #{seatType}
+      </if>
+      <if test="1 == 1">
+        and count > 0
+      </if>
+    </where>
+    order by id asc
   </select>
+
+  <update id="updateCountById" parameterType="map">
+    update marshalling
+    set count = #{count}, update_time = now()
+    where id = #{id}
+  </update>
 </mapper>

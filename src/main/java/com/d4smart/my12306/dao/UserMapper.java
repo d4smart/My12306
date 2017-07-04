@@ -3,7 +3,6 @@ package com.d4smart.my12306.dao;
 import com.d4smart.my12306.pojo.User;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 public interface UserMapper {
@@ -38,4 +37,6 @@ public interface UserMapper {
     List<User> selectUsersByPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
 
     int getUserCount();
+
+    List<User> selectUsersByIds(@Param("userIds") String userIds);
 }

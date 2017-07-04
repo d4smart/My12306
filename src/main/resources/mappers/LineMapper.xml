@@ -171,4 +171,10 @@
     select count(1)
     from line
   </select>
+
+  <select id="getPriceById" parameterType="java.lang.Integer" resultType="decimal">
+    select price
+    from line
+    where id = #{id}
+  </select>
 </mapper>

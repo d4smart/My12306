@@ -22,5 +22,7 @@ public interface GroupMapper {
 
     int getGroupCount(@Param("code") String code);
 
-    List<Group> getGroupsByCode(@Param("code") String code);
+    List<Group> getGroupsByCodeAndSeatType(@Param("code") String code, @Param("seatType") String seatType);
+
+    int updateCountById(@Param("id") Integer id, @Param("count") Integer count);
 }

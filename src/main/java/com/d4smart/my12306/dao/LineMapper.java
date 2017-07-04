@@ -3,6 +3,7 @@ package com.d4smart.my12306.dao;
 import com.d4smart.my12306.pojo.Line;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface LineMapper {
@@ -21,4 +22,6 @@ public interface LineMapper {
     List<Line> getLinesByPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
 
     int getLineCount();
+
+    BigDecimal getPriceById(Integer id);
 }

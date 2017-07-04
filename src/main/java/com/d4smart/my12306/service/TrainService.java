@@ -72,7 +72,7 @@ public class TrainService {
     }
 
     public TrainDetailVo assembleTrainDetailVo(Train train) {
-        List<Group> groups = groupMapper.getGroupsByCode(train.getCode());
+        List<Group> groups = groupMapper.getGroupsByCodeAndSeatType(train.getCode(), null);
 
         TrainDetailVo trainDetailVo = new TrainDetailVo(train);
         Map<String, Integer> tickets = new HashMap<String, Integer>();
