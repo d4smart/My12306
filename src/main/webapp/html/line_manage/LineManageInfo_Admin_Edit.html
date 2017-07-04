@@ -1,10 +1,384 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title></title>
+    <style>
+        body{
+            background: url(../../images/bg_point_write.gif);
+        }
 
+        .header{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .loginInfo{
+            position: relative;
+        }
+
+        .info{
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .register-bottom{
+            background: url(../../images/bottom_ny_bg.gif) repeat-x;
+            margin-top: 64px;
+        }
+
+        select {
+            margin-top: 4px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2 header">
+            <h3 style="color:#0A3C5F;">修改线路信息</h3>
+            <img src="../../images/line1.jpg" alt=""/>
+            <p style="margin-top:10px;">注：标有<span style="color:orangered">*</span>处，均为必填项</p>
+        </div>
+        <div class="col-xs-8 col-xs-offset-3 content">
+            <div class=" col-xs-12 lineInfo">
+                <h5 style="color:orangered">线路信息</h5>
+                <div class="info">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>线路名：</span>
+                    <input type="text" name="" id="name"/>
+                </div>
+                <div class="info row">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>途经车站/停留时间：</span>
+                    <div class="col-xs-10" id="stations">
+                        <select name="stations" id="beginStation">
+                            <option value="" selected>选择车站</option>
+                        </select>
+                        <input type="text" name="stayTime" id="" style="width:30px;">
+                    </div>
+                </div>
+                <div class="col-xs-4 col-xs-offset-2">
+                    <input type="button" value="增加车站" onclick="addStation()" style="margin-left:-18px;"/>
+                    <input type="button" value="删除车站" onclick="deleteStation()" style="margin-left: 24px;"/>
+                </div>
+            </div>
+            <div class=" col-xs-12 detailInfo">
+                <h5 style="color:orangered">详细信息</h5>
+                <div class="info">
+                    <span class="col-xs-2"><span style="color:orangered">*</span>发车时间：</span>
+                    <input type="text" name="" id="beginTime"/>&nbsp;&nbsp;&nbsp;&nbsp;例如：00：40
+                </div>
+                <div class="info">
+                    <span for="region" class="col-xs-2"><span style="color:orangered">*</span>到站时间：</span>
+                    <input type="text" name="" id="endTime"/>&nbsp;&nbsp;&nbsp;&nbsp;例如：14：00
+                </div>
+                <div class="info" style="margin-top:25px; margin-bottom:25px;">
+                    <span class="col-xs-3"></span>
+                    <input type="button" name="" id="" value="提交" onclick="btn_submit()"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset" name="" id="" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 register-bottom">
+            <div class="col-xs-2 col-xs-offset-5" style="margin-top: 5px;">
+                <p>copyright@12306 购票网</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var link = location.href;
+    var lineId = Number(link.substr(link.indexOf("lineId") + 7));
+    var srcName = "";
+    var srcSectionIds = "";
+    var srcStayTimes = "";
+    var srcBeginTime = "";
+    var srcEndTime = "";
+    var fromStation = "";
+    var toStation = "";
+    window.onload = function() {
+
+        // 从后台请求station表创建beginStation拉菜单
+        var oStation = document.getElementById("beginStation");
+        var para = {"pageSize": 50}; // 根据具体城市数量可以更改
+        $.ajax({
+            type: "get",
+            url: "/manage/station/list",
+            asnyc: false,
+            data: para,
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    oStation.length = 1;
+                    for (var i = 1; i <= para.pageSize; i++) {
+//                        console.log(data.data.list[i].name);
+                        oStation.options[i] = new Option(data.data.list[i].name);
+                    }
+                }
+            },
+            error: function(data) {
+                alert("服务器内部错误，请求Station表失败...");
+                return;
+            }
+        });
+
+
+        // 从后台获取车站信息并填写
+        var line = {"id": lineId};
+        $.ajax({
+            type: "get",
+            url: "/manage/line/get",
+            async: false,
+            data: line,
+            dataType: "json",
+            success: function(data) {
+                srcName = data.data.name;
+                srcSectionIds = data.data.sectionIds.split(",");
+                srcStayTimes = data.data.stayTimes.split(",");
+                srcBeginTime = data.data.beginTime;
+                srcEndTime = data.data.endTime;
+                document.getElementById("name").value = srcName;
+                document.getElementById("beginTime").value = srcBeginTime;
+                document.getElementById("endTime").value = srcEndTime;
+            },
+            error: function(data) {
+                alert("获取线路信息失败，服务器内部错误...");
+            }
+        });
+
+
+        for (var i = 0; i < srcSectionIds.length; i++) {
+            $.ajax({
+                type: "get",
+                url: "/manage/section/get",
+                data: {"id": srcSectionIds[i]},
+                dataType: "json",
+                success: function(data) {
+                    fromStation = data.data.fromStation;
+                    toStation = data.data.toStation;
+                    addStation();
+                    var oStations = document.getElementsByName("stations");
+                    alert(oStations[oStations.length - 2].length);
+                    for (var j = 0; j < oStations[oStations.length - 2].length; j++) {
+                        if (oStations[oStations.length - 2][j].innerHTML == fromStation) {
+                            oStations[oStations.length - 2][j].selected = true;
+                        }
+                    }
+                    alert(oStations[oStations.length - 1].length);
+                    for (var j = 0; j < oStations[oStations.length - 1].length; j++) {
+                        if (oStations[oStations.length - 1][j].innerHTML == toStation) {
+                            oStations[oStations.length - 1][j].selected = true;
+                        }
+                    }
+                    for (var i = 0; i < srcStayTimes.length; i++) {
+                        var oStayTimes = document.getElementById("stayTime");
+                        oStayTimes[i].value = srcStayTimes[i];
+                    }
+
+                },
+                error: function(data) {
+                    alert("获取信息失败，服务器内部错误...");
+                    return;
+                }
+            });
+        }
+    };
+
+    function addStation() {
+        var oSelect = document.createElement("select");
+        oSelect.setAttribute("name", "stations");
+        oSelect.options[0] = new Option("选择车站");
+        document.getElementById("stations").appendChild(oSelect);
+
+        var inputBox = document.createElement("input");
+        inputBox.setAttribute("type", "text");
+        inputBox.setAttribute("name", "stayTime");
+        inputBox.setAttribute("style", "width:30px");
+        document.getElementById("stations").appendChild(inputBox);
+
+        var oStations = document.getElementsByName("stations");
+        var frontIndex = oStations.length - 2;
+        getNextStationList(oStations, frontIndex);
+        oStations[frontIndex].onchange = function() {
+            getNextStationList(oStations, frontIndex);
+        }
+    }
+
+    function deleteStation() {
+        var oSelectBoxes = document.getElementsByName("stations");
+        if (oSelectBoxes.length > 1) {
+            document.getElementById("stations").removeChild(oSelectBoxes[oSelectBoxes.length - 1]);
+        }
+
+    }
+
+    function getNextStationList(oStations, frontIndex) {
+
+        var selectIndex = oStations[frontIndex].selectedIndex;
+        if (selectIndex != 0) {
+            var thisStation = oStations[frontIndex][selectIndex].innerHTML;
+            $.ajax({
+                type: "get",
+                url: "/manage/section/select?fromStation=" + thisStation + "&pageSize=50",
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        createNextSelect(data.data.list, frontIndex + 1);
+                    }
+                },
+                error: function (data) {
+                    alert("station表查询失败，服务器内部错误...");
+                    return;
+                }
+            });
+        }
+    }
+
+    function createNextSelect(list, index) {
+        var oSelect = document.getElementsByName("stations")[index];
+        oSelect.length = 1;
+//        console.log("listlenght:" + list.length);
+        for (var i = 1; i <= list.length; i++) {
+//            console.log(list[i].toStation);
+            oSelect.options[i] = new Option(list[i].toStation);
+        }
+    }
+
+    function btn_submit() {
+        var name = document.getElementById("name").value;
+        var oStations = document.getElementsByName("stations");
+        var stations = "";
+        if (oStations.length > 1) {
+            for (var i = 0; i < oStations.length - 1; i++) {
+                if (oStations[i][oStations[i].selectedIndex] != "选择车站" &&
+                    oStations[i+1][oStations[i+1].selectedIndex] != "选择车站") {
+                    var fromStation = oStations[i][oStations[i].selectedIndex].innerHTML;
+                    var toStation = oStations[i + 1][oStations[i + 1].selectedIndex].innerHTML;
+                    console.log("from:" + fromStation, "to:" + toStation);
+                    $.ajax({
+                        type: "get",
+                        url: "/manage/section/select",
+                        async: false,
+                        data: {"fromStation": fromStation, "toStation": toStation},
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.code == 0) {
+                                if (stations != "") {
+                                    stations += ",";
+                                }
+                                console.log(data.data.list[0].id);
+                                stations += data.data.list[0].id;
+                                console.log("stationIds:" + stations);
+
+                            }
+                        },
+                        error: function(data) {
+                            alert("获取section表失败，服务器内部错误...");
+                            return;
+                        }
+                    });
+                }
+            }
+        }
+        var beginTime = document.getElementById("beginTime").value;
+        var endTime = document.getElementById("endTime").value;
+        var oStayTimes = document.getElementsByName("stayTime");
+        var stayTimes = "";
+        for (var i = 0; i < oStayTimes.length; i++) {
+            if (oStayTimes[i].value == "") {
+                alert("火车停留时间不能为空");
+                return;
+            }
+            else {
+                if (stayTimes != "") {
+                    stayTimes += ",";
+                }
+                stayTimes += oStayTimes[i].value;
+            }
+        }
+        console.log("stay times:" + stayTimes);
+
+        var regTime = /^([0-2][0-9]):([0-5][0-9])$/;
+
+        if (name == "") {
+            alert("线路名不能为空");
+            return;
+        }
+        if (stations == "" || oStations.length < 2) {
+            alert("请选择2个或2个以上的途经车站");
+            return;
+        }
+        if (!regTime.test(beginTime)) {
+            alert("发车时间格式有误");
+            return;
+        }
+        if (!regTime.test(endTime)) {
+            alert("到站时间格式有误");
+            return;
+        }
+
+
+        var line = {};
+        if (srcName != name) {
+            line["name"] = name;
+        }
+        if (srcSectionIds.join() != stations) {
+            line["sectionIds"] = stations;
+        }
+        if (srcBeginTime != beginTime) {
+            line["beginTime"] = beginTime;
+        }
+        if (srcEndTime != endTime) {
+            line["endTime"] = endTime;
+        }
+        if (srcStayTimes.join() != stayTimes) {
+            line["stayTimes"] = stayTimes;
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/manage/line/update",
+            data: line,
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    alert(data.msg);
+                    parent.location.href = "../index.html";
+                }
+                else {
+                    alert(data.msg);
+                    return;
+                }
+            },
+            error: function(data) {
+                alert("更新路线失败，服务器内部错误...");
+            }
+        });
+
+    }
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
 </body>
+
 </html>
