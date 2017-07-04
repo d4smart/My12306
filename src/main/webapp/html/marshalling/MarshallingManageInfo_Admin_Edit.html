@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title></title>
+    <style>
+        body{
+            background: url(../../images/bg_point_write.gif);
+        }
+
+        .header{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .loginInfo{
+            position: relative;
+        }
+
+        .info{
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .register-bottom{
+            background: url(../../images/bottom_ny_bg.gif) repeat-x;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2 header">
+            <h3 style="color:#0A3C5F;">修改列车编组信息</h3>
+            <img src="../../images/line1.jpg" alt=""/>
+            <p style="margin-top:10px;">注：标有<span style="color:orangered">*</span>处，均为必填项</p>
+        </div>
+        <div class="col-xs-8 col-xs-offset-3 content">
+            <div class=" col-xs-12 stationInfo">
+                <h5 style="color:orangered">列车信息</h5>
+                <div class="info">
+                    <span for="name" class="col-xs-3"><span style="color:orangered">*</span>列车编组编号：</span>
+                    <input type="text" name="" id="id"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="info">
+                    <span for="code" class="col-xs-3"><span style="color:orangered">*</span>车次代码：</span>
+                    <input type="text" name="" id="code"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="info">
+                    <span for="code" class="col-xs-3"><span style="color:orangered">*</span>车厢号：</span>
+                    <input type="text" name="" id="cabin"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="info">
+                    <span for="code" class="col-xs-3"><span style="color:orangered">*</span>车厢坐席数量：</span>
+                    <input type="text" name="" id="count"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="info">
+                    <span for="code" class="col-xs-3"><span style="color:orangered">*</span>车厢坐席类型：</span>
+                    <input type="text" name="" id="seat_type"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="info">
+                    <span for="code" class="col-xs-3"><span style="color:orangered">*</span>车厢类型：</span>
+                    <input type="text" name="" id="type"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+
+            </div>
+
+            <div class="info" style="margin-top:25px; margin-bottom:25px;">
+                <span class="col-xs-3"></span>
+                <input type="button" name="" id="" value="提交" onclick="btn_submit()"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="reset" name="" id="" />
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 register-bottom">
+            <div class="col-xs-2 col-xs-offset-5" style="margin-top: 5px;">
+                <p>copyright@12306 购票网</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var link = location.href;
+    var stationId = Number(link.substr(link.indexOf("stationId") + 10));
+    var srcName = "";
+    var srcCode = "";
+    var srcBureau = "";
+    var srcLevel = "";
+    var srcRegion = "";
+    var srcAddress = "";
+    window.onload = function() {
+
+        // 从后台请求bureau表创建bureau下拉菜单
+        var oSelectBox = document.getElementById("bureau");
+        $.ajax({
+            type: "post",
+            url: "",
+            dataType: "json",
+            success: function(data) {
+
+            },
+            error: function(data) {
+                alert("服务器内部错误，请求bureau表失败...");
+                return;
+            }
+        });
+
+        // 临时模拟取值创建bureau
+        oSelectBox.length = 0;
+        for (var i = 0; i < 3; i++) {
+            oSelectBox.options[i] = new Option("哈");
+        }
+
+
+        // 从后台获取列车信息并填写
+        var station = {"id": stationId};
+        $.ajax({
+            type: "get",
+            url: "/manage/marshalling/get",
+            data: station,
+            dataType: "json",
+            success: function(data) {
+                srcName = data.data.name;
+                srcCode = data.data.code;
+                srcBureau = data.data.bureau;
+                srcLevel = data.data.level;
+                srcRegion = data.data.region;
+                srcAddress = data.data.address;
+                document.getElementById("name").value = srcName;
+                document.getElementById("code").value = srcCode;
+                var oBureau = document.getElementById("bureau");
+                for (var i = 0; i < oBureau.length; i++) {
+                    if (oBureau[i].innerHTML == srcBureau) {
+                        oBureau[i].selected = true;
+                    }
+                }
+                var oLevel = document.getElementById("level");
+                for (var i = 0; i < oLevel.length; i++) {
+                    if (oLevel[i].innerHTML == srcLevel) {
+                        oLevel[i].selected = true;
+                    }
+                }
+                document.getElementById("region").value = srcRegion;
+                document.getElementById("address").value = srcAddress;
+            },
+            error: function(data) {
+                alert("获取车站信息失败，服务器内部错误...");
+            }
+        });
+    }
+
+    function btn_submit() {
+        var code = document.getElementById("code");
+        var id = document.getElementById("id");
+        var count = document.getElementById("count");
+        var seat_type = document.getElementById("seat_type");
+        var type = document.getElementById("type");
+        var cabin = document.getElementById("cabin");
+        if (id.value == "") {
+            alert("列车编组编号不能为空");
+            return;
+        }
+        if (code.value == "") {
+            alert("车次代码不能为空");
+            return;
+        }
+        if (cabin.value == "") {
+            alert("车厢号不能为空");
+            return;
+        }
+        if (count.value == "") {
+            alert("车厢坐席数量不能为空");
+            return;
+        }
+
+        if (type.value == "") {
+            alert("车厢类型不能为空");
+            return;
+        }
+        if (seat_type.value == "") {
+            alert("车厢坐席类型不能为空");
+            return;
+        }
+        var marshalling = {
+            "code": code.value,
+            "id": id.value,
+            "type": type.value,
+            "cabin": cabin.value,
+            "seat_type": seat_type.value,
+            "count": count.value,
+
+        };
+
+
+        var station = {"id": stationId};
+        if (srcName != name.value) {
+            station["name"] = name.value;
+        }
+        if (srcCode != code.value) {
+            station["code"] = code.value;
+        }
+        if (srcBureau != bureau) {
+            station["bureau"] = bureau;
+        }
+        if (srcLevel != level) {
+            station["level"] = level;
+        }
+        if (srcRegion != region.value) {
+            station["region"] = region.value;
+        }
+        if (srcAddress != address.value) {
+            station["address"] = address.value;
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/manage/train/update",
+            data: station,
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    alert(data.msg);
+                    parent.location.href = "../index.html";
+                }
+                else {
+                    alert(data.msg);
+                    return;
+                }
+            },
+            error: function(data) {
+                alert("车站信息修改失败，服务器内部错误...");
+                return;
+            }
+        });
+
+    }
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
+</body>
+
+</html>
