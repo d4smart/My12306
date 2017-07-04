@@ -1,6 +1,7 @@
 package com.d4smart.my12306.service;
 
 import com.d4smart.my12306.common.Const;
+import com.d4smart.my12306.common.PageInfo;
 import com.d4smart.my12306.common.ServerResponse;
 import com.d4smart.my12306.dao.*;
 import com.d4smart.my12306.pojo.*;
@@ -36,6 +37,48 @@ public class OrderService {
 
     @Autowired
     private LineMapper lineMapper;
+
+    public ServerResponse<PageInfo> list(User user, int pageNum, int pageSize) {
+        int offset = (pageNum - 1) * pageSize;
+        int limit = pageSize;
+
+        List<Order> orders = orderMapper.getOrdersByPage(user.getId(), offset, limit);
+        int count = orderMapper.getOrderCount(user.getId());
+        PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
+        pageInfo.setList(orders);
+
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    public ServerResponse<PageInfo> getOrders(int pageNum, int pageSize) {
+        int offset = (pageNum - 1) * pageSize;
+        int limit = pageSize;
+
+        List<Order> orders = orderMapper.getOrdersByPage(null, offset, limit);
+        int count = orderMapper.getOrderCount(null);
+        PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
+        pageInfo.setList(orders);
+
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    public ServerResponse<Order> get(Integer id, User user) {
+        Order order = orderMapper.selectByIdAndUserId(id, user.getId());
+        if(order == null) {
+            return ServerResponse.createByErrorMessage("订单不存在");
+        }
+
+        return ServerResponse.createBySuccess(order);
+    }
+
+    public ServerResponse<Order> getByAdmin(Integer id) {
+        Order order = orderMapper.selectByPrimaryKey(id);
+        if(order == null) {
+            return ServerResponse.createByErrorMessage("订单不存在");
+        }
+
+        return ServerResponse.createBySuccess(order);
+    }
 
     public ServerResponse<String> create(String userIds, String code, String seatType, String date, User user) {
         if(userIds == null || code == null || seatType == null || date == null) {
@@ -90,11 +133,11 @@ public class OrderService {
             ticket.setEndStation(train.getEndStation());
             ticket.setPrice(price);
             ticket.setPassengerName(passenger.getActualName());
-            ticket.setPassengerType("成人");
+            ticket.setPassengerType(Const.PassengerType.ADULT);
             ticket.setIdentityNumber(passenger.getIdentityNumber());
-            ticket.setSaleMethod("网络");
+            ticket.setSaleMethod(Const.SaleMethod.ONLINE);
             ticket.setSaleTime(new Date());
-            ticket.setStatus(1);
+            ticket.setStatus(Const.TicketStatus.UNPAID.getCode());
             ticketMapper.insert(ticket);
 
             // 在对应的车厢减去车票
@@ -111,5 +154,89 @@ public class OrderService {
         groupMapper.updateCountById(groups.get(i).getId(), groups.get(i).getCount());
 
         return ServerResponse.createBySuccessMessage("订单创建成功");
+    }
+
+    public ServerResponse<String> cancel(Integer id, User user) {
+        Order order = orderMapper.selectByIdAndUserId(id, user.getId());
+        if(order == null) {
+            return ServerResponse.createByErrorMessage("订单不存在");
+        }
+
+        if(order.getStatus() != Const.OrderStatus.UNPAID.getCode()) {
+            return ServerResponse.createByErrorMessage("订单不能取消");
+        }
+
+        List<Ticket> tickets = ticketMapper.getTicketsByOrderId(order.getId());
+        for(Ticket ticket : tickets) {
+            ticketMapper.setTicketStatus(ticket.getId(), Const.TicketStatus.CANCELED.getCode());
+        }
+        int count = orderMapper.setOrderStatus(id, Const.OrderStatus.CANCELED.getCode());
+
+        if(count > 0) {
+            return ServerResponse.createBySuccessMessage("取消订单成功");
+        } else {
+            return ServerResponse.createByErrorMessage("取消订单失败");
+        }
+    }
+
+    public ServerResponse<String> retreat(Integer id, User user) {
+        Order order = orderMapper.selectByIdAndUserId(id, user.getId());
+        if(order == null) {
+            return ServerResponse.createByErrorMessage("订单不存在");
+        }
+
+        if(order.getStatus() != Const.OrderStatus.PAID.getCode()) {
+            return ServerResponse.createByErrorMessage("订单不能退款");
+        }
+
+        List<Ticket> tickets = ticketMapper.getTicketsByOrderId(order.getId());
+        for(Ticket ticket : tickets) {
+            ticketMapper.setTicketStatus(ticket.getId(), Const.TicketStatus.RETREAT.getCode());
+        }
+        int count = orderMapper.setOrderStatus(id, Const.OrderStatus.RETREAT.getCode());
+
+        if(count > 0) {
+            return ServerResponse.createBySuccessMessage("订单退款成功");
+        } else {
+            return ServerResponse.createByErrorMessage("订单退款失败");
+        }
+    }
+
+    public ServerResponse<String> pay(Integer id) {
+        Order order = orderMapper.selectByPrimaryKey(id);
+        if(order == null) {
+            return ServerResponse.createByErrorMessage("订单不存在");
+        }
+
+        if(order.getStatus() != Const.OrderStatus.UNPAID.getCode()) {
+            return ServerResponse.createByErrorMessage("订单不能支付");
+        }
+
+        List<Ticket> tickets = ticketMapper.getTicketsByOrderId(id);
+        for(Ticket ticket : tickets) {
+            ticketMapper.setTicketStatus(ticket.getId(), Const.TicketStatus.AVAILABLE.getCode());
+        }
+        int count = orderMapper.setOrderStatus(id, Const.OrderStatus.PAID.getCode());
+
+        if(count > 0) {
+            return ServerResponse.createBySuccessMessage("订单支付成功");
+        } else {
+            return ServerResponse.createByErrorMessage("订单支付失败");
+        }
+    }
+
+    public ServerResponse<String> delete(Integer id) {
+        int count = ticketMapper.deleteByOrderId(id);
+        if(count == 0) {
+            return ServerResponse.createByErrorMessage("订单下的车票删除失败");
+        }
+
+        count = orderMapper.deleteByPrimaryKey(id);
+
+        if(count > 0) {
+            return ServerResponse.createBySuccessMessage("订单删除成功");
+        } else {
+            return ServerResponse.createByErrorMessage("订单删除失败");
+        }
     }
 }

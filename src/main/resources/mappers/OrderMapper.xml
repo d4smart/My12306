@@ -120,4 +120,41 @@
       #{status,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{orderTime,jdbcType=TIMESTAMP},
       now(), now())
   </insert>
+
+  <update id="setOrderStatus" parameterType="map">
+    update orders
+    set status = #{status}, update_time = now()
+    where id = #{id}
+  </update>
+
+  <select id="selectByIdAndUserId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from orders
+    where id = #{id}
+    and user_id = #{userId}
+  </select>
+
+  <select id="getOrdersByPage" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from orders
+    <where>
+      <if test="userId != null">
+        and where user_id = #{userId}
+      </if>
+    </where>
+    order by id desc
+    limit #{offset}, #{limit}
+  </select>
+
+  <select id="getOrderCount" parameterType="java.lang.Integer" resultType="int">
+    select count(1)
+    from orders
+    <where>
+      <if test="userId != null">
+        and where user_id = #{userId}
+      </if>
+    </where>
+  </select>
 </mapper>

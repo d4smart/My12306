@@ -25,15 +25,26 @@ public class Const {
         int LOCKED = 1;
     }
 
+    public interface PassengerType {
+        String ADULT = "成人";
+        String CHILD = "儿童";
+        String STUDENT = "学生";
+    }
+
+    public interface SaleMethod {
+        String ONLINE = "网络";
+        String OFFICE = "售票处";
+        String PHONE = "电话";
+        String STATION = "车站";
+    }
+
     public enum OrderStatus {
         UNPAID(0, "未支付"),
         CANCELED(1, "已取消"),
 
-        PAID(10, "已付款"),
-        RETREAT(11, "已退票"),
-        CHANGED(12, "改签"),
+        RETREAT(11, "已退款"),
 
-        FETCHED(20, "已取票");
+        PAID(20, "已付款");
 
         private int code;
         private String value;
@@ -63,6 +74,49 @@ public class Const {
             for(OrderStatus orderStatus : values()) {
                 if(orderStatus.getCode() == code) {
                     return orderStatus;
+                }
+            }
+            throw new RuntimeException("没有找到对应的枚举");
+        }
+    }
+
+    public enum TicketStatus {
+        UNPAID(0, "未支付"),
+        CANCELED(1, "已取消"),
+
+        RETREAT(11, "已退票"),
+        CHANGED(12, "改签"),
+
+        AVAILABLE(20, "可以使用");
+
+        private int code;
+        private String value;
+
+        TicketStatus(int code, String value) {
+            this.code = code;
+            this.value = value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public void setCode(int code) {
+            this.code = code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public static TicketStatus codeOf(int code) {
+            for(TicketStatus ticketStatus : values()) {
+                if(ticketStatus.getCode() == code) {
+                    return ticketStatus;
                 }
             }
             throw new RuntimeException("没有找到对应的枚举");
