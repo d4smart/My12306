@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by d4smart on 2017/6/30 18:54
@@ -58,6 +59,12 @@ public class UserController {
         }
 
         return serverResponse;
+    }
+
+    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List<User>> select(String phone, String identityNumber, String email, String name) {
+        return userService.getSimpleUsers(phone, identityNumber, email, name);
     }
 
     @RequestMapping(value = "reset_password", method = RequestMethod.POST)

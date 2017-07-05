@@ -41,4 +41,7 @@ public interface UserMapper {
     int getUserCount(@Param("name") String name, @Param("sex") String sex, @Param("identityNumber") String identityNumber);
 
     List<User> selectUsersByIds(@Param("userIds") String userIds);
+
+    List<User> selectSimpleUsers(@Param("phone") String phone, @Param("identityNumber") String identityNumber,
+                                 @Param("email") String email, @Param("name") String name);
 }

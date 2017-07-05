@@ -2,7 +2,6 @@ package com.d4smart.my12306.service;
 
 import com.d4smart.my12306.common.Const;
 import com.d4smart.my12306.common.PageInfo;
-import com.d4smart.my12306.common.ResponseCode;
 import com.d4smart.my12306.common.ServerResponse;
 import com.d4smart.my12306.dao.UserMapper;
 import com.d4smart.my12306.pojo.User;
@@ -11,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -146,7 +144,13 @@ public class UserService {
         return ServerResponse.createBySuccessMessage("校验成功");
     }
 
-    public User selectLogin(String type, User user) {
+    public ServerResponse<List<User>> getSimpleUsers(String phone, String identityNumber, String email, String name) {
+        List<User> users = userMapper.selectSimpleUsers(phone, identityNumber, email, name);
+
+        return ServerResponse.createBySuccess(users);
+    }
+
+    private User selectLogin(String type, User user) {
         // 开始校验
         if(Const.PHONE.equals(type)) {
             return userMapper.selectLoginByPhone(user.getPhone(), user.getPassword());
@@ -229,9 +233,5 @@ public class UserService {
         } else {
             return ServerResponse.createByErrorMessage("删除用户失败");
         }
-    }
-
-    public Boolean isAdmin(User user) {
-        return user != null && user.getRole() == Const.Role.ROLE_ADMIN;
     }
 }

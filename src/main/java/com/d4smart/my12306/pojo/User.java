@@ -2,9 +2,11 @@ package com.d4smart.my12306.pojo;
 
 import com.d4smart.my12306.common.Const;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class User {
     private Integer id;
 
@@ -43,6 +45,14 @@ public class User {
         this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
+    }
+
+    public User(Integer id, String phone, String identityNumber, String email, String actualName) {
+        this.id = id;
+        this.phone = phone;
+        this.identityNumber = identityNumber;
+        this.email = email;
+        this.actualName = actualName;
     }
 
     public User() {

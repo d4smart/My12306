@@ -17,9 +17,21 @@
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
+  <resultMap id="SimpleResultMap" type="com.d4smart.my12306.pojo.User" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="identity_number" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actual_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
   <sql id="Base_Column_List" >
     id, phone, identity_number, email, password, actual_name, sex, role, last_login,
     status, create_time, update_time
+  </sql>
+  <sql id="Simple_Column_List" >
+    id, phone, identity_number, email, actual_name
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -254,5 +266,25 @@
     <include refid="Base_Column_List"/>
     from user
     where id in (${userIds})
+  </select>
+
+  <select id="selectSimpleUsers" parameterType="map" resultMap="SimpleResultMap">
+    select
+    <include refid="Simple_Column_List"/>
+    from user
+    <where>
+      <if test="phone != null">
+        and phone = #{phone}
+      </if>
+      <if test="identityNumber != null">
+        and identity_number = #{identityNumber}
+      </if>
+      <if test="email != null">
+        and email = #{email}
+      </if>
+      <if test="name != null">
+        and actual_name like "%"#{name}"%"
+      </if>
+    </where>
   </select>
 </mapper>
