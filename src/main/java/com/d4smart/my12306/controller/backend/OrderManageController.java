@@ -47,10 +47,4 @@ public class OrderManageController {
     public ServerResponse<String> pay(@RequestParam(value = "id", required = true) Integer id) {
         return orderService.pay(id);
     }
-
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse<String> delete(@RequestParam(value = "id", required = true) Integer id) {
-        return orderService.delete(id);
-    }
 }

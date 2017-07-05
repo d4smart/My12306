@@ -104,7 +104,11 @@ public class OrderService {
             return ServerResponse.createByErrorMessage("车票余量不足");
         }
 
-        BigDecimal price = lineMapper.getPriceById(train.getLineId());
+        // 根据座位类型和线路基础价格计算总价
+        double ratio = Const.FareRatio.getRatio(seatType);
+        System.out.println(ratio);
+        if(ratio == 0) return ServerResponse.createByErrorMessage("不存在这种座位类型");
+        BigDecimal price = BigDecimalUtil.multiply(lineMapper.getPriceById(train.getLineId()).doubleValue(), ratio);
 
         Order order = new Order();
         order.setUserId(user.getId());
@@ -246,21 +250,6 @@ public class OrderService {
             return ServerResponse.createBySuccessMessage("订单支付成功");
         } else {
             return ServerResponse.createByErrorMessage("订单支付失败");
-        }
-    }
-
-    public ServerResponse<String> delete(Integer id) {
-        int count = ticketMapper.deleteByOrderId(id);
-        if(count == 0) {
-            return ServerResponse.createByErrorMessage("订单下的车票删除失败");
-        }
-
-        count = orderMapper.deleteByPrimaryKey(id);
-
-        if(count > 0) {
-            return ServerResponse.createBySuccessMessage("订单删除成功");
-        } else {
-            return ServerResponse.createByErrorMessage("订单删除失败");
         }
     }
 }

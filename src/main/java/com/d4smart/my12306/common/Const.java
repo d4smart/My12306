@@ -123,4 +123,38 @@ public class Const {
         }
     }
 
+    public enum FareRatio {
+        FIRST("一等座", 4.0),
+        SECOND("二等座", 2.5),
+        HARDSEAT("硬座", 1.0),
+        SOFRSEAT("软座", 1.5),
+        HARDSLEEPER("硬卧", 2.0),
+        SOFTSLEEPER("软卧", 3.0),
+        NOSEAT("无座", 1.0);
+
+        private String seatType;
+        private double ratio;
+
+        FareRatio(String seatType, double ratio) {
+            this.seatType = seatType;
+            this.ratio = ratio;
+        }
+
+        public String getSeatType() {
+            return seatType;
+        }
+
+        public double getRatio() {
+            return ratio;
+        }
+
+        public static double getRatio(String seatType) {
+            for(FareRatio fareRatio : values()) {
+                if(fareRatio.getSeatType().equals(seatType)) {
+                    return fareRatio.getRatio();
+                }
+            }
+            return 0;
+        }
+    }
 }
