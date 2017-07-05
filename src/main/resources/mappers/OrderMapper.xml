@@ -143,6 +143,12 @@
       <if test="userId != null">
         and user_id = #{userId}
       </if>
+      <if test="orderTime != null">
+        and order_time between '${orderTime} 00:00:00' and '${orderTime} 23:59:59'
+      </if>
+      <if test="status != null">
+        and status = #{status}
+      </if>
     </where>
     order by id desc
     limit #{offset}, #{limit}
@@ -154,6 +160,12 @@
     <where>
       <if test="userId != null">
         and user_id = #{userId}
+      </if>
+      <if test="orderTime != null">
+        and order_time between '${orderTime} 00:00:00' and '${orderTime} 23:59:59'
+      </if>
+      <if test="status != null">
+        and status = #{status}
       </if>
     </where>
   </select>

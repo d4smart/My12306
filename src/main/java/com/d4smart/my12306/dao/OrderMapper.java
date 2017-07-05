@@ -24,7 +24,10 @@ public interface OrderMapper {
 
     Order selectByIdAndUserId(@Param("id") Integer id, @Param("userId") Integer userId);
 
-    List<Order> getOrdersByPage(@Param("userId") Integer userId, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<Order> getOrdersByPage(@Param("userId") Integer userId,
+                                @Param("status") String status, @Param("orderTime") String orderTime,
+                                @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    int getOrderCount(@Param("userId") Integer userId);
+    int getOrderCount(@Param("userId") Integer userId,
+                      @Param("status") String status, @Param("orderTime") String orderTime);
 }

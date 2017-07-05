@@ -18,9 +18,9 @@ public interface GroupMapper {
 
     int updateByPrimaryKey(Group record);
 
-    List<Group> getGroupsByPage(@Param("code") String code, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<Group> getGroupsByPage(@Param("code") String code, @Param("type") String type, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    int getGroupCount(@Param("code") String code);
+    int getGroupCount(@Param("code") String code, @Param("type") String type);
 
     List<Group> getGroupsByCodeAndSeatType(@Param("code") String code, @Param("seatType") String seatType);
 

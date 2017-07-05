@@ -18,10 +18,12 @@ public interface TrainMapper {
 
     int updateByPrimaryKey(Train record);
 
-    List<Train> getTrainsByPage(@Param("beginStation") String beginStation, @Param("endStation") String endStation,
+    List<Train> getTrainsByPage(@Param("lineId") Integer lineId,
+                                @Param("beginStation") String beginStation, @Param("endStation") String endStation,
                                 @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    int getTrainCount(@Param("beginStation") String beginStation, @Param("endStation") String endStation);
+    int getTrainCount(@Param("lineId") Integer lineId,
+                      @Param("beginStation") String beginStation, @Param("endStation") String endStation);
 
     Train selectByCode(String code);
 }

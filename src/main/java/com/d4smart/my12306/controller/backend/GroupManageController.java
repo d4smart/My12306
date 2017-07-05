@@ -30,17 +30,17 @@ public class GroupManageController {
 
     @RequestMapping(value = "select", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> select(String code,
+    public ServerResponse<PageInfo> select(String code, String type,
                                            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        return groupService.getGroups(code, pageNum, pageSize);
+        return groupService.getGroups(code, type, pageNum, pageSize);
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        return groupService.getGroups(null, pageNum, pageSize);
+        return groupService.getGroups(null, null, pageNum, pageSize);
     }
 
     @RequestMapping(value = "create", method = RequestMethod.POST)

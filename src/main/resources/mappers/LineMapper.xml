@@ -163,6 +163,14 @@
     select
     <include refid="Base_Column_List"/>
     from line
+    <where>
+      <if test="name != null">
+        and name like "%"#{name}"%"
+      </if>
+      <if test="station_names != null">
+        and station_names like "%"#{station_names}"%"
+      </if>
+    </where>
     order by id desc
     limit #{offset}, #{limit}
   </select>
@@ -170,6 +178,14 @@
   <select id="getLineCount" resultType="int">
     select count(1)
     from line
+    <where>
+      <if test="name != null">
+        and name like "%"#{name}"%"
+      </if>
+      <if test="station_names != null">
+        and station_names like "%"#{station_names}"%"
+      </if>
+    </where>
   </select>
 
   <select id="getPriceById" parameterType="java.lang.Integer" resultType="decimal">

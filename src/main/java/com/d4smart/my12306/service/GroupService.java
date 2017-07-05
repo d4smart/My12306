@@ -32,12 +32,12 @@ public class GroupService {
         return ServerResponse.createBySuccess(group);
     }
 
-    public ServerResponse<PageInfo> getGroups(String code, int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> getGroups(String code, String type, int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<Group> groups = groupMapper.getGroupsByPage(code, offset, limit);
-        int count = groupMapper.getGroupCount(code);
+        List<Group> groups = groupMapper.getGroupsByPage(code, type, offset, limit);
+        int count = groupMapper.getGroupCount(code, type);
         PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
         pageInfo.setList(groups);
 

@@ -188,6 +188,9 @@
     <include refid="Base_Column_List"/>
     from train
     <where>
+      <if test="lineId != null">
+        and line_id = #{lineId}
+      </if>
       <if test="beginStation != null">
         and begin_station = #{beginStation}
       </if>
@@ -203,6 +206,9 @@
     select count(1)
     from train
     <where>
+      <if test="lineId != null">
+        and line_id = #{lineId}
+      </if>
       <if test="beginStation != null">
         and begin_station = #{beginStation}
       </if>

@@ -40,6 +40,18 @@ public class TrainService {
         return ServerResponse.createBySuccess(train);
     }
 
+    public ServerResponse<PageInfo> getByLineId(Integer lineId, int pageNum, int pageSize) {
+        int offset = (pageNum - 1) * pageSize;
+        int limit = pageSize;
+
+        List<Train> trains = trainMapper.getTrainsByPage(lineId, null, null, offset, limit);
+        int count = trainMapper.getTrainCount(lineId, null, null);
+        PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
+        pageInfo.setList(trains);
+
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
     public ServerResponse<Train> getByCode(String code) {
         Train train = trainMapper.selectByCode(code);
         if(train == null) {
@@ -92,8 +104,8 @@ public class TrainService {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<Train> trains = trainMapper.getTrainsByPage(beginStation, endStation, offset, limit);
-        int count = trainMapper.getTrainCount(beginStation, endStation);
+        List<Train> trains = trainMapper.getTrainsByPage(null, beginStation, endStation, offset, limit);
+        int count = trainMapper.getTrainCount(null, beginStation, endStation);
         PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
         pageInfo.setList(trains);
 

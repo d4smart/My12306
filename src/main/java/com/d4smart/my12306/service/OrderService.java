@@ -42,20 +42,20 @@ public class OrderService {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<Order> orders = orderMapper.getOrdersByPage(user.getId(), offset, limit);
-        int count = orderMapper.getOrderCount(user.getId());
+        List<Order> orders = orderMapper.getOrdersByPage(user.getId(), null, null, offset, limit);
+        int count = orderMapper.getOrderCount(user.getId(), null, null);
         PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
         pageInfo.setList(orders);
 
         return ServerResponse.createBySuccess(pageInfo);
     }
 
-    public ServerResponse<PageInfo> getOrders(int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> getOrders(String status, String orderTime, int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<Order> orders = orderMapper.getOrdersByPage(null, offset, limit);
-        int count = orderMapper.getOrderCount(null);
+        List<Order> orders = orderMapper.getOrdersByPage(null, status, orderTime, offset, limit);
+        int count = orderMapper.getOrderCount(null, status, orderTime);
         PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
         pageInfo.setList(orders);
 

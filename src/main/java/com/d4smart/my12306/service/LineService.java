@@ -34,12 +34,12 @@ public class LineService {
         return ServerResponse.createBySuccess(line);
     }
 
-    public ServerResponse<PageInfo> list(int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> list(String name, String station_names, int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<Line> lines = lineMapper.getLinesByPage(offset, limit);
-        int count = lineMapper.getLineCount();
+        List<Line> lines = lineMapper.getLinesByPage(name, station_names, offset, limit);
+        int count = lineMapper.getLineCount(name, station_names);
         PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
         pageInfo.setList(lines);
 

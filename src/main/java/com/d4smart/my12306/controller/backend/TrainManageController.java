@@ -28,6 +28,14 @@ public class TrainManageController {
         return trainService.get(id);
     }
 
+    @RequestMapping(value = "get_by_lineId", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo> getByLineId(@RequestParam(value = "lineId", required = true) Integer lineId,
+                                                @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        return trainService.getByLineId(lineId, pageNum, pageSize);
+    }
+
     @RequestMapping(value = "select", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> select(String beginStation, String endStation,

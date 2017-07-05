@@ -29,16 +29,17 @@ public class OrderManageController {
 
     @RequestMapping(value = "select", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> select(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public ServerResponse<PageInfo> select(String status, String orderTime,
+                                           @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        return orderService.getOrders(pageNum, pageSize);
+        return orderService.getOrders(status, orderTime, pageNum, pageSize);
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        return orderService.getOrders(pageNum, pageSize);
+        return orderService.getOrders(null, null, pageNum, pageSize);
     }
 
     @RequestMapping(value = "pay", method = RequestMethod.POST)

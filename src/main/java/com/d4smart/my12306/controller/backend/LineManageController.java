@@ -32,7 +32,15 @@ public class LineManageController {
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        return lineService.list(pageNum, pageSize);
+        return lineService.list(null, null, pageNum, pageSize);
+    }
+
+    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo> select(String name, String station_names,
+                                           @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        return lineService.list(name, station_names, pageNum, pageSize);
     }
 
     @RequestMapping(value = "create", method = RequestMethod.POST)

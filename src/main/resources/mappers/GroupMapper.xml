@@ -118,6 +118,9 @@
       <if test="code != null">
         and code = #{code}
       </if>
+      <if test="type != null">
+        and type = #{type}
+      </if>
     </where>
     order by id desc
     limit #{offset}, #{limit}
@@ -130,10 +133,13 @@
       <if test="code != null">
         and code = #{code}
       </if>
+      <if test="type != null">
+        and type = #{type}
+      </if>
     </where>
   </select>
 
-  <select id="getGroupsByCodeAndSeatType" parameterType="string" resultMap="BaseResultMap">
+  <select id="getGroupsByCodeAndSeatType" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from marshalling
