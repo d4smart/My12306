@@ -26,7 +26,15 @@ public class StationManageController {
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        return stationService.getStations(pageNum, pageSize);
+        return stationService.getStations(null, null, null, pageNum, pageSize);
+    }
+
+    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo> select(String name, String code, String bureau,
+                                           @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        return stationService.getStations(name, code, bureau, pageNum, pageSize);
     }
 
     @RequestMapping(value = "get", method = RequestMethod.GET)

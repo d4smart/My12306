@@ -127,6 +127,17 @@
     select
     <include refid="Base_Column_List"/>
     from station
+    <where>
+      <if test="name != null">
+        and name like "%"#{name}"%"
+      </if>
+      <if test="code != null">
+        and code = #{code}
+      </if>
+      <if test="bureau != null">
+        and bureau = #{bureau}
+      </if>
+    </where>
     order by id desc
     limit #{offset}, #{limit}
   </select>
@@ -134,5 +145,16 @@
   <select id="getStationCount" resultType="int">
     select count(1)
     from station
+    <where>
+      <if test="name != null">
+        and name like "%"#{name}"%"
+      </if>
+      <if test="code != null">
+        and code = #{code}
+      </if>
+      <if test="bureau != null">
+        and bureau = #{bureau}
+      </if>
+    </where>
   </select>
 </mapper>

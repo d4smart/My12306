@@ -218,6 +218,17 @@
     select
     <include refid="Base_Column_List"/>
     from user
+    <where>
+      <if test="name != null">
+        and actual_name like "%"#{name}"%"
+      </if>
+      <if test="sex != null">
+        and sex = #{sex}
+      </if>
+      <if test="identityNumber != null">
+        and identity_number = #{identityNumber}
+      </if>
+    </where>
     order by id desc
     limit #{offset}, #{limit}
   </select>
@@ -225,6 +236,17 @@
   <select id="getUserCount" resultType="int">
     select count(1)
     from user
+    <where>
+      <if test="name != null">
+        and actual_name like "%"#{name}"%"
+      </if>
+      <if test="sex != null">
+        and sex = #{sex}
+      </if>
+      <if test="identityNumber != null">
+        and identity_number = #{identityNumber}
+      </if>
+    </where>
   </select>
 
   <select id="selectUsersByIds" parameterType="string" resultMap="BaseResultMap">

@@ -34,9 +34,11 @@ public interface UserMapper {
 
     int checkPassword(@Param("id") Integer id, @Param("password") String password);
 
-    List<User> selectUsersByPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<User> selectUsersByPage(@Param("name") String name, @Param("sex") String sex,
+                                 @Param("identityNumber") String identityNumber,
+                                 @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    int getUserCount();
+    int getUserCount(@Param("name") String name, @Param("sex") String sex, @Param("identityNumber") String identityNumber);
 
     List<User> selectUsersByIds(@Param("userIds") String userIds);
 }

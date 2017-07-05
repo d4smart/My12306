@@ -202,12 +202,12 @@ public class UserService {
         }
     }
 
-    public ServerResponse<PageInfo> getUsers(int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> getUsers(String name, String sex, String identityNumber, int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<User> users = userMapper.selectUsersByPage(offset, limit);
-        int count = userMapper.getUserCount();
+        List<User> users = userMapper.selectUsersByPage(name, sex, identityNumber, offset, limit);
+        int count = userMapper.getUserCount(name, sex, identityNumber);
         PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
         pageInfo.setList(users);
 

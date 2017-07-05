@@ -2,6 +2,8 @@ package com.d4smart.my12306.dao;
 
 import com.d4smart.my12306.pojo.Bureau;
 
+import java.util.List;
+
 public interface BureauMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface BureauMapper {
     int updateByPrimaryKeySelective(Bureau record);
 
     int updateByPrimaryKey(Bureau record);
+
+    List<Bureau> getBureaus();
 }

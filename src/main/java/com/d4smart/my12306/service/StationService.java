@@ -18,12 +18,12 @@ public class StationService {
     @Autowired
     private StationMapper stationMapper;
 
-    public ServerResponse<PageInfo> getStations(int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> getStations(String name, String code, String bureau, int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<Station> stations = stationMapper.selectStationsByPage(offset, limit);
-        int count = stationMapper.getStationCount();
+        List<Station> stations = stationMapper.selectStationsByPage(name, code, bureau, offset, limit);
+        int count = stationMapper.getStationCount(name, code, bureau);
         PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
         pageInfo.setList(stations);
 

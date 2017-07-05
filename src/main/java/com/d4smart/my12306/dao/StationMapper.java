@@ -18,7 +18,8 @@ public interface StationMapper {
 
     int updateByPrimaryKey(Station record);
 
-    List<Station> selectStationsByPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<Station> selectStationsByPage(@Param("name") String name, @Param("code") String code, @Param("bureau") String bureau,
+                                       @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    int getStationCount();
+    int getStationCount(@Param("name") String name, @Param("code") String code, @Param("bureau") String bureau);
 }
