@@ -37,24 +37,12 @@ public class OrderService {
     @Autowired
     private GroupMapper groupMapper;
 
-    public ServerResponse<PageInfo> list(User user, int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> getOrders(Integer userId, String status, String orderTime, int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
 
-        List<Order> orders = orderMapper.getOrdersByPage(user.getId(), null, null, offset, limit);
-        int count = orderMapper.getOrderCount(user.getId(), null, null);
-        PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
-        pageInfo.setList(orders);
-
-        return ServerResponse.createBySuccess(pageInfo);
-    }
-
-    public ServerResponse<PageInfo> getOrders(String status, String orderTime, int pageNum, int pageSize) {
-        int offset = (pageNum - 1) * pageSize;
-        int limit = pageSize;
-
-        List<Order> orders = orderMapper.getOrdersByPage(null, status, orderTime, offset, limit);
-        int count = orderMapper.getOrderCount(null, status, orderTime);
+        List<Order> orders = orderMapper.getOrdersByPage(userId, status, orderTime, offset, limit);
+        int count = orderMapper.getOrderCount(userId, status, orderTime);
         PageInfo pageInfo = new PageInfo(pageNum, pageSize, count);
         pageInfo.setList(orders);
 
@@ -227,8 +215,8 @@ public class OrderService {
         }
     }
 
-    public ServerResponse<String> pay(Integer id) {
-        Order order = orderMapper.selectByPrimaryKey(id);
+    public ServerResponse<String> pay(Integer id, Integer userId) {
+        Order order = orderMapper.selectByIdAndUserId(id, userId);
         if(order == null) {
             return ServerResponse.createByErrorMessage("订单不存在");
         }

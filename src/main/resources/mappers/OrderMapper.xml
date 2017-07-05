@@ -132,7 +132,9 @@
     <include refid="Base_Column_List"/>
     from orders
     where id = #{id}
-    and user_id = #{userId}
+    <if test="userId != null">
+      and user_id = #{userId}
+    </if>
   </select>
 
   <select id="getOrdersByPage" parameterType="map" resultMap="BaseResultMap">
@@ -143,11 +145,11 @@
       <if test="userId != null">
         and user_id = #{userId}
       </if>
-      <if test="orderTime != null">
-        and order_time between '${orderTime} 00:00:00' and '${orderTime} 23:59:59'
-      </if>
       <if test="status != null">
         and status = #{status}
+      </if>
+      <if test="orderTime != null">
+        and order_time between '${orderTime} 00:00:00' and '${orderTime} 23:59:59'
       </if>
     </where>
     order by id desc
@@ -161,11 +163,11 @@
       <if test="userId != null">
         and user_id = #{userId}
       </if>
-      <if test="orderTime != null">
-        and order_time between '${orderTime} 00:00:00' and '${orderTime} 23:59:59'
-      </if>
       <if test="status != null">
         and status = #{status}
+      </if>
+      <if test="orderTime != null">
+        and order_time between '${orderTime} 00:00:00' and '${orderTime} 23:59:59'
       </if>
     </where>
   </select>

@@ -25,13 +25,13 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "select", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> list(HttpSession session,
-                                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+    public ServerResponse<PageInfo> select(String status, String orderTime, HttpSession session,
+                                           @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
-        return orderService.list(user, pageNum, pageSize);
+        return orderService.getOrders(user.getId(), status, orderTime, pageNum, pageSize);
     }
 
     @RequestMapping(value = "get", method = RequestMethod.GET)
@@ -46,6 +46,13 @@ public class OrderController {
     public ServerResponse<String> create(String userIds, String code, String seatType, String date, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         return orderService.create(userIds, code, seatType, date, user);
+    }
+
+    @RequestMapping(value = "pay", method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> pay(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
+        User user = (User) session.getAttribute(Const.LOGIN_USER);
+        return orderService.pay(id, user.getId());
     }
 
     @RequestMapping(value = "cancel", method = RequestMethod.POST)

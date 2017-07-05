@@ -203,10 +203,10 @@
         and line_id = #{lineId}
       </if>
       <if test="beginStation != null">
-        and begin_station = #{beginStation}
+        and begin_station like "%"#{beginStation}"%"
       </if>
       <if test="endStation != null">
-        and end_station = #{endStation}
+        and end_station like "%"#{endStation}"%"
       </if>
     </where>
     order by id desc
@@ -221,10 +221,10 @@
         and line_id = #{lineId}
       </if>
       <if test="beginStation != null">
-        and begin_station = #{beginStation}
+        and begin_station like "%"#{beginStation}"%"
       </if>
       <if test="endStation != null">
-        and end_station = #{endStation}
+        and end_station like "%"#{endStation}"%"
       </if>
     </where>
   </select>
