@@ -54,7 +54,7 @@
                 <h5 style="color:orangered">订单信息</h5>
                 <div class="info">
                     <span class="col-xs-3"><span style="color:orangered">*</span>车次代码：</span>
-                    <input type="text" name="" id="code"/>
+                    <input type="text" name="" id="code" onclick="this.blur()"/>
                 </div>
                 <div class="info">
                     <span class="col-xs-3"><span style="color:orangered">*</span>出发日期：</span>
@@ -66,16 +66,18 @@
 
                     </select>
                 </div>
-                <div class="info row">
+                <div class="info row" id="idBox">
                     <span class="col-xs-3"><span style="color:orangered">*</span>乘客身份证号码：</span>
-                    <div class="col-xs-9" id="idBox">
-                        <input type="text" name="identityNo" id=""/>
+                    <div class="col-xs-9" >
+                        <input type="text" name="identityNo" id="" style="margin-left:-8px;"/>
                     </div>
                 </div>
-                <div class="info col-xs-3">
-                    <input type="button" value="增加乘客" onclick="addPassenger()" />
+                <div class="info col-xs-3 col-xs-offset-3">
+                    <input type="button" value="增加乘客" onclick="addPassenger()" style="margin-left:-16px;"/>
                     <input type="button" value="删除乘客" onclick="deletePassenger()" style="margin-left: 24px;"/>
                 </div>
+            </div>
+            <div class="col-xs-12 orderCtrl">
                 <div class="info" style="margin-top:25px; margin-bottom:25px;">
                     <span class="col-xs-3"></span>
                     <input type="button" name="" id="" value="提交" onclick="btn_submit()"/>
@@ -112,6 +114,7 @@
                 if (data.code == 0) {
                     var tickets = data.data.tickets;
                     createDetails(tickets);
+                    document.getElementById("code").value = data.data.code;
                 }
                 else {
                     alert(data.msg);
@@ -143,16 +146,23 @@
     }
 
     function addPassenger() {
+        var divBox = document.createElement("div");
+        divBox.setAttribute("class", "col-xs-9 col-xs-offset-3");
+        divBox.setAttribute("name", "idBox");
+        divBox.setAttribute("style", "margin-top:5px");
+
         var inputBox = document.createElement("input");
         inputBox.setAttribute("type", "text");
         inputBox.setAttribute("name", "identityNo");
-        document.getElementById("idBox").appendChild(inputBox);
+        inputBox.setAttribute("style", "margin-left:-8px");
+        divBox.appendChild(inputBox);
+        document.getElementById("idBox").appendChild(divBox);
     }
 
     function deletePassenger() {
-        var inputBoxes = document.getElementsByName("identityNo");
-        if (inputBoxes.length > 1) {
-            document.getElementById("idBox").removeChild(inputBoxes[inputBoxes.length - 1]);
+        var divBoxes = document.getElementsByName("idBox");
+        if (divBoxes.length > 1) {
+            document.getElementById("idBox").removeChild(divBoxes[divBoxes.length - 1]);
         }
     }
 

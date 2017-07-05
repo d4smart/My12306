@@ -48,7 +48,7 @@
                 <h5 style="color:orangered">订单信息</h5>
                 <div class="info">
                     <span class="col-xs-3"><span style="color:orangered">*</span>车次代码：</span>
-                    <input type="text" name="" id="code"/>
+                    <input type="text" name="" id="code" onclick="this.blur();"/>
                 </div>
                 <div class="info">
                     <span class="col-xs-3"><span style="color:orangered">*</span>出发日期：</span>
@@ -166,9 +166,7 @@
     }
 
     function btn_submit() {
-        var code = document.getElementById("code").value;
         var date = document.getElementById("date");
-        var seatType = document.getElementById("seatType")[document.getElementById("seatType").selectedIndex].innerHTML;
         var identityNos = document.getElementsByName("identityNo");
         var userIds = "";
         var regId = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
@@ -191,10 +189,6 @@
             }
         }
 
-        if (code.value == "") {
-            alert("车次代码不能为空");
-            return;
-        }
         if (date == "") {
             alert("出发日期不能为空");
             return;
@@ -204,17 +198,17 @@
             return;
         }
 
-
-        var order = {
-            "code": code,
-            "date": date,
-            "seatType": seatType,
-            "userIds": userIds
-        };
+        var order = {};
+        if (srcDate != date) {
+            order["date"] = date;
+        }
+        if (srcUserIds != userIds) {
+            order["userIds"] = userIds;
+        }
 
         $.ajax({
             type: "post",
-            url: "/order/create",
+            url: "/order/update",
             data: order,
             dataType: "json",
             success: function(data) {
@@ -228,7 +222,7 @@
                 }
             },
             error: function(data) {
-                alert("创建订单失败，服务器内部错误...");
+                alert("改签订单失败，服务器内部错误...");
             }
         });
     }
