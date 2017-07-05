@@ -34,6 +34,7 @@
 
         .register-bottom{
             background: url(../../images/bottom_ny_bg.gif) repeat-x;
+            margin-top: 24px;
         }
     </style>
 </head>
@@ -115,27 +116,23 @@
     var srcRegion = "";
     var srcAddress = "";
     window.onload = function() {
-
         // 从后台请求bureau表创建bureau下拉菜单
         var oSelectBox = document.getElementById("bureau");
         $.ajax({
-            type: "post",
-            url: "",
+            type: "get",
+            url: "/manage/bureau/list",
             dataType: "json",
             success: function(data) {
-
+                oSelectBox.length = 1;
+                for (var i = 1; i < data.data.length; i++) {
+                    oSelectBox.options[i] = new Option(data.data[i].name);
+                }
             },
             error: function(data) {
                 alert("服务器内部错误，请求bureau表失败...");
                 return;
             }
         });
-
-        // 临时模拟取值创建bureau
-        oSelectBox.length = 0;
-        for (var i = 0; i < 3; i++) {
-            oSelectBox.options[i] = new Option("哈");
-        }
 
 
         // 从后台获取车站信息并填写
@@ -173,7 +170,7 @@
                 alert("获取车站信息失败，服务器内部错误...");
             }
         });
-    }
+    };
 
     function btn_submit() {
         var name = document.getElementById("name");

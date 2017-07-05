@@ -108,11 +108,14 @@
         // 从后台请求bureau表创建bureau下拉菜单
         var oSelectBox = document.getElementById("bureau");
         $.ajax({
-            type: "post",
-            url: "",
+            type: "get",
+            url: "/manage/bureau/list",
             dataType: "json",
             success: function(data) {
-
+                oSelectBox.length = 1;
+                for (var i = 1; i < data.data.length; i++) {
+                    oSelectBox.options[i] = new Option(data.data[i].name);
+                }
             },
             error: function(data) {
                 alert("服务器内部错误，请求bureau表失败...");
@@ -120,12 +123,7 @@
             }
         });
 
-        // 临时模拟取值创建bureau
-        oSelectBox.length = 0;
-        for (var i = 0; i < 3; i++) {
-            oSelectBox.options[i] = new Option("哈");
-        }
-    }
+    };
 
     function btn_submit() {
         var name = document.getElementById("name");

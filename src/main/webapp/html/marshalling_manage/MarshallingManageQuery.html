@@ -94,6 +94,8 @@
                         车厢类型：
                         <select name="" id="type">
                             <option value="">车厢类型</option>
+                            <option value="">一等座车</option>
+                            <option value="">二等座车</option>
                             <option value="">硬座车</option>
                             <option value="">软座车</option>
                             <option value="">硬卧车</option>
@@ -248,17 +250,19 @@
 
         var marshalling = {
             "pageSize": pageSize,
-            "pageNum": currentPage,
-            "type": type
+            "pageNum": currentPage
         };
 
         if (code != "") {
             marshalling["code"] = code;
         }
+        if (oType.selectedIndex != 0) {
+            marshalling["type"] = type;
+        }
 
         $.ajax({
             type: "get",
-            url: "/manage/group/list",
+            url: "/manage/group/select",
             data: marshalling,
             dataType: "json",
             success: function(data) {

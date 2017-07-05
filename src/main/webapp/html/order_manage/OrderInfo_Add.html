@@ -66,9 +66,9 @@
 
                     </select>
                 </div>
-                <div class="info row" id="idBox">
+                <div class="info row">
                     <span class="col-xs-3"><span style="color:orangered">*</span>乘客身份证号码：</span>
-                    <div class="col-xs-9" >
+                    <div class="col-xs-9" name="idBox">
                         <input type="text" name="identityNo" id="" style="margin-left:-8px;"/>
                     </div>
                 </div>
@@ -168,7 +168,7 @@
 
     function btn_submit() {
         var code = document.getElementById("code").value;
-        var date = document.getElementById("date");
+        var date = document.getElementById("date").value;
         var seatType = document.getElementById("seatType")[document.getElementById("seatType").selectedIndex].innerHTML;
         var identityNos = document.getElementsByName("identityNo");
         var userIds = "";
@@ -177,16 +177,16 @@
         for (var i = 0; i < identityNos.length; i++) {
             if (regId.test(identityNos[i].value)) {
                 if (userIds != "") {
-                    userId += ",";
+                    userIds += ",";
                 }
                 $.ajax({
                     type: "get",
-                    url: "/manage/user/",
+                    url: "/manage/user/select",
                     async: false,
                     data: {"identityNumber": identityNos[i].value},
                     dataType: "json",
                     success: function(data) {
-                        userId += data.data.id;
+                        userIds += data.data.list[0].id;
                     }
                 });
             }
@@ -205,6 +205,7 @@
             return;
         }
 
+        console.log(code, date, seatType, userIds);
 
         var order = {
             "code": code,

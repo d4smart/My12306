@@ -169,11 +169,14 @@
         // 从后台请求bureau表创建bureau下拉菜单
         var oSelectBox = document.getElementById("bureau");
         $.ajax({
-            type: "post",
-            url: "",
+            type: "get",
+            url: "/manage/bureau/list",
             dataType: "json",
             success: function(data) {
-
+                oSelectBox.length = 1;
+                for (var i = 1; i < data.data.length; i++) {
+                    oSelectBox.options[i] = new Option(data.data[i].name);
+                }
             },
             error: function(data) {
                 alert("服务器内部错误，请求bureau表失败...");
@@ -181,12 +184,7 @@
             }
         });
 
-        // 临时模拟取值创建bureau
-        oSelectBox.length = 1;
-        for (var i = 1; i < 4; i++) {
-            oSelectBox.options[i] = new Option("哈");
-        }
-    }
+    };
     // 搜索按钮绑定回车事件
     document.onkeydown = function(event) {
         if (event.keyCode == 13) {
@@ -194,7 +192,7 @@
             event.returnValue = false;
             search(true);
         }
-    }
+    };
 
     // 向前翻页
     function previous() {
@@ -281,7 +279,7 @@
 
         $.ajax({
             type: "get",
-            url: "/manage/station/list",
+            url: "/manage/station/select",
             data: station,
             dataType: "json",
             success: function(data) {

@@ -243,19 +243,16 @@
             "pageSize": pageSize,
             "pageNum": currentPage
         };
-        // alert(statusIndex);
         if (statusIndex != 0) {
             order["status"] = statusCode[statusIndex - 1];
-            return;
         }
         if (date != "") {
-            order["date"] = date;
-            return;
+            order["orderTime"] = date;
         }
 
         $.ajax({
             type: "get",
-            url: "/order/list",
+            url: "/manage/order/select",
             data: order,
             dataType: "json",
             success: function(data) {

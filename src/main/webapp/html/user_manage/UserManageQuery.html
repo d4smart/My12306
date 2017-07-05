@@ -261,7 +261,7 @@
         };
 
         if (name != "") {
-            user["actualName"] = name;
+            user["name"] = name;
         }
         if (gender != "全部") {
             user["sex"] = gender;
@@ -272,7 +272,7 @@
 
         $.ajax({
             type: "get",
-            url: "/manage/user/list",
+            url: "/manage/user/select",
             data: user,
             dataType: "json",
             success: function(data) {

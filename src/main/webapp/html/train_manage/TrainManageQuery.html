@@ -276,9 +276,61 @@
 
         if (code != "") {
             train["code"] = code;
+            $.ajax({
+                type: "get",
+                url: "/train/get_by_code",
+                data: train,
+                dataType: "json",
+                success: function(data) {
+                    if (data.code == 0) {
+                        if (flag) {
+                            createPageCode(1);
+                        }
+
+                        // 清除除表头之外的tr行
+                        var rows = document.getElementById("trainList").rows.length;
+                        for (var i = rows - 1; i > 0; i--) {
+                            document.getElementById("trainList").deleteRow(i);
+                        }
+                        // 根据从后台取来的信息创建新的表
+
+                        var para = {
+                            "id": data.data.id,
+                            "code": data.data.code,
+                            "lineId": data.data.lineId,
+                            "beginStation": data.data.beginStation,
+                            "endStation": data.data.endStation,
+                            "beginTime": data.data.beginTime,
+                            "endTime": data.data.endTime,
+                            "spendTime": data.data.spendTime,
+                            "mileage": data.data.mileage,
+                            "noseatCount": data.data.noseatCount,
+                            "vehicleType": data.data.vehicleType,
+                            "trainType": data.data.trainType
+                        };
+                        addRow(para);
+                    }
+                }
+            });
+            return;
         }
         if (line != "选择线路") {
             train["lineId"] = lineId[lineSelect.selectedIndex - 1];
+            $.ajax({
+                type: "get",
+                url: "/manage/train/get_by_lineId",
+                data: train,
+                dataType: "json",
+                success: function(data) {
+                    if (data.code == 0) {
+                        if (flag) {
+                            createPageCode(data.data.pageNum);
+                        }
+                        createTable(data.data.list, data.data.pageSize);
+                    }
+                }
+            });
+            return;
         }
 
         $.ajax({
@@ -289,12 +341,13 @@
             success: function(data) {
                 if (data.code == 0) {
                     if (flag) {
-                        createPageCode(data.data.totalPage);
+                        createPageCode(data.data.pageNum);
                     }
-                    createTable(data.data.pageSize, data.data.list);
+                    createTable(data.data.list, data.data.pageSize);
                 }
             }
         });
+
     }
 
     function createPageCode(number) {
@@ -319,8 +372,8 @@
         oul.appendChild(oli);
     }
 
-    function createTable(pageSize, list) {
-        var pageSize = arguments[0] ? arguments[0] : 5;
+    function createTable(list, pageSize) {
+        var pageSize = arguments[1] ? arguments[1] : 5;
         // 清除除表头之外的tr行
         var rows = document.getElementById("trainList").rows.length;
         for (var i = rows - 1; i > 0; i--) {
@@ -360,7 +413,8 @@
                 lineName = data.data.name;
             },
             error: function(data) {
-                console.log("line表请求失败，服务器内不错误...");
+                alert(data.lineId);
+                console.log("line表请求失败，服务器内部错误...");
                 return;
             }
         });

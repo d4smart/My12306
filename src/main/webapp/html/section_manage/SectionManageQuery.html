@@ -269,16 +269,16 @@
             "pageNum": currentPage
         };
 
-        if (from != "") {
+        if (oFrom.selectedIndex != 0) {
             section["fromStation"] = from;
         }
-        if (to != "") {
+        if (oTo.selectedIndex != 0) {
             section["toStation"] = to;
         }
 
         $.ajax({
             type: "get",
-            url: "/manage/section/list",
+            url: "/manage/section/select",
             data: section,
             dataType: "json",
             success: function(data) {

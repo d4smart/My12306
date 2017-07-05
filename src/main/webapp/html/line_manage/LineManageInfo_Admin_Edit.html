@@ -171,7 +171,7 @@
                     var fromStation = data.data.fromStation;
                     var toStation = data.data.toStation;
                     var oStations = document.getElementsByName("stations");
-                    alert(oStations[oStations.length - 2].length);
+                    // alert(oStations[oStations.length - 2].length);
                     for (var j = 0; j < oStations[oStations.length - 2].length; j++) {
                         if (oStations[oStations.length - 2][j].innerHTML == fromStation) {
                             oStations[oStations.length - 2][j].selected = true;
@@ -199,7 +199,7 @@
     };
 
     var oStations = document.getElementsByName("stations");
-    alert("length" +oStations[oStations.length - 2].length);
+    // alert("length" +oStations[oStations.length - 2].length);
 
     function addStation() {
         var oSelect = document.createElement("select");

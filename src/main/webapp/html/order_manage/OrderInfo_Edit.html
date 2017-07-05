@@ -60,8 +60,8 @@
                 </div>
                 <div class="info row">
                     <span class="col-xs-3"><span style="color:orangered">*</span>乘客身份证号码：</span>
-                    <div class="col-xs-9" id="idBox">
-                        <input type="text" name="identityNo" id=""/>
+                    <div class="col-xs-9" name="idBox">
+                        <input type="text" name="identityNo" id="" style="margin-left:-8px;"/>
                     </div>
                 </div>
                 <div class="info col-xs-3">
@@ -152,16 +152,23 @@
     }
 
     function addPassenger() {
+        var divBox = document.createElement("div");
+        divBox.setAttribute("class", "col-xs-9 col-xs-offset-3");
+        divBox.setAttribute("name", "idBox");
+        divBox.setAttribute("style", "margin-top:5px");
+
         var inputBox = document.createElement("input");
         inputBox.setAttribute("type", "text");
         inputBox.setAttribute("name", "identityNo");
-        document.getElementById("idBox").appendChild(inputBox);
+        inputBox.setAttribute("style", "margin-left:-8px");
+        divBox.appendChild(inputBox);
+        document.getElementById("idBox").appendChild(divBox);
     }
 
     function deletePassenger() {
-        var inputBoxes = document.getElementsByName("identityNo");
-        if (inputBoxes.length > 1) {
-            document.getElementById("idBox").removeChild(inputBoxes[inputBoxes.length - 1]);
+        var divBoxes = document.getElementsByName("idBox");
+        if (divBoxes.length > 1) {
+            document.getElementById("idBox").removeChild(divBoxes[divBoxes.length - 1]);
         }
     }
 
