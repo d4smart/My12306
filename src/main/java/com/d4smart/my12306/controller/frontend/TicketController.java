@@ -40,4 +40,11 @@ public class TicketController {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         return ticketService.list(user, pageNum, pageSize);
     }
+
+    @RequestMapping(value = "retreat", method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> retreat(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
+        User user = (User) session.getAttribute(Const.LOGIN_USER);
+        return ticketService.retreat(id, user);
+    }
 }

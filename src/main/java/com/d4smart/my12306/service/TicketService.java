@@ -1,7 +1,9 @@
 package com.d4smart.my12306.service;
 
+import com.d4smart.my12306.common.Const;
 import com.d4smart.my12306.common.PageInfo;
 import com.d4smart.my12306.common.ServerResponse;
+import com.d4smart.my12306.dao.GroupMapper;
 import com.d4smart.my12306.dao.TicketMapper;
 import com.d4smart.my12306.pojo.Ticket;
 import com.d4smart.my12306.pojo.User;
@@ -18,6 +20,9 @@ public class TicketService {
 
     @Autowired
     private TicketMapper ticketMapper;
+
+    @Autowired
+    private GroupMapper groupMapper;
 
     public ServerResponse<Ticket> get(Integer id, User user) {
         Ticket ticket = ticketMapper.selectByIdAndUserId(id, user.getId());
@@ -59,5 +64,25 @@ public class TicketService {
         pageInfo.setList(tickets);
 
         return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    public ServerResponse<String> retreat(Integer id, User user) {
+        Ticket ticket = ticketMapper.selectByIdAndUserId(id, user.getId());
+        if(ticket == null) {
+            return ServerResponse.createByErrorMessage("车票不存在");
+        }
+
+        if(ticket.getStatus() != Const.TicketStatus.AVAILABLE.getCode() && ticket.getStatus() != Const.TicketStatus.CHANGED.getCode()) {
+            return ServerResponse.createByErrorMessage("车票不能改签");
+        }
+
+        ticketMapper.setTicketStatus(ticket.getId(), Const.TicketStatus.RETREATED.getCode());
+        int count = groupMapper.increaseCountByCodeAndCabin(ticket.getTrip(), ticket.getCabin(), 1);
+
+        if(count > 0) {
+            return ServerResponse.createBySuccessMessage("退票成功");
+        } else {
+            return ServerResponse.createByErrorMessage("退票失败");
+        }
     }
 }

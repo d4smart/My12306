@@ -42,7 +42,7 @@ public class Const {
         UNPAID(0, "未支付"),
         CANCELED(1, "已取消"),
 
-        RETREAT(11, "已退款"),
+        RETREATED(11, "已退款"),
 
         PAID(20, "已付款");
 
@@ -84,7 +84,7 @@ public class Const {
         UNPAID(0, "未支付"),
         CANCELED(1, "已取消"),
 
-        RETREAT(11, "已退票"),
+        RETREATED(11, "已退票"),
         CHANGED(12, "改签"),
 
         AVAILABLE(20, "可以使用");

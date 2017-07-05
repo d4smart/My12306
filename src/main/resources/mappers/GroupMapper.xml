@@ -162,4 +162,18 @@
     set count = #{count}, update_time = now()
     where id = #{id}
   </update>
+
+  <update id="updateCountByCodeAndCabin" parameterType="map">
+    update marshalling
+    set count = #{count}
+    where code = #{code}
+    and cabin = #{cabin}
+  </update>
+
+  <update id="increaseCountByCodeAndCabin" parameterType="map">
+    update marshalling
+    set count = count + #{count}
+    where code = #{code}
+    and cabin = #{cabin}
+  </update>
 </mapper>

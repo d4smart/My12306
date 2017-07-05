@@ -25,4 +25,8 @@ public interface GroupMapper {
     List<Group> getGroupsByCodeAndSeatType(@Param("code") String code, @Param("seatType") String seatType);
 
     int updateCountById(@Param("id") Integer id, @Param("count") Integer count);
+
+    int updateCountByCodeAndCabin(@Param("code") String code, @Param("cabin") String cabin, @Param("count") Integer count);
+
+    int increaseCountByCodeAndCabin(@Param("code") String code, @Param("cabin") String cabin, @Param("count") Integer count);
 }

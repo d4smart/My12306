@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by d4smart on 2017/7/4 13:12
@@ -168,8 +170,19 @@ public class OrderService {
         }
 
         List<Ticket> tickets = ticketMapper.getTicketsByOrderId(order.getId());
+        Map<String, Integer> refunds = new HashMap<String, Integer>();
         for(Ticket ticket : tickets) {
             ticketMapper.setTicketStatus(ticket.getId(), Const.TicketStatus.CANCELED.getCode());
+            // groupMapper.increaseCountByCodeAndCabin(ticket.getTrip(), ticket.getCabin(), 1); // 对应车次的车厢车票数+1
+
+            if(refunds.containsKey(ticket.getCabin())) {
+                refunds.put(ticket.getCabin(), refunds.get(ticket.getCabin()) + 1);
+            } else {
+                refunds.put(ticket.getCabin(), 1);
+            }
+        }
+        for(Map.Entry<String, Integer> entry : refunds.entrySet()) {
+            groupMapper.increaseCountByCodeAndCabin(tickets.get(0).getTrip(), entry.getKey(), entry.getValue());
         }
         int count = orderMapper.setOrderStatus(id, Const.OrderStatus.CANCELED.getCode());
 
@@ -191,10 +204,20 @@ public class OrderService {
         }
 
         List<Ticket> tickets = ticketMapper.getTicketsByOrderId(order.getId());
+        Map<String, Integer> refunds = new HashMap<String, Integer>();
         for(Ticket ticket : tickets) {
-            ticketMapper.setTicketStatus(ticket.getId(), Const.TicketStatus.RETREAT.getCode());
+            ticketMapper.setTicketStatus(ticket.getId(), Const.TicketStatus.RETREATED.getCode());
+
+            if(refunds.containsKey(ticket.getCabin())) {
+                refunds.put(ticket.getCabin(), refunds.get(ticket.getCabin()) + 1);
+            } else {
+                refunds.put(ticket.getCabin(), 1);
+            }
         }
-        int count = orderMapper.setOrderStatus(id, Const.OrderStatus.RETREAT.getCode());
+        for(Map.Entry<String, Integer> entry : refunds.entrySet()) {
+            groupMapper.increaseCountByCodeAndCabin(tickets.get(0).getTrip(), entry.getKey(), entry.getValue());
+        }
+        int count = orderMapper.setOrderStatus(id, Const.OrderStatus.RETREATED.getCode());
 
         if(count > 0) {
             return ServerResponse.createBySuccessMessage("订单退款成功");
