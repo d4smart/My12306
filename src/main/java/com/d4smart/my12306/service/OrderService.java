@@ -37,9 +37,6 @@ public class OrderService {
     @Autowired
     private GroupMapper groupMapper;
 
-    @Autowired
-    private LineMapper lineMapper;
-
     public ServerResponse<PageInfo> list(User user, int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
@@ -108,7 +105,7 @@ public class OrderService {
         double ratio = Const.FareRatio.getRatio(seatType);
         System.out.println(ratio);
         if(ratio == 0) return ServerResponse.createByErrorMessage("不存在这种座位类型");
-        BigDecimal price = BigDecimalUtil.multiply(lineMapper.getPriceById(train.getLineId()).doubleValue(), ratio);
+        BigDecimal price = BigDecimalUtil.multiply(train.getPrice().doubleValue(), ratio);
 
         Order order = new Order();
         order.setUserId(user.getId());

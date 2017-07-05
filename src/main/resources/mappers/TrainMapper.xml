@@ -12,6 +12,7 @@
       <arg column="end_time" jdbcType="TIME" javaType="java.util.Date" />
       <arg column="spend_time" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="mileage" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="noseat_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="vehicle_type" jdbcType="CHAR" javaType="java.lang.String" />
       <arg column="train_type" jdbcType="CHAR" javaType="java.lang.String" />
@@ -21,7 +22,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, code, line_id, begin_station, end_station, begin_time, end_time, spend_time, 
-    mileage, noseat_count, vehicle_type, train_type, create_time, update_time
+    mileage, price, noseat_count, vehicle_type, train_type, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -36,12 +37,12 @@
   <insert id="insert" parameterType="com.d4smart.my12306.pojo.Train" >
     insert into train (id, code, line_id, 
       begin_station, end_station, begin_time, 
-      end_time, spend_time, mileage, 
+      end_time, spend_time, mileage, price,
       noseat_count, vehicle_type, train_type,
       create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{lineId,jdbcType=INTEGER}, 
       #{beginStation,jdbcType=VARCHAR}, #{endStation,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIME}, 
-      #{endTime,jdbcType=TIME}, #{spendTime,jdbcType=INTEGER}, #{mileage,jdbcType=INTEGER}, 
+      #{endTime,jdbcType=TIME}, #{spendTime,jdbcType=INTEGER}, #{mileage,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL},
       #{noseatCount,jdbcType=INTEGER}, #{vehicleType,jdbcType=CHAR}, #{trainType,jdbcType=CHAR},
       now(), now())
   </insert>
@@ -74,6 +75,9 @@
       </if>
       <if test="mileage != null" >
         mileage,
+      </if>
+      <if test="price != null" >
+        price,
       </if>
       <if test="noseatCount != null" >
         noseat_count,
@@ -114,6 +118,9 @@
       <if test="mileage != null" >
         #{mileage,jdbcType=INTEGER},
       </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
       <if test="noseatCount != null" >
         #{noseatCount,jdbcType=INTEGER},
       </if>
@@ -153,6 +160,9 @@
       <if test="mileage != null" >
         mileage = #{mileage,jdbcType=INTEGER},
       </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
       <if test="noseatCount != null" >
         noseat_count = #{noseatCount,jdbcType=INTEGER},
       </if>
@@ -176,6 +186,7 @@
       end_time = #{endTime,jdbcType=TIME},
       spend_time = #{spendTime,jdbcType=INTEGER},
       mileage = #{mileage,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
       noseat_count = #{noseatCount,jdbcType=INTEGER},
       vehicle_type = #{vehicleType,jdbcType=CHAR},
       train_type = #{trainType,jdbcType=CHAR},

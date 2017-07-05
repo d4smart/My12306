@@ -3,6 +3,7 @@ package com.d4smart.my12306.pojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Train {
@@ -26,6 +27,8 @@ public class Train {
 
     private Integer mileage;
 
+    private BigDecimal price;
+
     private Integer noseatCount;
 
     private String vehicleType;
@@ -36,7 +39,7 @@ public class Train {
 
     private Date updateTime;
 
-    public Train(Integer id, String code, Integer lineId, String beginStation, String endStation, Date beginTime, Date endTime, Integer spendTime, Integer mileage, Integer noseatCount, String vehicleType, String trainType, Date createTime, Date updateTime) {
+    public Train(Integer id, String code, Integer lineId, String beginStation, String endStation, Date beginTime, Date endTime, Integer spendTime, Integer mileage, BigDecimal price, Integer noseatCount, String vehicleType, String trainType, Date createTime, Date updateTime) {
         this.id = id;
         this.code = code;
         this.lineId = lineId;
@@ -46,6 +49,7 @@ public class Train {
         this.endTime = endTime;
         this.spendTime = spendTime;
         this.mileage = mileage;
+        this.price = price;
         this.noseatCount = noseatCount;
         this.vehicleType = vehicleType;
         this.trainType = trainType;
@@ -129,6 +133,14 @@ public class Train {
 
     public void setMileage(Integer mileage) {
         this.mileage = mileage;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Integer getNoseatCount() {

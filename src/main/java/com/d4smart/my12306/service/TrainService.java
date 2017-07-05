@@ -129,6 +129,7 @@ public class TrainService {
         train.setEndTime(line.getEndTime());
         train.setSpendTime(line.getSpendTime());
         train.setMileage(line.getMileage());
+        train.setPrice(line.getPrice());
 
         int count = trainMapper.insertSelective(train);
 
@@ -140,6 +141,9 @@ public class TrainService {
     }
 
     public ServerResponse<String> update(Train train) {
+        Train update = new Train();
+
+        update.setCode(train.getCode());
         if(train.getLineId() != null) {
             Line line = lineMapper.selectByPrimaryKey(train.getLineId());
             if(line == null) {
@@ -147,15 +151,19 @@ public class TrainService {
             }
 
             String stations[] = line.getStationNames().split(",");
-            train.setBeginStation(stations[0]);
-            train.setEndStation(stations[stations.length - 1]);
-            train.setBeginTime(line.getBeginTime());
-            train.setEndTime(line.getEndTime());
-            train.setSpendTime(line.getSpendTime());
-            train.setMileage(line.getMileage());
+            update.setBeginStation(stations[0]);
+            update.setEndStation(stations[stations.length - 1]);
+            update.setBeginTime(line.getBeginTime());
+            update.setEndTime(line.getEndTime());
+            update.setSpendTime(line.getSpendTime());
+            update.setMileage(line.getMileage());
+            update.setPrice(line.getPrice());
         }
+        update.setNoseatCount(train.getNoseatCount());
+        update.setVehicleType(train.getVehicleType());
+        update.setTrainType(train.getTrainType());
 
-        int count = trainMapper.updateByPrimaryKeySelective(train);
+        int count = trainMapper.updateByPrimaryKeySelective(update);
 
         if(count > 0) {
             return ServerResponse.createBySuccessMessage("列车更新成功");

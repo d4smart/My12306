@@ -7,6 +7,7 @@ import com.d4smart.my12306.dao.TrainMapper;
 import com.d4smart.my12306.pojo.Group;
 import com.d4smart.my12306.pojo.Train;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,7 +55,12 @@ public class GroupService {
             return ServerResponse.createByErrorMessage("列车不存在");
         }
 
-        int count = groupMapper.insertSelective(group);
+        int count = 0;
+        try {
+            count = groupMapper.insertSelective(group);
+        } catch (DuplicateKeyException e) {
+            return ServerResponse.createByErrorMessage("编组添加重复");
+        }
 
         if(count > 0) {
             return ServerResponse.createBySuccessMessage("编组添加成功");
