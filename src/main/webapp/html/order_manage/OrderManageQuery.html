@@ -1,10 +1,404 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/
+			.3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/
+			.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title></title>
+    <style>
+        body {
+            background: url(../../images/bg_point_write.gif);
+        }
 
+        .searchBtn {
+            width: 60px;
+            background: url(../../images/button_cx.gif);
+        }
+
+        #formSearch{
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-left: 15px;
+            margin-right: 25px;
+        }
+
+        #formResult table{
+            margin-top: 40px;
+            border: 1px solid #DFDCDF;
+        }
+
+        #formResult th{
+            text-align: center;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        #formResult td{
+            text-align: center;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        .table-control{
+            margin: 15px auto;
+        }
+
+        #btn-create {
+            width: 160px;
+            background-color: #ADD2EC;
+        }
+
+        #btn-delete {
+            width: 80px;
+            background-color: #ADD2EC;
+            margin-left: 15px;
+        }
+
+        #btn-excel {
+            width: 80px;
+            background-color: #ADD2EC;
+            margin-left: 15px;
+        }
+
+        .bottom-control{
+            font-size: 14px;
+            margin-top: 26px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 header">
+            <h3 style="color:#0A3C5F;">订单管理</h3>
+            <img src="../../images/line1.jpg" alt="" />
+        </div>
+        <div class="col-xs-10 col-xs-offset-1 searchBar">
+            <form action="" role="form" class="form-inline" id="formSearch">
+                <div class="row">
+                    <div class="form-group">
+                        订单状态：
+                        <select name="" id="status">
+                            <option value="">订单状态</option>
+                            <option value="">未付款</option>
+                            <option value="">已付款</option>
+                            <option value="">已退款</option>
+                            <option value="">已取消</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        下单日期：<input type="text" name="" id="date" />&nbsp;&nbsp;&nbsp;&nbsp;例如：2017-07-04
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-1 col-xs-offset-5">
+                            <input type="button" class="searchBtn" id="searchBtn" value="" onclick="search(true)" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 style="">
+        <form action="" role="form" id="formResult">
+            <table class="table table-striped" id="orderList">
+                <thead>
+                    <th width="6%">订单id</th>
+                    <th width="8%">下单人姓名</th>
+                    <th width="8%">订单状态</th>
+                    <th width="8%">订单价格</th>
+                    <th width="10%">下单时间</th>
+                    <th width="10%">上次修改时间</th>
+                    <th width="8%">取消</th>
+                    <th width="8%">退款</th>
+                    <th width="8%">改签</th>
+                    <th width="8%">支付</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-6 text-right">
+                <ul class="pagination" id="page">
+                    <li><a href="#" onclick="previous()">&laquo;</a></li>
+                    <li class="active"><a href="#" onclick="callSearch(this)">1</a></li>
+                    <li><a href="#" onclick="next()">&raquo;</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-2 text-right bottom-control">
+                每页显示<select name="" id="pageSize">
+                <option value="five">5</option>
+                <option value="eight">8</option>
+                <option value="ten">10</option>
+                <option value="twelve">12</option>
+                <option value="fifteen">15</option>
+            </select>条信息
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    // 订单状态码，对应订单状态
+    var statusCode = new Array(0, 20, 11, 1);
+
+
+    // 窗口初始化，加载完成后执行
+    window.onload = function() {
+
+    }
+    // 搜索按钮绑定回车事件
+    document.onkeydown = function(event) {
+        if (event.keyCode == 13) {
+            event.cancelBubble = true;
+            event.returnValue = false;
+            search(true);
+        }
+    }
+
+    // 向前翻页
+    function previous() {
+        var currentPage = 0;
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 1; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                currentPage = i;
+                break;
+            }
+        }
+        var previousPage = currentPage - 1;
+        if (previousPage > 0) {
+            lis[currentPage].className = "";
+            lis[previousPage].className = "active";
+            search();
+        }
+
+    }
+    // 向后翻页
+    function next() {
+        var currentPage = 0;
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 1; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                currentPage = i;
+                break;
+            }
+        }
+        var nextPage = currentPage + 1;
+        if (nextPage < lis.length - 1) {
+            lis[currentPage].className = "";
+            lis[nextPage].className = "active";
+            search();
+        }
+
+    }
+
+    function callSearch(thisAnchor) {
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 0; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                lis[i].className = "";
+                break;
+            }
+        }
+        lis[thisAnchor.innerHTML].className = "active";
+        search();
+    }
+
+    function search(flag) {
+        var flag = arguments[0] ? arguments[0] : false;
+
+        var statusIndex = document.getElementById("status").selectedIndex;
+        var date = document.getElementById("date").value;
+
+        var oPageSize = document.getElementById("pageSize");
+        var pageSize = oPageSize[oPageSize.selectedIndex].innerHTML;
+        var currentPage = 1;
+        var lis = document.getElementById("page").getElementsByTagName("li");
+        for (var i = 1; i < lis.length; i++) {
+            if (lis[i].className == "active") {
+                currentPage = i;
+                break;
+            }
+        }
+
+        var order = {
+            "pageSize": pageSize,
+            "pageNum": currentPage
+        };
+        // alert(statusIndex);
+        if (statusIndex != 0) {
+            order["status"] = statusCode[statusIndex - 1];
+            return;
+        }
+        if (date != "") {
+            order["date"] = date;
+            return;
+        }
+
+        $.ajax({
+            type: "get",
+            url: "/order/list",
+            data: order,
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    if (flag) {
+                        createPageCode(data.data.totalPage);
+                    }
+                    createTable(data.data.pageSize, data.data.list);
+                }
+            }
+        });
+    }
+
+    function createPageCode(number) {
+        // 删除以前创建的页码条
+        var oul = document.getElementById("page");
+        for (var i = oul.childNodes.length - 1; i > 2; i--) {
+            oul.removeChild(oul.childNodes[i]);
+        }
+        // 根据参数创建新的页码条
+//		alert("delete done");
+        var oli = document.createElement("li");
+        oli.setAttribute("class", "active");
+        oli.innerHTML = "<a href='#' onclick='callSearch(this)'>1</a>";
+        oul.appendChild(oli);
+        for (var i = 1; i < number; i++) {
+            var oli = document.createElement("li");
+            oli.innerHTML = "<a href='#' onclick='callSearch(this)'>" + (i+1) + "</a>";
+            oul.appendChild(oli);
+        }
+        var oli = document.createElement("li");
+        oli.innerHTML = "<a href='#' onclick='next()'>&raquo;</a>";
+        oul.appendChild(oli);
+    }
+
+    function createTable(pageSize, list) {
+        var pageSize = arguments[0] ? arguments[0] : 5;
+        // 清除除表头之外的tr行
+        var rows = document.getElementById("orderList").rows.length;
+        for (var i = rows - 1; i > 0; i--) {
+            document.getElementById("orderList").deleteRow(i);
+        }
+        // 根据从后台取来的信息创建新的表
+        for (var i = 0; i < pageSize; i++) {
+            var data = {
+                "id": list[i].id,
+                "actualName": list[i].actualName,
+                "status": list[i].status,
+                "price": list[i].price,
+                "orderTime": list[i].orderTime,
+                "updateTime": list[i].updateTime
+            };
+            addRow(data);
+        }
+    }
+
+    // 分页功能
+    // addRow()从数据库取出信息查出信息并创建新的行
+    function addRow(data) {
+        var statusIndex = statusCode.indexOf(data.status) + 1;
+        var newTr = document.getElementById("orderList").insertRow(document.getElementById("orderList").rows.length);
+        var newTd = newTr.insertCell(0);
+        var newTd2 = newTr.insertCell(1);
+        var newTd3 = newTr.insertCell(2);
+        var newTd4 = newTr.insertCell(3);
+        var newTd5 = newTr.insertCell(4);
+        var newTd6 = newTr.insertCell(5);
+        var newTd7 = newTr.insertCell(6);
+        var newTd8 = newTr.insertCell(7);
+        var newTd9 = newTr.insertCell(8);
+        var newTd10 = newTr.insertCell(9);
+        newTd.innerHTML = data.id;
+        newTd2.innerHTML = data.actualName;
+        newTd3.innerHTML = document.getElementById("status")[statusIndex].innerHTML;
+        newTd4.innerHTML = data.price;
+        newTd5.innerHTML = data.orderTime;
+        newTd6.innerHTML = data.updateTime;
+        newTd7.innerHTML = data.status == 0 ?
+            "<a href='#' onclick='cancelOrder(" + data.id + ")'><span style='color:orangered'>取消</span></a>" :
+            "<a href='#' onclick='this.blur();'><span style='color:darkgray'>取消</span></a>";
+        newTd8.innerHTML = data.status == 20 ?
+            "<a href='#' onclick='retreatOrder(" + data.id + ")'><span style='color:orangered'>退款</span></a>" :
+            "<a href='#' onclick='this.blur();'><span style='color:darkgray'>退款</span></a>";
+        newTd9.innerHTML = data.status == 20 ?
+            "<a href='#' onclick='changeOrder(" + data.id + ")'><span style='color:orangered'>改签</span></a>" :
+            "<a href='#' onclick='this.blur();'><span style='color:darkgray'>改签</span></a>";
+        newTd10.innerHTML = data.status == 0 ?
+            "<a href='#' onclick='payOrder(" + data.id + ")'><span style='color:orangered'>支付</span></a>" :
+            "<a href='#' onclick='this.blur();'><span style='color:darkgray'>支付</span></a>";
+    }
+
+    document.getElementById("pageSize").onchange = function() {
+        search(true);
+    }
+
+    function cancelOrder(orderId) {
+        $.ajax({
+            type: "post",
+            url: "/order/cancel",
+            data: {"id": orderId},
+            dataType: "json",
+            success: function(data) {
+                alert(data.msg);
+                location.href = "OrderManageQuery.html";
+            }
+        });
+    }
+
+    function retreatOrder(orderId) {
+        $.ajax({
+            type: "post",
+            url: "/order/retreat",
+            data: {"id": orderId},
+            dataType: "json",
+            success: function(data) {
+                alert(data.msg);
+                location.href = "OrderManageQuery.html";
+            }
+        });
+    }
+
+    function changeOrder(orderId) {
+        location.href = "../order_manage/OrderInfo_Edit.html?orderId=" + orderId;
+    }
+
+
+    function payOrder(orderId) {
+        $.ajax({
+            type: "post",
+            url: "/manage/order/pay",
+            data: {"id": orderId},
+            dataType: "json",
+            success: function(data) {
+                alert(data.msg);
+                location.href = "OrderManageQuery.html";
+            }
+        });
+    }
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.js"></script>
 </body>
+
 </html>

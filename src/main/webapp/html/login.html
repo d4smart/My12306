@@ -143,7 +143,7 @@
                 var emailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
                 var idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
                 var phoneReg = /^1\d{10}$/;
-                var picCode = new RegExp("^"+picCode+"$", "i");
+                var picCode = new RegExp("^"+code+"$", "i");
 
                 var user = {"password": passwd};
 			
@@ -167,7 +167,7 @@
 					alert("密码格式有误");
 					return;
 				}
-				if(picCode.test(vertifyCode)) {
+				if(!picCode.test(vertifyCode)) {
 					alert("验证码错误");
 					return;
 				}
