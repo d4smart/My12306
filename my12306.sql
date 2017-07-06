@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : my12306
+Source Server         : My12306
 Source Server Version : 50548
-Source Host           : www.d4smarter.com:3306
+Source Host           : 115.159.119.16:3306
 Source Database       : my12306
 
 Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-07-05 16:00:30
+Date: 2017-07-06 11:46:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -165,6 +165,7 @@ CREATE TABLE `train` (
   `end_time` time DEFAULT NULL,
   `spend_time` int(11) NOT NULL DEFAULT '0',
   `mileage` int(11) NOT NULL DEFAULT '0' COMMENT '里程',
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00',
   `noseat_count` int(11) NOT NULL DEFAULT '0',
   `vehicle_type` enum('新空调','高铁') NOT NULL DEFAULT '新空调' COMMENT '车辆车体分类',
   `train_type` enum('直达特快','特快','普快','普客') NOT NULL DEFAULT '普客' COMMENT '列车类型',
