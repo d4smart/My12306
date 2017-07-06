@@ -98,27 +98,82 @@
     var link = location.href;
     var sectionId = Number(link.substr(link.indexOf("sectionId") + 10));
     var srcFrom = "";
-    var srcTO = "";
+    var srcTo = "";
     var srcMileage = "";
     var srcPrice = "";
     window.onload = function() {
+        // 从后台获取车站信息并填写
+        var section = {"id": sectionId};
+        $.ajax({
+            type: "get",
+            url: "/manage/section/get",
+            async: false,
+            data: section,
+            dataType: "json",
+            success: function(data) {
+                srcFrom = data.data.fromStation;
+                srcTo = data.data.toStation;
+                srcMileage = data.data.mileage;
+                srcPrice = data.data.price;
+                document.getElementById("mileage").value = srcMileage;
+                document.getElementById("price").value = srcPrice;
+//                var oFrom = document.getElementById("fromStation");
+//                for (var i = 0; i < oFrom.length; i++) {
+//                    if (oFrom[i].innerHTML == srcFrom) {
+//                        oFrom[i].selected = true;
+//                    }
+//                }
+//                var oTo = document.getElementById("toStation");
+//                for (var i = 0; i < oTo.length; i++) {
+//                    if (oTo[i].innerHTML == srcTo) {
+//                        oTo[i].selected = true;
+//                    }
+//                }
+            },
+            error: function(data) {
+                alert("获取车站信息失败，服务器内部错误...");
+            }
+        });
 
         // 从后台请求station表创建From To下拉菜单
-        var oFrom = document.getElementById("fromStation");
-        var oTo = document.getElementById("toStation");
+        var oSelectBox = document.getElementById("fromStation");
+        var oSelectBox2 = document.getElementById("toStation");
         var para = {"pageSize": 50}; // 根据具体城市数量可以更改
+        var flag1 = false;
+        var flag2 = false;
         $.ajax({
             type: "get",
             url: "/manage/station/list",
+            async: false,
             data: para,
             dataType: "json",
             success: function(data) {
                 if (data.code == 0) {
-                    oFrom.length = 0;
-                    oTo.length = 0;
-                    for (var i = 1; i <= para.pageSize; i++) {
-                        oFrom.options[i] = new Option(data.data.list[i].name);
-                        oTo.options[i] = new Option(data.data.list[i].name);
+                    oSelectBox.length = 1;
+                    oSelectBox2.length = 1;
+                    oSelectBox.options[1] = new Option(srcFrom);
+                    oSelectBox2.options[1] = new Option(srcTo);
+                    oSelectBox[1].selected = true;
+                    oSelectBox2[1].selected = true;
+                    for (var i = 2; i <= data.data.totalRow; i++) {
+                        if (data.data.list[i].name == srcFrom) {
+                            flag1 = true;
+                        }
+                        if (data.data.list[i].name == srcTo) {
+                            flag2 = true;
+                        }
+                        if (!flag1) {
+                            oSelectBox.options[i] = new Option(data.data.list[i].name);
+                        }
+                        if (!flag2) {
+                            oSelectBox2.options[i] = new Option(data.data.list[i].name);
+                        }
+                        if (flag1) {
+                            oSelectBox.options[i] = new Option(data.data.list[i + 1].name);
+                        }
+                        if (flag2) {
+                            oSelectBox2.options[i] = new Option(data.data.list[i + 1].name);
+                        }
                     }
                 }
             },
@@ -129,38 +184,8 @@
         });
 
 
-        // 从后台获取车站信息并填写
-        var section = {"id": sectionId};
-        $.ajax({
-            type: "get",
-            url: "/manage/section/get",
-            data: section,
-            dataType: "json",
-            success: function(data) {
-                srcFrom = data.data.fromStation;
-                srcTo = data.data.toStation;
-                srcMileage = data.data.mileage;
-                srcPrice = data.data.price;
-                document.getElementById("mileage").value = srcMileage;
-                document.getElementById("price").value = srcPrice;
-                var oFrom = document.getElementById("fromStation");
-                for (var i = 0; i < oFrom.length; i++) {
-                    if (oFrom[i].innerHTML == srcFrom) {
-                        oFrom[i].selected = true;
-                    }
-                }
-                var oTo = document.getElementById("toStation");
-                for (var i = 0; i < oTo.length; i++) {
-                    if (oTo[i].innerHTML == srcTo) {
-                        oTo[i].selected = true;
-                    }
-                }
-            },
-            error: function(data) {
-                alert("获取车站信息失败，服务器内部错误...");
-            }
-        });
-    }
+
+    };
 
     function btn_submit() {
         var oFrom = document.getElementById("fromStation");
@@ -216,7 +241,7 @@
             success: function(data) {
                 if (data.code == 0) {
                     alert(data.msg);
-                    parent.location.href = "../index.html";
+                    location.href = "SectionManageQuery.html";
                 }
                 else {
                     alert(data.msg);

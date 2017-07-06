@@ -112,7 +112,7 @@
     };
     type.onchange = function() {
         seatType[type.selectedIndex].selected = true;
-    }
+    };
 
     function btn_submit() {
         var code = document.getElementById("code");
@@ -151,7 +151,7 @@
             success: function(data) {
                 if (data.code == 0) {
                     alert(data.msg);
-                    parent.location.href = "MarshallingManageQuery.html";
+                    location.href = "MarshallingManageQuery.html";
                 }
                 else {
                     alert(data.msg);

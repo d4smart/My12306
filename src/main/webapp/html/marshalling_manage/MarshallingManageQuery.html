@@ -170,8 +170,8 @@
 <script>
     // 窗口初始化，加载完成后执行
     window.onload = function() {
-
-    }
+        search(true);
+    };
     // 搜索按钮绑定回车事件
     document.onkeydown = function(event) {
         if (event.keyCode == 13) {
@@ -179,7 +179,7 @@
             event.returnValue = false;
             search(true);
         }
-    }
+    };
 
     // 向前翻页
     function previous() {

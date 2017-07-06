@@ -162,7 +162,7 @@
 
     // 窗口初始化，加载完成后执行
     window.onload = function() {
-
+        search(true);
     }
     // 搜索按钮绑定回车事件
     document.onkeydown = function(event) {
@@ -252,7 +252,7 @@
 
         $.ajax({
             type: "get",
-            url: "/manage/order/select",
+            url: "/manage/order/list",
             data: order,
             dataType: "json",
             success: function(data) {
@@ -261,6 +261,24 @@
                         createPageCode(data.data.totalPage);
                     }
                     createTable(data.data.pageSize, data.data.list);
+                    return;
+                }
+                else if (data.code == 4) {
+                    $.ajax({
+                        type: "get",
+                        url: "/order/select",
+                        data: order,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.code == 0) {
+                                if (flag) {
+                                    createPageCode(data.data.totalPage);
+                                }
+                                createTable(data.data.pageSize, data.data.list);
+                                return;
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -386,8 +404,27 @@
             data: {"id": orderId},
             dataType: "json",
             success: function(data) {
-                alert(data.msg);
-                location.href = "OrderManageQuery.html";
+                if (data.code == 0) {
+                    alert(data.msg);
+                    location.href = "OrderManageQuery.html";
+                }
+                else if (data.code == 4) {
+                    $.ajax({
+                        type: "post",
+                        url: "/order/pay",
+                        data: {"id": orderId},
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.code == 0) {
+                                alert(data.msg);
+                                location.href = "OrderManageQuery.html";
+                            }
+                        }
+                    });
+                }
+                else {
+                    alert(data.msg);
+                }
             }
         });
     }

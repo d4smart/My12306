@@ -66,7 +66,7 @@
 
                     </select>
                 </div>
-                <div class="info row">
+                <div class="info row" id="idBox">
                     <span class="col-xs-3"><span style="color:orangered">*</span>乘客身份证号码：</span>
                     <div class="col-xs-9" name="idBox">
                         <input type="text" name="identityNo" id="" style="margin-left:-8px;"/>
@@ -181,12 +181,12 @@
                 }
                 $.ajax({
                     type: "get",
-                    url: "/manage/user/select",
+                    url: "/user/select",
                     async: false,
                     data: {"identityNumber": identityNos[i].value},
                     dataType: "json",
                     success: function(data) {
-                        userIds += data.data.list[0].id;
+                        userIds += data.data[0].id;
                     }
                 });
             }
@@ -222,7 +222,7 @@
             success: function(data) {
                 if (data.code == 0) {
                     alert(data.msg);
-                    parent.location.href = "../index.html";
+                    location.href = "OrderManageQuery.html";
                 }
                 else {
                     alert(data.msg);

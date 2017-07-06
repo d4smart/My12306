@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="../../css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/
 			.3.7.0/html5shiv.js"></script>
@@ -15,7 +15,7 @@
     <title></title>
     <style>
         body{
-            background: url(../../images/bg_point_write.gif);
+            background: url(/images/bg_point_write.gif);
         }
 
         .header{
@@ -33,7 +33,7 @@
         }
 
         .register-bottom{
-            background: url(../../images/bottom_ny_bg.gif) repeat-x;
+            background: url(/images/bottom_ny_bg.gif) repeat-x;
             margin-top: 64px;
         }
 
@@ -49,7 +49,7 @@
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2 header">
             <h3 style="color:#0A3C5F;">修改线路信息</h3>
-            <img src="../../images/line1.jpg" alt=""/>
+            <img src="/images/line1.jpg" alt=""/>
             <p style="margin-top:10px;">注：标有<span style="color:orangered">*</span>处，均为必填项</p>
         </div>
         <div class="col-xs-8 col-xs-offset-3 content">
@@ -116,6 +116,7 @@
 
         // 从后台请求station表创建beginStation拉菜单
         var oStation = document.getElementById("beginStation");
+        // var oStations = document.getElementsByName("stations");
         var para = {"pageSize": 50}; // 根据具体城市数量可以更改
         $.ajax({
             type: "get",
@@ -124,7 +125,12 @@
             dataType: "json",
             success: function(data) {
                 if (data.code == 0) {
-                    for (var i = 1; i <= para.pageSize; i++) {
+//                    alert(oStations.length);
+//                    for (var i = 0; i < stationList.length; i++) {
+//                        oStations[i + 1][1] = stationList[i];
+//                        oStations[i + 1][1].selected = true;
+//                    }
+                    for (var i = 1; i <= data.data.totalRow; i++) {
                         oStation.options[i] = new Option(data.data.list[i].name);
                     }
                 }
@@ -158,9 +164,10 @@
             }
         });
 
+        var stationList = "";
         // console.log("sectionIds length: " + srcSectionIds.length);
         for (var i = 0; i < srcSectionIds.length; i++) {
-            console.log("hello" + i);
+            // console.log("hello" + i);
             addStation();
             $.ajax({
                 type: "get",
@@ -189,6 +196,11 @@
                         oStayTimes[i].value = srcStayTimes[i];
                     }
 
+//                    if (stationList == "") {
+//                        stationList = stationList.concat(data.data.fromStation);
+//                    }
+//                    stationList = stationList.concat(data.data.toStation);
+
                 },
                 error: function(data) {
                     alert("获取信息失败，服务器内部错误...");
@@ -196,6 +208,10 @@
                 }
             });
         }
+
+
+
+
     };
 
     var oStations = document.getElementsByName("stations");
@@ -257,7 +273,7 @@
 //        console.log("listlenght:" + list.length);
         for (var i = 1; i <= list.length; i++) {
 //            console.log(list[i].toStation);
-            oSelect.options[i] = new Option(list[i].toStation);
+            oSelect.options[i] = new Option(list[i - 1].toStation);
         }
     }
 
@@ -360,7 +376,7 @@
             success: function(data) {
                 if (data.code == 0) {
                     alert(data.msg);
-                    parent.location.href = "../index.html";
+                    location.href = "LineManageQuery.html";
                 }
                 else {
                     alert(data.msg);
@@ -376,8 +392,8 @@
 
 </script>
 
-<script src="../../js/jquery.js"></script>
-<script src="../../js/bootstrap.js"></script>
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.js"></script>
 </body>
 
 </html>

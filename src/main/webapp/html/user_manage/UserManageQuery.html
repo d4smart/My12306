@@ -160,17 +160,10 @@
 </div>
 
 <script>
-    // 窗口初始化，加载完成后执行
-//    window.onload = function() {
-//        for (var i = 0; i < 5; i++) {
-//            var data = {
-//                "name": "用户" + i,
-//                "gender": "男",
-//                "identityNumber": "23621519701208110x"
-//            };
-//            addRow(data);
-//        }
-//    }
+	// 窗口初始化，加载完成后执行
+    window.onload = function() {
+        search(true);
+    }
     // 搜索按钮绑定回车事件
     document.onkeydown = function(event) {
         if (event.keyCode == 13) {

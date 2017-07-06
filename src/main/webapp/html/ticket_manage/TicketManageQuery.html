@@ -119,8 +119,8 @@
                     <th width="9%">始发时间</th>
                     <th width="9%">终到时间</th>
                     <th width="6%">历时</th>
-                    <th width="6%">里程</th>
-                    <th width="8%">车辆车体分类</th>
+                    <th width="6%">里程(km)</th>
+                    <th width="6%">车辆车体分类</th>
                     <th width="8%">列车类型</th>
                     <th width="10%">操作</th>
                 </thead>
@@ -156,7 +156,7 @@
     // 窗口初始化，加载完成后执行
     window.onload = function() {
 
-    }
+    };
     // 搜索按钮绑定回车事件
     document.onkeydown = function(event) {
         if (event.keyCode == 13) {
@@ -164,7 +164,7 @@
             event.returnValue = false;
             search(true);
         }
-    }
+    };
 
     // 向前翻页
     function previous() {
@@ -255,7 +255,7 @@
 
         $.ajax({
             type: "get",
-            url: "/manage/train/select",
+            url: "/train/list",
             data: train,
             dataType: "json",
             success: function(data) {
@@ -320,6 +320,8 @@
     // addRow()从数据库取出信息查出信息并创建新的行
     function addRow(data) {
         var newTr = document.getElementById("trainList").insertRow(document.getElementById("trainList").rows.length);
+        var spendMinute = data.spendTime%60 == 0 ? "整" : (data.spendTime%60 + "分钟");
+        var spendTime = Math.floor(data.spendTime/60) + "小时" + spendMinute;
         var newTd = newTr.insertCell(0);
         var newTd2 = newTr.insertCell(1);
         var newTd3 = newTr.insertCell(2);
@@ -337,7 +339,7 @@
         newTd4.innerHTML = data.endStation;
         newTd5.innerHTML = data.beginTime;
         newTd6.innerHTML = data.endTime;
-        newTd7.innerHTML = data.spendTime;
+        newTd7.innerHTML = spendTime;
         newTd8.innerHTML = data.mileage;
         newTd9.innerHTML = data.vehicleType;
         newTd10.innerHTML = data.trainType;
