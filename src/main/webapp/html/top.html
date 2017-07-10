@@ -5,21 +5,19 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<link rel="stylesheet" href="../css/bootstrap.css" />
+		<link rel="stylesheet" href="/css/bootstrap.css" />
 		<!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/libs/html5shiv/
-			.3.7.0/html5shiv.js"></script>
-			<script src="https://oss.maxcdn.com/libs/respond.js/
-			.1.4.2/respond.min.js"></script>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<title></title>
 		<style>
 			body{
-				background: url(../images/bg_point.gif);
+				background: url(/images/bg_point.gif);
 			}
 			
 			.register-top{
-				background: url(../images/ny_top_img_bg.gif) repeat-x;
+				background: url(/images/ny_top_img_bg.gif) repeat-x;
 			}
 			
 			.register-top2{
@@ -40,7 +38,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-12 register-top">
-					<img src="../images/ny_top_img.gif" alt="" />
+					<img src="/images/ny_top_img.gif" alt="" />
 				</div>
 				<div class="col-xs-12 register-top2">
 					<div class="col-xs-2  col-xs-offset-6 text-left">
@@ -69,7 +67,7 @@
                         }
                         else {
                             alert("请先登陆");
-                            parent.location.href = "login.html";
+                            parent.location.href = "../login.html";
                         }
                     }
                 });
@@ -82,7 +80,7 @@
 					dataType: "json",
 					success: function(data) {
 					    if (data.code == 0) {
-					        parent.location.href = "login.html";
+					        parent.location.href = "../login.html";
 						}
 					}
 				});
@@ -105,7 +103,7 @@
 			window.setInterval("showTime()", 1000);
 		</script>
 		
-		<script src="../js/jquery.js"></script>
-		<script src="../js/bootstrap.js"></script>
+		<script src="/js/jquery.js"></script>
+		<script src="/js/bootstrap.js"></script>
 	</body>
 </html>

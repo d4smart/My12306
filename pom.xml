@@ -60,12 +60,6 @@
 
 
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.7.3</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
             <version>${org.mybatis.spring.version}</version>
@@ -76,6 +70,11 @@
             <version>${org.mybatis.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.3</version>
+        </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
@@ -212,11 +211,6 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
-
-                    <!-- 用于引入中央仓库没有的jar包 -->
-                    <compilerArguments>
-                        <extdirs>${project.basedir}/src/main/webapp/WEB-INF/lib</extdirs>
-                    </compilerArguments>
                 </configuration>
             </plugin>
         </plugins>

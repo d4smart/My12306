@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : My12306
+Source Server         : my12306
 Source Server Version : 50548
-Source Host           : 115.159.119.16:3306
+Source Host           : www.d4smarter.com:3306
 Source Database       : my12306
 
 Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-07-06 11:46:04
+Date: 2017-07-10 15:29:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;

@@ -91,7 +91,6 @@ public class OrderService {
 
         // 根据座位类型和线路基础价格计算总价
         double ratio = Const.FareRatio.getRatio(seatType);
-        System.out.println(ratio);
         if(ratio == 0) return ServerResponse.createByErrorMessage("不存在这种座位类型");
         BigDecimal price = BigDecimalUtil.multiply(train.getPrice().doubleValue(), ratio);
 
