@@ -23,6 +23,8 @@ target/
 *.patch
 *.tmp
 
+logback.xml
+
 # system file
 .DS_Store
 Thumbs.db
