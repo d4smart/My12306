@@ -2,7 +2,7 @@
 tomcat_home=/root/docs/apache-tomcat-7.0.73
 project_home=/data/www/my12306.d4smarter.com
 
-echo "===========进入git项目mall目录============="
+echo "===========进入项目目录============="
 cd ${project_home}
 
 echo "==================git fetch======================"

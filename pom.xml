@@ -191,7 +191,7 @@
     </dependencies>
 
     <build>
-        <finalName>My12306</finalName>
+        <finalName>my12306</finalName>
         <plugins>
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
