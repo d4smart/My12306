@@ -71,7 +71,7 @@ public class UserService {
         }
 
         userMapper.updateLastLoginTime(user.getId()); //更新最后登录时间
-        user.setPassword(StringUtils.EMPTY);
+        user.setPassword(null); //隐藏密码
 
         return ServerResponse.createBySuccess("登陆成功", user);
     }
