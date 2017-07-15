@@ -6,7 +6,7 @@
 
     <display-name>My12306 Web Application</display-name>
 
-    <!-- 使用默认的静态资源处理Servlet处理静态资源 -->
+    <!-- 使用默认的静态资源处理Servlet处理静态资源（本地开发时使用，生产环境使用nginx处理静态资源并将其他请求转发至tomcat，此配置可删） -->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/index.html</url-pattern>
