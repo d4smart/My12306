@@ -231,14 +231,6 @@
             }
         }
 
-        if (beginStation == "") {
-            alert("出发地不能为空");
-            return;
-        }
-        if (endStation == "") {
-            alert("目的地不能为空");
-            return;
-        }
         if (beginDate == "") {
             var now = new Date();
             beginDate = now.getFullYear() + "-" + (now.getMonth()+1) + "-" + now.getDate();
@@ -350,7 +342,7 @@
 
 
     function getOrder(trainId) {
-        location.href = "/html/order_manage/OrderInfo_Add.html";
+        location.href = "/html/order_manage/OrderInfo_Add.html?trainId=" + trainId;
     }
 
 </script>
