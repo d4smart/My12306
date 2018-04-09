@@ -15,9 +15,9 @@ mvn clean package -Dmaven.test.skip=true
 
 echo "============删除旧的ROOT.war==================="
 rm ${tomcat_home}/webapps/my12306.war
-echo "======拷贝编译出来的war包到tomcat下-ROOT.war======="
+echo "======拷贝编译出来的war包到tomcat下======="
 cp ${project_home}/target/my12306.war  ${tomcat_home}/webapps/my12306.war
-echo "============删除tomcat下旧的ROOT文件夹============="
+echo "============删除tomcat下旧的文件夹============="
 rm -rf ${tomcat_home}/webapps/my12306
 
 echo "====================关闭tomcat====================="
