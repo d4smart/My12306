@@ -14,11 +14,11 @@ echo "===========编译并跳过单元测试===================="
 mvn clean package -Dmaven.test.skip=true
 
 echo "============删除旧的ROOT.war==================="
-rm ${tomcat_home}/webapps/ROOT.war
+rm ${tomcat_home}/webapps/my12306.war
 echo "======拷贝编译出来的war包到tomcat下-ROOT.war======="
-cp ${project_home}/target/my12306.war  ${tomcat_home}/webapps/ROOT.war
+cp ${project_home}/target/my12306.war  ${tomcat_home}/webapps/my12306.war
 echo "============删除tomcat下旧的ROOT文件夹============="
-rm -rf ${tomcat_home}/webapps/ROOT
+rm -rf ${tomcat_home}/webapps/my12306
 
 echo "====================关闭tomcat====================="
 ${tomcat_home}/bin/shutdown.sh
