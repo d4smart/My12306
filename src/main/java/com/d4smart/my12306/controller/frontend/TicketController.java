@@ -25,14 +25,14 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<Ticket> get(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         return ticketService.get(id, user);
     }
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> list(HttpSession session,
                                          @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -41,7 +41,7 @@ public class TicketController {
         return ticketService.list(user, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "retreat", method = RequestMethod.POST)
+    @RequestMapping(value = "/retreat", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> retreat(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);

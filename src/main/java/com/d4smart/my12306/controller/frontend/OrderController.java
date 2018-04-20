@@ -25,7 +25,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> select(String status, String orderTime, HttpSession session,
                                            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -34,35 +34,35 @@ public class OrderController {
         return orderService.getOrders(user.getId(), status, orderTime, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<Order> get(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         return orderService.get(id, user);
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> create(String userIds, String code, String seatType, String date, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         return orderService.create(userIds, code, seatType, date, user);
     }
 
-    @RequestMapping(value = "pay", method = RequestMethod.POST)
+    @RequestMapping(value = "/pay", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> pay(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         return orderService.pay(id, user.getId());
     }
 
-    @RequestMapping(value = "cancel", method = RequestMethod.POST)
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> cancel(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         return orderService.cancel(id, user);
     }
 
-    @RequestMapping(value = "retreat", method = RequestMethod.POST)
+    @RequestMapping(value = "/retreat", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> retreat(@RequestParam(value = "id", required = true) Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);

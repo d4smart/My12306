@@ -22,14 +22,14 @@ public class StationManageController {
     @Autowired
     private StationService stationService;
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         return stationService.getStations(null, null, null, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> select(String name, String code, String bureau,
                                            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -37,20 +37,20 @@ public class StationManageController {
         return stationService.getStations(name, code, bureau, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<Station> get(@RequestParam(value = "id", required = true) Integer id) {
         return stationService.get(id);
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> create(Station station) {
         station.setId(null);
         return stationService.create(station);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> update(Station station) {
         if(station.getId() == null) {
@@ -61,7 +61,7 @@ public class StationManageController {
         return stationService.update(station);
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> delete(@RequestParam(value = "id", required = true) Integer id) {
         return stationService.delete(id);

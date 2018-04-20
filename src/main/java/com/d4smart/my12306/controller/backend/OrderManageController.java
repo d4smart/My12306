@@ -21,13 +21,13 @@ public class OrderManageController {
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<Order> get(@RequestParam(value = "id", required = true) Integer id) {
         return orderService.getByAdmin(id);
     }
 
-    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> select(String status, String orderTime,
                                            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -35,14 +35,14 @@ public class OrderManageController {
         return orderService.getOrders(null, status, orderTime, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         return orderService.getOrders(null, null, null, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "pay", method = RequestMethod.POST)
+    @RequestMapping(value = "/pay", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> pay(@RequestParam(value = "id", required = true) Integer id) {
         return orderService.pay(id, null);

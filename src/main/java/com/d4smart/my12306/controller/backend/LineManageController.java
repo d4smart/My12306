@@ -22,20 +22,20 @@ public class LineManageController {
     @Autowired
     private LineService lineService;
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<Line> get(@RequestParam(value = "id", required = true) Integer id) {
         return lineService.get(id);
     }
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         return lineService.list(null, null, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> select(String name, String station_names,
                                            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -43,14 +43,14 @@ public class LineManageController {
         return lineService.list(name, station_names, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> create(Line line) {
         line.setId(null);
         return lineService.create(line);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> update(Line line) {
         if(line.getId() == null) {
@@ -61,7 +61,7 @@ public class LineManageController {
         return lineService.update(line);
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> delete(@RequestParam(value = "id", required = true) Integer id) {
         return lineService.delete(id);

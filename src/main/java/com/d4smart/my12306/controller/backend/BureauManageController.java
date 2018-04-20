@@ -21,7 +21,7 @@ public class BureauManageController {
     @Autowired
     private BureauService bureauService;
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List<Bureau>> list() {
         return bureauService.list();

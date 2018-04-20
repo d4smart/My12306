@@ -21,7 +21,7 @@ public class RegionManageController {
     @Autowired
     private RegionService regionService;
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List<Region>> list() {
         return regionService.list();

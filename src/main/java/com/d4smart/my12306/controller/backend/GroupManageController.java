@@ -22,13 +22,13 @@ public class GroupManageController {
     @Autowired
     private GroupService groupService;
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<Group> get(@RequestParam(value = "id", required = true) Integer id) {
         return groupService.get(id);
     }
 
-    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> select(String code, String type,
                                            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -36,21 +36,21 @@ public class GroupManageController {
         return groupService.getGroups(code, type, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         return groupService.getGroups(null, null, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> create(Group group) {
         group.setId(null);
         return groupService.create(group);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> update(Group group) {
         if(group.getId() == null) {
@@ -61,7 +61,7 @@ public class GroupManageController {
         return groupService.update(group);
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> delete(@RequestParam(value = "id", required = true) Integer id) {
         return groupService.delete(id);

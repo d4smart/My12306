@@ -16,20 +16,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by d4smart on 2017/6/30 21:03
  */
 @Controller
-@RequestMapping("/manage/user/")
+@RequestMapping("/manage/user")
 public class UserManageController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> create(User user) {
         user.setId(null); // id由数据库控制
         return userService.createOrUpdate(user);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> update(User user) {
         if(user.getId() == null) {
@@ -40,14 +40,14 @@ public class UserManageController {
         return userService.createOrUpdate(user);
     }
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         return userService.getUsers(null, null, null, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> select(String name, String sex, String identityNumber,
                                            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -55,13 +55,13 @@ public class UserManageController {
         return userService.getUsers(name, sex, identityNumber, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<User> get(@RequestParam(value = "id", required = true) Integer id) {
         return userService.get(id);
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> delete(@RequestParam(value = "id", required = true) Integer id) {
         return userService.delete(id);

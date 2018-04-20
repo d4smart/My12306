@@ -17,19 +17,19 @@ import java.util.List;
  * Created by d4smart on 2017/6/30 18:54
  */
 @Controller
-@RequestMapping("/user/")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> register(User user) {
         return userService.register(user);
     }
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> login(User user, HttpSession session) {
         ServerResponse<User> serverResponse = userService.login(user);
@@ -40,14 +40,14 @@ public class UserController {
         return serverResponse;
     }
 
-    @RequestMapping(value = "get_user_info", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_user_info", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         return ServerResponse.createBySuccess(user);
     }
 
-    @RequestMapping(value = "update_user_info", method = RequestMethod.POST)
+    @RequestMapping(value = "/update_user_info", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> updateUserInfo(User user, HttpSession session) {
         User login = (User) session.getAttribute(Const.LOGIN_USER);
@@ -61,27 +61,27 @@ public class UserController {
         return serverResponse;
     }
 
-    @RequestMapping(value = "select", method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List<User>> select(String phone, String identityNumber, String email, String name) {
         return userService.getSimpleUsers(phone, identityNumber, email, name);
     }
 
-    @RequestMapping(value = "reset_password", method = RequestMethod.POST)
+    @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> resetPassword(String oldPassword, String newPassword, HttpSession session) {
         User user = (User) session.getAttribute(Const.LOGIN_USER);
         return userService.resetPassword(user, oldPassword, newPassword);
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session) {
         session.removeAttribute(Const.LOGIN_USER);
         return ServerResponse.createBySuccess();
     }
 
-    @RequestMapping(value = "check_valid", method = RequestMethod.GET)
+    @RequestMapping(value = "/check_valid", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<String> checkValid(String type, String str) {
         return userService.checkValid(type, str);

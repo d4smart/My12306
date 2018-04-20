@@ -22,7 +22,7 @@ public class TrainController {
     @Autowired
     private TrainService trainService;
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> list(String beginStation, String endStation,
                                          @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -30,25 +30,25 @@ public class TrainController {
         return trainService.getTrains(beginStation, endStation, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<Train> get(@RequestParam(value = "id", required = true) Integer id) {
         return trainService.get(id);
     }
 
-    @RequestMapping(value = "get_by_code", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_by_code", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<Train> getByCode(String code) {
         return trainService.getByCode(code);
     }
 
-    @RequestMapping(value = "get_detail_by_id", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_detail_by_id", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<TrainDetailVo> getDetailById(@RequestParam(value = "id", required = true) Integer id) {
         return trainService.getDetailById(id);
     }
 
-    @RequestMapping(value = "get_detail_by_code", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_detail_by_code", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<TrainDetailVo> getDetailByCode(@RequestParam(value = "code", required = true) String code) {
         return trainService.getDetailByCode(code);
